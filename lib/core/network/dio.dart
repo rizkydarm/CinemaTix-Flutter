@@ -49,7 +49,8 @@ class DioHelper {
       );
       return response.data;
     } on DioException catch (e) {
-      throw e.response?.statusMessage ?? Exception("Error is null");
+      final exp = _dioError(e);
+      throw exp;
     } catch (e) {
       rethrow;
     } 
@@ -66,9 +67,30 @@ class DioHelper {
       );
       return response.data;
     } on DioException catch (e) {
-      throw e.response?.statusMessage ?? Exception("Error is null");
+      final exp = _dioError(e);
+      throw exp;
     } catch (e) {
       rethrow;
     } 
+  }
+
+  Exception _dioError(DioException e) {
+    if (e.type == DioExceptionType.connectionTimeout) {
+      return Exception("Connection Timeout Exception");
+    } else if (e.type == DioExceptionType.sendTimeout) {
+      return Exception("Send Timeout Exception");
+    } else if (e.type == DioExceptionType.receiveTimeout) {
+      return Exception("Receive Timeout Exception");
+    } else if (e.type == DioExceptionType.badResponse) {
+      final statusCode = e.response?.statusCode;
+      final statusMessage = e.response?.statusMessage;
+      return Exception("Received invalid status code: $statusCode, Message: $statusMessage");
+    } else if (e.type == DioExceptionType.cancel) {
+      throw Exception("Request to API server was cancelled");
+    } else if (e.type == DioExceptionType.unknown) {
+      return Exception("Network Error: ${e.message}");
+    } else {
+      return Exception("Null Error");
+    }
   }
 }
