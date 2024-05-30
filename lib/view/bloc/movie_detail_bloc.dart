@@ -1,18 +1,18 @@
 part of '_bloc.dart';
 
-class MovieDetailCubit extends Cubit<BlocState<MovieDetailEntity>> {
+class MovieDetailCubit extends Cubit<BlocState> {
   
   final MovieUseCase movieUseCase;
 
-  MovieDetailCubit(this.movieUseCase) : super(const BlocState<MovieDetailEntity>.initial());
+  MovieDetailCubit(this.movieUseCase) : super(InitialState());
 
   Future<void> fetchMovieDetailById(String id) async {
-    emit(const BlocState<MovieDetailEntity>.loading());
+    emit(LoadingState());
     try {
       final movie = await movieUseCase.getMovieDetailById(id);
-      emit(BlocState<MovieDetailEntity>.success(movie));
+      emit(SuccessState(movie));
     } catch (e) {
-      emit(BlocState<MovieDetailEntity>.error(e.toString()));
+      emit(ErrorState(e.toString()));
     }
   }
 }

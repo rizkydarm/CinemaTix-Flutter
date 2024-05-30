@@ -13,23 +13,24 @@ part 'home_page.dart';
 class InfiniteListView<T> extends StatefulWidget {
   
   final Widget Function(BuildContext, T, int) itemBuilder;
+  final Widget Function(BuildContext, int) separatorBuilder;
+  
   final Future<void> Function(int, PagingController<int, T>) onFetchPage;
-  final int pageSize;
 
   const InfiniteListView({super.key,
     required this.itemBuilder,
+    required this.separatorBuilder,
     required this.onFetchPage,
-    this.pageSize = 20,
   });
 
   @override
-  State createState() => _BeerListViewState<T>();
+  State createState() => _InfiniteListViewState<T>();
 }
 
-class _BeerListViewState<T> extends State<InfiniteListView<T>> {
+class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
   
 
-  final PagingController<int, T> _pagingController = PagingController(firstPageKey: 0);
+  final PagingController<int, T> _pagingController = PagingController(firstPageKey: 1);
 
   @override
   void initState() {
@@ -41,10 +42,15 @@ class _BeerListViewState<T> extends State<InfiniteListView<T>> {
   
   @override
   Widget build(BuildContext context) => 
-    PagedListView<int, T>(
+    PagedListView<int, T>.separated(
+      separatorBuilder: widget.separatorBuilder,
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<T>(
-        itemBuilder: widget.itemBuilder
+        itemBuilder: widget.itemBuilder,
+        firstPageErrorIndicatorBuilder: (context) => SizedBox(
+          height: 60,
+          child: Center(child: Text(_pagingController.error.toString()))
+        ),
       ),
     );
 

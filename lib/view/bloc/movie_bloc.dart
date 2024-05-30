@@ -1,51 +1,30 @@
 part of '_bloc.dart';
 
-class MovieCubit extends Cubit<BlocState<List<MovieEntity>>> {
+class MovieCubit extends Cubit<BlocState> {
   
-  MovieUseCase movieUseCase;
+  final MovieUseCase movieUseCase;
+
   int currentPage = 1;
-  
-  bool isFetchingPaging = false;
+  static const int pageSize = 20;
 
-  List<MovieEntity> _movies = [];
+  bool _isFetching = false;
 
-  MovieCubit(this.movieUseCase) : super(const BlocState<List<MovieEntity>>.initial());
+  MovieCubit(this.movieUseCase) : super(InitialState());
 
-  Future<void> fetchNextPlayingNowMovies() async {
-    if (isFetchingPaging) return;
-    isFetchingPaging = true;
-
-    emit(const BlocState<List<MovieEntity>>.loading());
+  Future<void> fetchPlayingNowMovies({int page = 1, String? language}) async {
+    if (_isFetching) return;
+    _isFetching = true;
+    
+    emit(LoadingState());
     try {
-      final movies = await movieUseCase.getPlayingNowMovies(page: currentPage);
-      currentPage++;
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      if (_movies.isNotEmpty) {
-        _movies.addAll(movies);
-        emit(BlocState<List<MovieEntity>>.success(_movies));
-      } else {
-        _movies = movies;
-        emit(BlocState<List<MovieEntity>>.success(_movies));
-      }
-
+      await Future.delayed(const Duration(seconds: 2));
+      final movies = await movieUseCase.getPlayingNowMovies(page: page);
+      currentPage = page;
+      emit(SuccessState(movies));
     } catch (e) {
-      emit(BlocState<List<MovieEntity>>.error(e.toString()));
+      emit(ErrorState(e.toString()));
     } finally {
-      isFetchingPaging = false;
-    }
-  }
-
-  Future<void> fetchPlayingNowMovies() async {
-    currentPage = 1;
-    emit(const BlocState<List<MovieEntity>>.loading());
-    try {
-      final movies = await movieUseCase.getPlayingNowMovies();
-      _movies = movies;
-      emit(BlocState<List<MovieEntity>>.success(_movies));
-    } catch (e) {
-      emit(BlocState<List<MovieEntity>>.error(e.toString()));
+      _isFetching = false;
     }
   }
 }

@@ -44,8 +44,8 @@ void main() {
       },
       act: (cubit) => cubit.fetchPlayingNowMovies(),
       expect: () => [
-        const BlocState<List<MovieEntity>>.loading(),
-        BlocState<List<MovieEntity>>.success(movieList),
+        LoadingState(),
+        SuccessState<List<MovieEntity>>(movieList),
       ],
     );
 
@@ -58,8 +58,8 @@ void main() {
       },
       act: (cubit) => cubit.fetchPlayingNowMovies(),
       expect: () => [
-        BlocState<List<MovieEntity>>.loading(),
-        BlocState<List<MovieEntity>>.error('Exception: Failed to fetch movies'),
+        LoadingState(),
+        const ErrorState('Exception: Failed to fetch movies'),
       ],
     );
   });
@@ -84,8 +84,8 @@ void main() {
       },
       act: (cubit) => cubit.fetchMovieDetailById('1'),
       expect: () => [
-        const BlocState<MovieDetailEntity>.loading(),
-        BlocState<MovieDetailEntity>.success(movieDetail),
+        LoadingState(),
+        SuccessState(movieDetail),
       ],
     );
 
@@ -98,8 +98,8 @@ void main() {
       },
       act: (cubit) => cubit.fetchMovieDetailById('1'),
       expect: () => [
-        const BlocState<MovieDetailEntity>.loading(),
-        const BlocState<MovieDetailEntity>.error('Exception: Failed to fetch movie detail'),
+        LoadingState(),
+        const ErrorState('Exception: Failed to fetch movie detail'),
       ],
     );
   });
