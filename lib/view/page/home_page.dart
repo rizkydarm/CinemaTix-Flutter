@@ -5,6 +5,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final pageIndexNotifier = ValueNotifier(0);
     final pageViewController = PageController(
       initialPage: 0,
@@ -12,7 +13,15 @@ class HomePage extends StatelessWidget {
     );
     
     return BlocProvider(
-      create: (context) => MovieCubit()..fetchPlayingNowMovies(),
+      create: (context) => MovieCubit(
+        MovieUseCase(
+          MovieRepository(
+            MovieRemoteDataSource(
+              DioHelper(TMDBApi.baseUrl)
+            )
+          )
+        )
+      )..fetchPlayingNowMovies(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Home'),
@@ -51,21 +60,12 @@ class HomePage extends StatelessWidget {
                 final cubit = context.read<MovieCubit>();
                 return RefreshIndicator(
                   onRefresh: () => cubit.fetchPlayingNowMovies(),
-                  child: InfiniteList(
-                    onFetchData: () {
+                  child: InfiniteListView<MovieEntity>(
+                    onFetchPage: (pageKey, pagingController) async {
                       cubit.fetchNextPlayingNowMovies();
-                      print('onFetchData ${cubit.currentPage}');
                     },
-                    isLoading: state.status == BlocStatus.loading,
-                    itemCount: state.data?.length ?? 0,
-                    separatorBuilder: (context, index) => const Divider(height: 0),
-                    itemBuilder: (context, index) => ListTile(
+                    itemBuilder: (context, data, index) => ListTile(
                       title: Text( "${index+1} ${state.data?[index].title ?? '-'}"),
-                    ),
-                    hasReachedMax: cubit.currentPage >= 5,
-                    hasError: state.status == BlocStatus.error,
-                    errorBuilder: (context) => Center(
-                      child: Text(state.errorMessage ?? 'Error is not found'),
                     ),
                   ),
                 );

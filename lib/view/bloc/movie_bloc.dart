@@ -2,14 +2,14 @@ part of '_bloc.dart';
 
 class MovieCubit extends Cubit<BlocState<List<MovieEntity>>> {
   
-  final MovieUseCase movieUseCase = MovieUseCase(MovieRepository(MovieRemoteDataSource(DioHelper(TMDBApi.baseUrl))));
+  MovieUseCase movieUseCase;
   int currentPage = 1;
   
   bool isFetchingPaging = false;
 
   List<MovieEntity> _movies = [];
 
-  MovieCubit() : super(const BlocState<List<MovieEntity>>.initial());
+  MovieCubit(this.movieUseCase) : super(const BlocState<List<MovieEntity>>.initial());
 
   Future<void> fetchNextPlayingNowMovies() async {
     if (isFetchingPaging) return;
@@ -23,11 +23,9 @@ class MovieCubit extends Cubit<BlocState<List<MovieEntity>>> {
       await Future.delayed(const Duration(seconds: 1));
 
       if (_movies.isNotEmpty) {
-        print('add');
         _movies.addAll(movies);
         emit(BlocState<List<MovieEntity>>.success(_movies));
       } else {
-        print('change');
         _movies = movies;
         emit(BlocState<List<MovieEntity>>.success(_movies));
       }
