@@ -1,13 +1,10 @@
 
 
 import 'package:cinematix/core/_core.dart';
-import 'package:cinematix/data/_data.dart';
-import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/page/_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+
 
 void main() {
 
@@ -37,7 +34,14 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => const MovieListPage(),
+    ),
+    GoRoute(
+      path: '/movie_detail/:movieId',
+      builder: (context, state) => MovieDetailPage(
+        movieTitle: 'Movie Title',
+        movieId: state.pathParameters['movieId'] as String,
+      ),
     ),
   ],
 );

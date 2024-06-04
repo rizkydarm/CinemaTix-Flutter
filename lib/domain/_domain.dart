@@ -2,6 +2,7 @@
 
 import 'package:cinematix/data/_data.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 part 'entities/movie_entity.dart';
 part 'entities/movie_detail_entity.dart';
