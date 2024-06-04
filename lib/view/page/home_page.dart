@@ -10,15 +10,7 @@ class HomePage extends StatelessWidget {
     final pageViewController = PageController();
 
     return BlocProvider(
-      create: (context) => MovieCubit(
-        MovieUseCase(
-          MovieRepository(
-            MovieRemoteDataSource(
-              DioHelper(TMDBApi.baseUrl)
-            )
-          )
-        )
-      ),
+      create: (context) => PlayingNowMovieCubit(MovieUseCase()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Home'),
@@ -51,14 +43,19 @@ class HomePage extends StatelessWidget {
         ),
         body: PageView(
           controller: pageViewController,
+          onPageChanged: (index) => pageIndexNotifier.value = index,
           children: [
             const InfiniteMovieListView(),
-            ListView.separated(
-              itemCount: 10,
-              separatorBuilder: (context, index) => const Divider(height: 0,),
-              itemBuilder: (context, index) => ListTile(
-                title: Text('Item $index'),
-              ),
+            Builder(
+              builder: (context) {
+                return ListView.separated(
+                  itemCount: 10,
+                  separatorBuilder: (context, index) => const Divider(height: 0,),
+                  itemBuilder: (context, index) => ListTile(
+                    title: Text('Item $index'),
+                  ),
+                );
+              }
             )
           ],
         )
@@ -83,7 +80,7 @@ class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<MovieCubit>().fetchPlayingNowMovies(page: pageKey);
+      context.read<PlayingNowMovieCubit>().fetchPlayingNowMovies(page: pageKey);
     });
   }
 
@@ -95,14 +92,15 @@ class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MovieCubit, BlocState>(
+    return BlocListener<PlayingNowMovieCubit, BlocState>(
       listener: (context, state) {
         if (state is SuccessState<List<MovieEntity>>) {
-          final isLastPage = context.read<MovieCubit>().currentPage >= _maxPage;
+          final cubit = context.read<PlayingNowMovieCubit>();
+          final isLastPage = cubit.currentPage >= _maxPage;
           if (isLastPage) {
             _pagingController.appendLastPage(state.data);
           } else {
-            final nextPageKey = context.read<MovieCubit>().currentPage + 1;
+            final nextPageKey = cubit.currentPage + 1;
             _pagingController.appendPage(state.data, nextPageKey);
           }
         } else if (state is ErrorState) {
@@ -110,7 +108,7 @@ class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
         }
       },
       child: RefreshIndicator(
-        onRefresh: () => context.read<MovieCubit>().fetchPlayingNowMovies(page: 1),
+        onRefresh: () => context.read<PlayingNowMovieCubit>().fetchPlayingNowMovies(page: 1),
         child: PagedListView<int, MovieEntity>.separated(
           separatorBuilder: (context, index) => const Divider(height: 0,),
           pagingController: _pagingController,

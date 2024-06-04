@@ -2,12 +2,10 @@ part of '../_data.dart';
 
 class MovieRepository {
   
-  final MovieRemoteDataSource remoteDataSource;
-
-  MovieRepository(this.remoteDataSource);
+  final MovieRemoteDataSource _remoteDataSource = MovieRemoteDataSource();
 
   Future<List<MovieEntity>> getPlayingNowMovies({int page = 1, String? language}) async {
-    final movies = await remoteDataSource.getPlayingNowMovies(page: page, language: language);
+    final movies = await _remoteDataSource.getPlayingNowMovies(page: page, language: language);
     return movies.map((e) => MovieEntity(
       id: e.id!,
       title: e.title!,
@@ -21,7 +19,7 @@ class MovieRepository {
   }
 
   Future<List<MovieEntity>> getUpComingMovies({int page = 1, String? language}) async {
-    final movies = await remoteDataSource.getPlayingNowMovies(page: page, language: language);
+    final movies = await _remoteDataSource.getPlayingNowMovies(page: page, language: language);
     return movies.map((e) => MovieEntity(
       id: e.id!,
       title: e.title!,
@@ -35,7 +33,7 @@ class MovieRepository {
   }
 
   Future<MovieDetailEntity> getMovieDetailById(String id) async {
-    final movieDetail = await remoteDataSource.getDetailMovie(id);
+    final movieDetail = await _remoteDataSource.getDetailMovie(id);
     return MovieDetailEntity(
       movie: MovieEntity(
         id: movieDetail.id!,
