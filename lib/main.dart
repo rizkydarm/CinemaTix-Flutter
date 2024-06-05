@@ -1,10 +1,7 @@
-
-
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/view/page/_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 
 void main() {
 
@@ -34,6 +31,10 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
+      builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: '/list',
       builder: (context, state) => const MovieListPage(),
     ),
     GoRoute(

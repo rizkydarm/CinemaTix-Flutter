@@ -33,7 +33,7 @@ class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<PlayingNowMovieCubit>().fetchPlayingNowMovies(page: pageKey);
+      context.read<PlayingNowMovieCubit>().fetchMovies(page: pageKey);
     });
   }
 
@@ -61,7 +61,7 @@ class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
         }
       },
       child: RefreshIndicator(
-        onRefresh: () => context.read<PlayingNowMovieCubit>().fetchPlayingNowMovies(page: 1),
+        onRefresh: () => context.read<PlayingNowMovieCubit>().fetchMovies(page: 1),
         child: PagedListView<int, MovieEntity>.separated(
           separatorBuilder: (context, index) => const Divider(height: 0,),
           pagingController: _pagingController,
