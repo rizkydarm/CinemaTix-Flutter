@@ -40,8 +40,20 @@ class TMDBApi {
   );
 
   static Endpoint upComing({int page = 1, String? language}) => Endpoint('movie/upcoming', 
-  TMDBApi.headers, params: {
+    TMDBApi.headers, params: {
       'page': page,
+      if (language != null) 'language': language
+    }
+  );
+
+  static Endpoint movieCredits(String id, {String? language}) => Endpoint('movie/$id/credits', 
+    TMDBApi.headers, params: {
+      if (language != null) 'language': language
+    }
+  );
+
+  static Endpoint movieImages(String id, {String? language}) => Endpoint('movie/$id/images', 
+    TMDBApi.headers, params: {
       if (language != null) 'language': language
     }
   );

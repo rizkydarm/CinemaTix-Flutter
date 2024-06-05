@@ -3,12 +3,15 @@
 // import 'package:cinematix/data/_data.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'playingnow_movie_bloc.dart';
 part 'upcoming_movie_bloc.dart';
+part 'favorite_movie_bloc.dart';
 part 'movie_detail_bloc.dart';
+part 'movie_credits_bloc.dart';
 
 
 sealed class BlocState extends Equatable {

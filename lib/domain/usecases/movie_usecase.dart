@@ -16,4 +16,8 @@ class MovieUseCase {
   Future<MovieDetailEntity> getMovieDetailById(String id) async {
     return await _repository.getMovieDetailById(id);
   }
+
+  Future<(List<MovieCrewEntity>, List<MovieCastEntity>)> getMovieCreditsById(String id) async {
+    return await _repository.getMovieCreditsById(id);
+  }
 }
