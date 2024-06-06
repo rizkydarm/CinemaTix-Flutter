@@ -5,27 +5,41 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => PlayingNowMovieCubit(MovieUseCase())..fetchMovies(max: 5)),
-        BlocProvider(create: (context) => UpComingMovieCubit(MovieUseCase())..fetchMovies(max: 5)),
-      ],
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Home'),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(16),
-          children: const [
-            Text('Playing Now Movies'),
-            SizedBox(height: 16,),
-            HorizontalMovieList<PlayingNowMovieCubit>(),
-            SizedBox(height: 16,),
-            Text('Upcoming Movies'),
-            SizedBox(height: 16,),
-            HorizontalMovieList<UpComingMovieCubit>(),
-          ],
-        ),
+
+    context.read<PlayingNowMovieCubit>().fetchMovies(max: 5);
+    context.read<UpComingMovieCubit>().fetchMovies(max: 5);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          ListTile(
+            title: const Text('Playing Now Movies'),
+            trailing: IconButton(
+              onPressed: () {
+                context.push('/list/playing_now');
+              },
+              icon: const Icon(Icons.arrow_forward_ios),
+            ),
+          ),
+          const SizedBox(height: 16,),
+          const HorizontalMovieList<PlayingNowMovieCubit>(),
+          const SizedBox(height: 16,),
+          ListTile(
+            title: const Text('Upcoming Movies'),
+            trailing: IconButton(
+              onPressed: () {
+                context.push('/list/upcoming');
+              },
+              icon: const Icon(Icons.arrow_forward_ios),
+            ),
+          ),
+          const SizedBox(height: 16,),
+          const HorizontalMovieList<UpComingMovieCubit>(),
+        ],
       ),
     );
   }
@@ -58,7 +72,9 @@ class HorizontalMovieList<T extends Cubit<BlocState>> extends StatelessWidget {
                 return Card(
                   clipBehavior: Clip.antiAlias,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      context.push('/movie_detail/${movie.id}');
+                    },
                     child: SizedBox(
                       width: 200,
                       child: Column(

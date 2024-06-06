@@ -1,30 +1,27 @@
 part of '_page.dart';
 
-class MovieListPage extends StatelessWidget {
+class MovieListPage<T extends MovieCubit> extends StatelessWidget {
   const MovieListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PlayingNowMovieCubit(MovieUseCase()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('List Page'),
-        ),
-        body: const InfiniteMovieListView(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('List Page'),
       ),
+      body: InfiniteMovieListView<T>(),
     );
   }
 }
 
-class InfiniteMovieListView extends StatefulWidget {
+class InfiniteMovieListView<T extends MovieCubit> extends StatefulWidget {
   const InfiniteMovieListView({super.key});
 
   @override
-  State<InfiniteMovieListView> createState() => _InfiniteMovieListViewState();
+  State<InfiniteMovieListView<T>> createState() => _InfiniteMovieListViewState<T>();
 }
 
-class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
+class _InfiniteMovieListViewState<T extends MovieCubit> extends State<InfiniteMovieListView<T>> {
 
   final PagingController<int, MovieEntity> _pagingController = PagingController(firstPageKey: 1);
   final int _maxPage = 3;
@@ -33,7 +30,7 @@ class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<PlayingNowMovieCubit>().fetchMovies(page: pageKey);
+      context.read<T>().fetchMovies(page: pageKey);
     });
   }
 
@@ -45,10 +42,10 @@ class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PlayingNowMovieCubit, BlocState>(
+    return BlocListener<T, BlocState>(
       listener: (context, state) {
         if (state is SuccessState<List<MovieEntity>>) {
-          final cubit = context.read<PlayingNowMovieCubit>();
+          final cubit = context.read<T>();
           final isLastPage = cubit.currentPage >= _maxPage;
           if (isLastPage) {
             _pagingController.appendLastPage(state.data);
@@ -61,7 +58,7 @@ class _InfiniteMovieListViewState extends State<InfiniteMovieListView> {
         }
       },
       child: RefreshIndicator(
-        onRefresh: () => context.read<PlayingNowMovieCubit>().fetchMovies(page: 1),
+        onRefresh: () => context.read<T>().fetchMovies(page: 1),
         child: PagedListView<int, MovieEntity>.separated(
           separatorBuilder: (context, index) => const Divider(height: 0,),
           pagingController: _pagingController,

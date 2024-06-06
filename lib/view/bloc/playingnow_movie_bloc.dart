@@ -1,15 +1,14 @@
 part of '_bloc.dart';
 
-class PlayingNowMovieCubit extends Cubit<BlocState> {
+class PlayingNowMovieCubit extends MovieCubit {
   
   final MovieUseCase movieUseCase;
-
-  int currentPage = 1; 
 
   bool _isFetching = false;
 
   PlayingNowMovieCubit(this.movieUseCase) : super(InitialState());
 
+  @override
   Future<void> fetchMovies({int page = 1, int? max, String? language}) async {
     if (_isFetching) return;
     _isFetching = true;

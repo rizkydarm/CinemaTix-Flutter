@@ -10,7 +10,7 @@ class TMDBApi {
     'accept': 'application/json'
   };
 
-  static String getImageUrl(String path, {String type = 'w500'}) => 'https://image.tmdb.org/t/p/$type/$path';
+  static String getImageUrl(String path, {String type = 'w500'}) => 'https://image.tmdb.org/t/p/$type$path';
 
   static Endpoint detailById(String id, {String? language}) => Endpoint('movie/$id', 
     TMDBApi.headers, params: (language != null) ? {

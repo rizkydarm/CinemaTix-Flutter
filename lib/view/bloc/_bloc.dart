@@ -47,3 +47,9 @@ class ErrorState extends BlocState {
   @override
   List<Object?> get props => [message];
 }
+
+abstract class MovieCubit extends Cubit<BlocState> {
+  MovieCubit(super.initialState);
+  int currentPage = 1;
+  Future<void> fetchMovies({int page = 1, int? max, String? language});
+}
