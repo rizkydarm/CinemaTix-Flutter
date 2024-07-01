@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'searched_movie_bloc.dart';
 part 'playingnow_movie_bloc.dart';
 part 'upcoming_movie_bloc.dart';
-part 'favorite_movie_bloc.dart';
+part 'component/favorite_movie_bloc.dart';
 part 'movie_detail_bloc.dart';
 part 'movie_credits_bloc.dart';
 

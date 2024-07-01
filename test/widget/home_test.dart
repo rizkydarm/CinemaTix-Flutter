@@ -12,11 +12,11 @@ class MockUpComingMovieCubit extends Mock implements UpComingMovieCubit {}
 void main() {
   
   late MockPlayingNowMovieCubit mockPlayingNowMovieCubit;
-  late MockUpComingMovieCubit upComingMovieCubit;
+  late MockUpComingMovieCubit mockUpComingMovieCubit;
 
   setUp(() {
     mockPlayingNowMovieCubit = MockPlayingNowMovieCubit();
-    upComingMovieCubit = MockUpComingMovieCubit();
+    mockUpComingMovieCubit = MockUpComingMovieCubit();
   });
 
   Widget createWidgetUnderTest() {
@@ -43,8 +43,8 @@ void main() {
 
     await tester.pumpWidget(createWidgetUnderTest());
 
-    expect(find.byKey(Key('list1')), findsOneWidget);
-    expect(find.byKey(Key('list2')), findsOneWidget);
+    expect(find.byKey(const Key('list1')), findsOneWidget);
+    expect(find.byKey(const Key('list2')), findsOneWidget);
     for (var item in list1) {
       expect(find.text(item), findsOneWidget);
     }

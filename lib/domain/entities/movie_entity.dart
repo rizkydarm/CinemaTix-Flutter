@@ -7,6 +7,7 @@ class MovieEntity extends Entity {
   final String posterPath;
   final List<String> genres;
   final bool isLiked;
+  final double rating;
 
   MovieEntity({
     required this.id,
@@ -14,6 +15,7 @@ class MovieEntity extends Entity {
     required this.overview,
     required this.posterPath,
     required this.genres,
+    required this.rating,
     this.isLiked = false,
   });
 

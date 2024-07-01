@@ -14,6 +14,7 @@ class MovieRepository {
       title: e.title!,
       overview: e.overview!,
       posterPath: e.posterPath!,
+      rating: e.voteAverage!,
       genres: e.genreIds!
         .map((id) => TMDBApi.genreIds.firstWhere(
           (genre) => genre['id'] == id
@@ -50,6 +51,7 @@ class MovieRepository {
         title: movieDetail.title!,
         overview: movieDetail.overview!,
         posterPath: movieDetail.posterPath!,
+        rating: movieDetail.voteAverage!,
         genres: movieDetail.genres!
           .map((genre) => genre.name!).toList(),
       ), 

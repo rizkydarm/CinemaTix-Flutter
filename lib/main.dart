@@ -24,7 +24,9 @@ void main() {
         create: (context) => MovieDetailCubit(context.read<MovieUseCase>())),
       BlocProvider(
         create: (context) => MovieCreditsCubit(context.read<MovieUseCase>())),
-        
+      BlocProvider(
+        create: (context) => FavoriteMovieCubit(),
+      ) 
     ],
     child: const MyApp(),
   );

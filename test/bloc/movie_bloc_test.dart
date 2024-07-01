@@ -33,8 +33,8 @@ void main() {
   group('fetchMovies', () {
     
     final movieList = [
-      MovieEntity(id: '1', title: 'Movie 1', overview: 'Overview 1', posterPath: 'path1', genres: const ['Action', 'Adventure']),
-      MovieEntity(id: '2', title: 'Movie 2', overview: 'Overview 2', posterPath: 'path2', genres: const ['Action', 'Comedy']),
+      MovieEntity(id: '1', title: 'Movie 1', overview: 'Overview 1', posterPath: 'path1', genres: const ['Action', 'Adventure'], rating: 5.0),
+      MovieEntity(id: '2', title: 'Movie 2', overview: 'Overview 2', posterPath: 'path2', genres: const ['Action', 'Comedy'], rating: 5.0),
     ];
 
     blocTest<PlayingNowMovieCubit, BlocState>(
@@ -70,7 +70,7 @@ void main() {
 
   group('fetchMovieDetail', () {
     final movieDetail = MovieDetailEntity(
-      movie: MovieEntity(id: '1', title: 'Movie 1', overview: 'Overview 1', posterPath: 'path1', genres: const ['Action', 'Adventure'],),
+      movie: MovieEntity(id: '1', title: 'Movie 1', overview: 'Overview 1', posterPath: 'path1', genres: const ['Action', 'Adventure'], rating: 5.0),
       backdropPath: 'backdropPath',
       popularity: 9.0,
       releaseDate: DateTime(2020),

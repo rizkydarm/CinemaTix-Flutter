@@ -1,0 +1,25 @@
+part of '../_component.dart';
+
+class FavoriteMovieButton extends StatelessWidget {
+  const FavoriteMovieButton({
+    super.key,
+    required this.movieId,
+  });
+
+  final String movieId;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<FavoriteMovieCubit, BlocState>(
+      builder: (context, state) {
+        return IconButton(
+          onPressed: () {
+            context.read<FavoriteMovieCubit>().toggle(movieId);
+          },
+          color: (state is SuccessState<String>) ? (state.data == movieId) ? Colors.red : null : null,
+          icon: const Icon(Icons.favorite),
+        );
+      }
+    );
+  }
+}
