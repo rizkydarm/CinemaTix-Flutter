@@ -14,28 +14,23 @@ class HomePage extends StatelessWidget {
         title: const Text('Home'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
         children: [
           ListTile(
+            onTap: () {
+              context.push('/list/playing_now');
+            },
             title: const Text('Playing Now Movies'),
-            trailing: IconButton(
-              onPressed: () {
-                context.push('/list/playing_now');
-              },
-              icon: const Icon(Icons.arrow_forward_ios),
-            ),
+            trailing: const Icon(Icons.arrow_forward_ios),
           ),
           const SizedBox(height: 16,),
           const HorizontalMovieList<PlayingNowMovieCubit>(),
           const SizedBox(height: 16,),
           ListTile(
-            title: const Text('Upcoming Movies'),
-            trailing: IconButton(
-              onPressed: () {
+            onTap: () {
                 context.push('/list/upcoming');
               },
-              icon: const Icon(Icons.arrow_forward_ios),
-            ),
+            title: const Text('Upcoming Movies'),
+            trailing: const Icon(Icons.arrow_forward_ios),
           ),
           const SizedBox(height: 16,),
           const HorizontalMovieList<UpComingMovieCubit>(),
@@ -64,6 +59,7 @@ class HorizontalMovieList<T extends Cubit<BlocState>> extends StatelessWidget {
           }
           else if (state is SuccessState<List<MovieEntity>>) {
             return ListView.separated(
+              padding: const EdgeInsets.only(left: 16),
               scrollDirection: Axis.horizontal,
               itemCount: state.data.length,
               separatorBuilder: (context, index) => const SizedBox(width: 4,),

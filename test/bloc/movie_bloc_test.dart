@@ -12,13 +12,16 @@ import 'movie_bloc_test.mocks.dart';
 @GenerateMocks([MovieUseCase])
 
 void main() {
+  
   late MockMovieUseCase mockMovieUseCase;
   late PlayingNowMovieCubit playingNowMovieCubit;
+  late UpComingMovieCubit upComingMovieCubit;
   late MovieDetailCubit movieDetailCubit;
 
   setUp(() {
     mockMovieUseCase = MockMovieUseCase();
     playingNowMovieCubit = PlayingNowMovieCubit(mockMovieUseCase);
+    upComingMovieCubit = UpComingMovieCubit(mockMovieUseCase);
     movieDetailCubit = MovieDetailCubit(mockMovieUseCase);
   });
 
@@ -43,21 +46,21 @@ void main() {
 
         return playingNowMovieCubit;
       },
-      act: (cubit) => cubit.fetchPlayingNowMovies(),
+      act: (cubit) => cubit.fetchMovies(),
       expect: () => [
         LoadingState(),
         SuccessState<List<MovieEntity>>(movieList),
       ],
     );
 
-    blocTest<PlayingNowMovieCubit, BlocState>(
+    blocTest<UpComingMovieCubit, BlocState>(
       'emits [loading, error] when fetchMovies fails',
       build: () {
-        when(mockMovieUseCase.getPlayingNowMovies())
+        when(mockMovieUseCase.getUpComingMovies())
             .thenThrow(Exception('Failed to fetch movies'));
-        return playingNowMovieCubit;
+        return upComingMovieCubit;
       },
-      act: (cubit) => cubit.fetchPlayingNowMovies(),
+      act: (cubit) => cubit.fetchMovies(),
       expect: () => [
         LoadingState(),
         const ErrorState('Exception: Failed to fetch movies'),

@@ -50,7 +50,7 @@ class MovieRepository {
     );
   }
 
-  Future<(List<MovieCrewEntity>, List<MovieCastEntity>)> getMovieCreditsById(String id) async {
+  Future<MovieCreditsEntity> getMovieCreditsById(String id) async {
     final (crews, casts) = await _remoteDataSource.getMovieCredits(id);
     
     final crewEntities = crews.map((e) => MovieCrewEntity(
@@ -70,6 +70,6 @@ class MovieRepository {
       profilePath: e.profilePath,
     )).toList();
 
-    return (crewEntities, castEntities);
+    return MovieCreditsEntity(crews: crewEntities, casts: castEntities);
   }
 }

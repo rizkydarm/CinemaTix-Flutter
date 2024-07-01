@@ -9,8 +9,8 @@ class MovieCreditsCubit extends Cubit<BlocState> {
   Future<void> fetchMovieCreditsById(String id, {int max = 5}) async {
     emit(LoadingState());
     try {
-      final (crews, casts) = await movieUseCase.getMovieCreditsById(id);
-      emit(SuccessState((crews.sublist(max), casts.sublist(max))));
+      final credits = await movieUseCase.getMovieCreditsById(id);
+      emit(SuccessState((credits.crews.sublist(max), credits.casts.sublist(max))));
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

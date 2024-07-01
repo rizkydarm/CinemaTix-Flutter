@@ -20,6 +20,26 @@ class MovieDetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(movieTitle),
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          children: [
+            FilledButton(
+              onPressed: () {},
+              child: Text('Buy Ticket'),
+            ),
+            StatefulValueBuilder<bool>(
+              initialValue: false,
+              builder: (context, value, setState) {
+                return IconButton(
+                  onPressed: () => setState(!(value ?? false)),
+                  color: (value ?? false) ? Colors.red : null,
+                  icon: const Icon(Icons.favorite),
+                );
+              }
+            ),
+          ],
+        ),
+      ),
       body: BlocBuilder<MovieDetailCubit, BlocState>(
         builder: (context, state) {
           if (state is LoadingState) {
@@ -38,16 +58,6 @@ class MovieDetailPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 Image.network(TMDBApi.getImageUrl(state.data.movie.posterPath),
                   fit: BoxFit.contain,
-                ),
-                StatefulValueBuilder<bool>(
-                  initialValue: false,
-                  builder: (context, value, setState) {
-                    return IconButton(
-                      onPressed: () => setState(!(value ?? false)),
-                      color: (value ?? false) ? Colors.red : null,
-                      icon: const Icon(Icons.favorite),
-                    );
-                  }
                 ),
                 const SizedBox(height: 16),
                 Text(state.data.movie.title),

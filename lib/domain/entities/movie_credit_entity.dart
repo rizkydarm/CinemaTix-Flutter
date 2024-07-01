@@ -48,3 +48,20 @@ class MovieCrewEntity extends Entity {
       gender,
     ];
 }
+
+class MovieCreditsEntity extends Entity {
+    
+    final List<MovieCrewEntity> crews;
+    final List<MovieCastEntity> casts;
+    
+    MovieCreditsEntity({
+      required this.crews,
+      required this.casts,
+    });
+
+    @override
+    List<Object?> get props => [
+      crews,
+      casts,
+    ];
+}
