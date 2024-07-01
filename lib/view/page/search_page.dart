@@ -6,24 +6,36 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    context.read<PlayingNowMovieCubit>().fetchMovies(max: 5);
-    context.read<UpComingMovieCubit>().fetchMovies(max: 5);
+    final queryNotifier = ValueNotifier<String>('');
 
-    return Provider<ValueNotifier>.value(
-      value: ValueNotifier<String?>(null),
+    return ValueListenableProvider.value(
+      value: queryNotifier,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.cyan,
-          title: const SearchMovieTextField(),
+          title: SearchMovieTextField(
+            onChanged: (query) => queryNotifier.value = query
+          ),
         ),
-        body: const ResultSearchedMovieListView(),
+        body: ValueListenableBuilder(
+          valueListenable: queryNotifier,
+          builder: (context, value, child) {
+            return ResultSearchedMovieListView(
+              query: value,
+            );
+          }
+        ),
       ),
     );
   }
 }
 
 class SearchMovieTextField extends StatelessWidget {
+
+  final void Function(String) onChanged;
+
   const SearchMovieTextField({
+    required this.onChanged,
     super.key,
   });
 
@@ -38,14 +50,17 @@ class SearchMovieTextField extends StatelessWidget {
       constraints: const BoxConstraints.expand(
         height: 40
       ),
-      onChanged: (value) => context.read<ValueNotifier>().value = value,
+      onChanged: onChanged,
     );
   }
 }
 
 class ResultSearchedMovieListView extends StatefulWidget {
 
+  final String query;
+
   const ResultSearchedMovieListView({
+    required this.query,
     super.key});
 
   @override
@@ -62,14 +77,19 @@ class _ResultSearchedMovieListViewState extends State<ResultSearchedMovieListVie
   @override
   void initState() {
     super.initState();
-      context.read<ValueNotifier<String?>>().addListener(() {
-        query = context.read<ValueNotifier<String?>>().value ?? '';
-      });
-    _pagingController.addPageRequestListener((pageKey) {
-      if (query.isNotEmpty) {
-        context.read<SerachedMovieBloc>().fetchMovies(query, page: pageKey);
-      }
+    query = widget.query;
+    _pagingController.addPageRequestListener((pageKey) {   
+      context.read<SearchedMovieCubit>().fetchMovies(query, page: pageKey);
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant ResultSearchedMovieListView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    query = widget.query;
+    _pagingController.notifyPageRequestListeners(1);
+    _pagingController.refresh();
   }
 
   @override
@@ -80,11 +100,11 @@ class _ResultSearchedMovieListViewState extends State<ResultSearchedMovieListVie
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SerachedMovieBloc, BlocState>(
+    return BlocListener<SearchedMovieCubit, BlocState>(
       listenWhen: (previous, current) => current is! LoadingState,
       listener: (context, state) {
         if (state is SuccessState<List<SearchedMovieEntity>>) {
-          final cubit = context.read<SerachedMovieBloc>();
+          final cubit = context.read<SearchedMovieCubit>();
           final isLastPage = cubit.currentPage >= _maxPage;
           if (isLastPage) {
             _pagingController.appendLastPage(state.data);
@@ -96,54 +116,39 @@ class _ResultSearchedMovieListViewState extends State<ResultSearchedMovieListVie
           _pagingController.error = state.message;
         }
       },
-      child: ValueListenableBuilder<String?>(
-        valueListenable: context.read<ValueNotifier<String?>>(),
-        builder: (context, value, child) {
-          return PagedListView<int, SearchedMovieEntity>.separated(
-            separatorBuilder: (context, index) => const Divider(height: 0,),
-            pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<SearchedMovieEntity>(
-              itemBuilder: (context, item, index) => ListTile(
-                onTap: () {
-                  context.push('/movie_detail/${item.id}');
-                },
-                title: Text(item.title),
-                subtitle: Text(item.genres.join(', ')),
-                trailing: StatefulValueBuilder<bool>(
-                  initialValue: false,
-                  builder: (context, value, setState) {
-                    return IconButton(
-                      onPressed: () => setState(!(value ?? false)),
-                      color: (value ?? false) ? Colors.red : null,
-                      icon: const Icon(Icons.favorite),
-                    );
-                  }
-                ),
-              ),
-              firstPageProgressIndicatorBuilder: (context) => const Center(
-                child: CircularProgressIndicator(),
-              ),
-              newPageProgressIndicatorBuilder: (context) => const Padding(
-                padding: EdgeInsets.all(16),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
-                child: Text(_pagingController.error ?? 'Something went wrong'),
-              ),
-              newPageErrorIndicatorBuilder: (context) => Padding(
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: TextButton(
-                    onPressed: () => _pagingController.retryLastFailedRequest(),
-                    child: const Text('Retry'),
-                  ),
-                ),
+      child: PagedListView<int, SearchedMovieEntity>.separated(
+        separatorBuilder: (context, index) => const Divider(height: 0,),
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<SearchedMovieEntity>(
+          itemBuilder: (context, item, index) => ListTile(
+            onTap: () {
+              context.push('/movie_detail/${item.id}');
+            },
+            title: Text(item.title),
+            subtitle: Text(item.genres.join(', ')),
+          ),
+          firstPageProgressIndicatorBuilder: (context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          newPageProgressIndicatorBuilder: (context) => const Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          firstPageErrorIndicatorBuilder: (context) => Center(
+            child: Text(_pagingController.error ?? 'Something went wrong'),
+          ),
+          newPageErrorIndicatorBuilder: (context) => Padding(
+            padding: const EdgeInsets.all(16),
+            child: Center(
+              child: TextButton(
+                onPressed: () => _pagingController.retryLastFailedRequest(),
+                child: const Text('Retry'),
               ),
             ),
-          );
-        }
+          ),
+        ),
       )
     );
   }

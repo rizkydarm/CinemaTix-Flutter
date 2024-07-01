@@ -15,7 +15,6 @@ class PlayingNowMovieCubit extends MovieCubit {
     
     emit(LoadingState());
     try {
-      await Future.delayed(const Duration(seconds: 2));
       final movies = await movieUseCase.getPlayingNowMovies(page: page);
       if (max != null) {
         currentPage = page;

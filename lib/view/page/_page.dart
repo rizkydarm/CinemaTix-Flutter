@@ -1,6 +1,8 @@
 
 
 // import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:async';
+
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';

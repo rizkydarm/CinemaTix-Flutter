@@ -4,6 +4,7 @@ import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:cinematix/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 void main() {
 
@@ -11,14 +12,19 @@ void main() {
 
   final providers = MultiBlocProvider(
     providers: [
+      Provider(
+        create: (context) => MovieUseCase(),),
       BlocProvider(
-        create: (context) => PlayingNowMovieCubit(MovieUseCase()),),
+        create: (context) => SearchedMovieCubit(context.read<MovieUseCase>()),),
       BlocProvider(
-        create: (context) => UpComingMovieCubit(MovieUseCase()),),
+        create: (context) => PlayingNowMovieCubit(context.read<MovieUseCase>()),),
       BlocProvider(
-        create: (context) => MovieDetailCubit(MovieUseCase())),
+        create: (context) => UpComingMovieCubit(context.read<MovieUseCase>()),),
       BlocProvider(
-        create: (context) => MovieCreditsCubit(MovieUseCase())),
+        create: (context) => MovieDetailCubit(context.read<MovieUseCase>())),
+      BlocProvider(
+        create: (context) => MovieCreditsCubit(context.read<MovieUseCase>())),
+        
     ],
     child: const MyApp(),
   );

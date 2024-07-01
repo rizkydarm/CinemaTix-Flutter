@@ -1,13 +1,13 @@
 part of '_bloc.dart';
 
-class SerachedMovieBloc extends Cubit<BlocState> {
+class SearchedMovieCubit extends Cubit<BlocState> {
   
   final MovieUseCase movieUseCase;
 
   bool _isFetching = false;
   int currentPage = 1;
 
-  SerachedMovieBloc(this.movieUseCase) : super(InitialState());
+  SearchedMovieCubit(this.movieUseCase) : super(InitialState());
 
   Future<void> fetchMovies(String query, {int page = 1, int? max, String? language}) async {
     if (_isFetching) return;
@@ -15,7 +15,6 @@ class SerachedMovieBloc extends Cubit<BlocState> {
     
     emit(LoadingState());
     try {
-      await Future.delayed(const Duration(seconds: 2));
       final movies = await movieUseCase.getSearchedMovies(query, page: page);
       if (max != null) {
         currentPage = page;

@@ -16,14 +16,14 @@ class DioHelper {
       InterceptorsWrapper(
         onRequest: (options, handler) {
           debugPrint('**Request**');
-          debugPrint(options.path);
+          debugPrint('\t${options.path}');
           // debugPrint(options.data.toString());
           // debugPrint(options.headers.toString());
           return handler.next(options);
         },
         onResponse: (response, handler) {
-          debugPrint('==Response==');
-          debugPrint(response.statusMessage);
+          // debugPrint('==Response==');
+          // debugPrint(response.statusMessage);
           // debugPrint(response.data.toString());
           // debugPrint(response.statusCode.toString());
           return handler.next(response);
