@@ -70,16 +70,7 @@ class _InfiniteMovieListViewState<T extends MovieCubit> extends State<InfiniteMo
               },
               title: Text(item.title),
               subtitle: Text(item.genres.join(', ')),
-              trailing: StatefulValueBuilder<bool>(
-                initialValue: false,
-                builder: (context, value, setState) {
-                  return IconButton(
-                    onPressed: () => setState(!(value ?? false)),
-                    color: (value ?? false) ? Colors.red : null,
-                    icon: const Icon(Icons.favorite),
-                  );
-                }
-              ),
+              trailing: FavoriteMovieButton(movieId: item.id,)
             ),
             firstPageProgressIndicatorBuilder: (context) => const Center(
               child: CircularProgressIndicator(),
