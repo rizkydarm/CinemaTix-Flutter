@@ -11,6 +11,10 @@ final router = GoRouter(
       builder: (context, state) => const HomePage(),
     ),
     GoRoute(
+      path: '/search',
+      builder: (context, state) => const SearchPage(),
+    ),
+    GoRoute(
       path: '/list/:category',
       builder: (context, state) {
         final category = state.pathParameters['category'] as String;
@@ -39,6 +43,7 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.red,
       appBar: AppBar(),
       body: const Center(
         child: Text('Error Page'),

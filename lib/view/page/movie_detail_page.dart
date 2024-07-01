@@ -23,9 +23,11 @@ class MovieDetailPage extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: [
-            FilledButton(
-              onPressed: () {},
-              child: Text('Buy Ticket'),
+            Expanded(
+              child: FilledButton(
+                onPressed: () {},
+                child: const Text('Buy Ticket'),
+              ),
             ),
             StatefulValueBuilder<bool>(
               initialValue: false,
@@ -41,6 +43,7 @@ class MovieDetailPage extends StatelessWidget {
         ),
       ),
       body: BlocBuilder<MovieDetailCubit, BlocState>(
+        buildWhen: (previous, current) => current is! LoadingState,
         builder: (context, state) {
           if (state is LoadingState) {
             return const Center(child: CircularProgressIndicator());
@@ -52,12 +55,18 @@ class MovieDetailPage extends StatelessWidget {
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                Image.network(TMDBApi.getImageUrl(state.data.backdropPath),
-                  fit: BoxFit.contain,
+                SizedBox(
+                  height: 200,
+                  child: Image.network(TMDBApi.getImageUrl(state.data.backdropPath),
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 const SizedBox(height: 16),
-                Image.network(TMDBApi.getImageUrl(state.data.movie.posterPath),
-                  fit: BoxFit.contain,
+                SizedBox(
+                  height: 300,
+                  child: Image.network(TMDBApi.getImageUrl(state.data.movie.posterPath),
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(state.data.movie.title),

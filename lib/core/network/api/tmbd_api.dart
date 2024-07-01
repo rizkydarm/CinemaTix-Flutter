@@ -12,6 +12,14 @@ class TMDBApi {
 
   static String getImageUrl(String path, {String type = 'w500'}) => 'https://image.tmdb.org/t/p/$type$path';
 
+  static Endpoint searchedMovie(String query, {int page = 1, String? language}) => Endpoint('search/movie', 
+    TMDBApi.headers, params: {
+      'query': query,
+      'page': page,
+      if (language != null) 'language': language
+    }
+  );
+
   static Endpoint detailById(String id, {String? language}) => Endpoint('movie/$id', 
     TMDBApi.headers, params: (language != null) ? {
       'language': language

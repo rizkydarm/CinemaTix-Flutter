@@ -43,6 +43,7 @@ class _InfiniteMovieListViewState<T extends MovieCubit> extends State<InfiniteMo
   @override
   Widget build(BuildContext context) {
     return BlocListener<T, BlocState>(
+      listenWhen: (previous, current) => current is! LoadingState,
       listener: (context, state) {
         if (state is SuccessState<List<MovieEntity>>) {
           final cubit = context.read<T>();

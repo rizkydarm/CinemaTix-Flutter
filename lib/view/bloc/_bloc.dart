@@ -51,5 +51,6 @@ class ErrorState extends BlocState {
 abstract class MovieCubit extends Cubit<BlocState> {
   MovieCubit(super.initialState);
   int currentPage = 1;
+  List<MovieEntity>? movies;
   Future<void> fetchMovies({int page = 1, int? max, String? language});
 }

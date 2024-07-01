@@ -11,5 +11,6 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 part 'home_page.dart';
+part 'search_page.dart';
 part 'movie_list_page.dart';
 part 'movie_detail_page.dart';
