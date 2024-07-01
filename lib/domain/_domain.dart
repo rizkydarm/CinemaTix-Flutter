@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 
 part 'entities/movie_entity.dart';
+part 'entities/searched_movie_entity.dart';
 part 'entities/movie_detail_entity.dart';
 part 'entities/movie_credit_entity.dart';
 

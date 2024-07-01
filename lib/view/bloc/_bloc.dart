@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+part 'searched_movie_bloc.dart';
 part 'playingnow_movie_bloc.dart';
 part 'upcoming_movie_bloc.dart';
 part 'favorite_movie_bloc.dart';

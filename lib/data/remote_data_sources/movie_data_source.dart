@@ -4,6 +4,17 @@ class MovieRemoteDataSource {
   
   final DioHelper _dio = DioHelper(TMDBApi.baseUrl);
 
+  Future<List<MovieModel>> getSearchedMovies(String query, {int page = 1, String? language}) async {
+    final data = await _dio.get<Map>(TMDBApi.searchedMovie(query, page: page, language: language));
+    if (data?.containsKey('results') ?? false) {
+      return (data?['results'] as List? ?? [])
+        .map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+    } else {
+      throw Exception('Results key is not found in playingNow data');
+    }
+  }
+
   Future<List<MovieModel>> getPlayingNowMovies({int page = 1, String? language}) async {
     final data = await _dio.get<Map>(TMDBApi.playingNow(page: page, language: language));
     if (data?.containsKey('results') ?? false) {

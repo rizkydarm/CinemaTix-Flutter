@@ -21,6 +21,19 @@ class MovieRepository {
     )).toList();
   }
 
+  Future<List<SearchedMovieEntity>> getSearchedMovies(String query, {int page = 1, String? language}
+  ) async {
+    final movies = await _remoteDataSource.getSearchedMovies(query, page: page, language: language);
+    return movies.map((e) => SearchedMovieEntity(
+      id: e.id!,
+      title: e.title!,
+      genres: e.genreIds!
+        .map((id) => TMDBApi.genreIds.firstWhere(
+          (genre) => genre['id'] == id
+        )['name'] as String).toList(),
+    )).toList();
+  }
+
   Future<List<MovieEntity>> getPlayingNowMovies({int page = 1, String? language}) async {
     return _fetchMovies(_remoteDataSource.getPlayingNowMovies, page: page, language: language);
   }
