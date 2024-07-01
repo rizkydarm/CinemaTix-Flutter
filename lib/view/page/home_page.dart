@@ -11,7 +11,37 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        backgroundColor: Colors.cyan,
+        title: SizedBox(
+          width: double.infinity,
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 72,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(Icons.abc_outlined,
+                    size: 60,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: () {
+                    context.push('/search');
+                  },
+                  icon: const Icon(Icons.search),
+                  label: const Text('Search'),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        centerTitle: true,
       ),
       body: ListView(
         children: [
@@ -50,6 +80,7 @@ class HorizontalMovieList<T extends Cubit<BlocState>> extends StatelessWidget {
     return SizedBox(
       height: 300,
       child: BlocBuilder<T, BlocState>(
+        buildWhen: (previous, current) => current is! LoadingState,
         builder: (context, state) {
           if (state is LoadingState) {
             return const Center(child: CircularProgressIndicator());
@@ -84,7 +115,24 @@ class HorizontalMovieList<T extends Cubit<BlocState>> extends StatelessWidget {
                             overflow: TextOverflow.ellipsis, 
                             maxLines: 2,
                           ),
-                          Text(movie.genres.join(', '), overflow: TextOverflow.ellipsis,),
+                          Flexible(
+                            child: Text(
+                              movie.genres.join(', '),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center, 
+                              maxLines: 2,
+                            )
+                          ),
+                          StatefulValueBuilder<bool>(
+                            initialValue: false,
+                            builder: (context, value, setState) {
+                              return IconButton(
+                                onPressed: () => setState(!(value ?? false)),
+                                color: (value ?? false) ? Colors.red : null,
+                                icon: const Icon(Icons.favorite),
+                              );
+                            }
+                          ),
                         ],
                       ),
                     ),
