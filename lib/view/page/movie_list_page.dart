@@ -30,8 +30,11 @@ class _InfiniteMovieListViewState<T extends MovieCubit> extends State<InfiniteMo
   void initState() {
     super.initState();
     _pagingController.addPageRequestListener((pageKey) {
-      context.read<T>().fetchMovies(page: pageKey);
+      EasyThrottle.throttle('list-page-scroll-throttle', const Duration(milliseconds: 320), () {
+        context.read<T>().fetchMovies(page: pageKey);
+      });   
     });
+    
   }
 
   @override

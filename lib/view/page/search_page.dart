@@ -14,7 +14,11 @@ class SearchPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.cyan,
           title: SearchMovieTextField(
-            onChanged: (query) => queryNotifier.value = query
+            onChanged: (query) {
+              EasyDebounce.debounce('search-movie', const Duration(milliseconds: 320), () {
+                queryNotifier.value = query;
+              });
+            }
           ),
         ),
         body: ValueListenableBuilder(
@@ -78,8 +82,10 @@ class _ResultSearchedMovieListViewState extends State<ResultSearchedMovieListVie
   void initState() {
     super.initState();
     query = widget.query;
-    _pagingController.addPageRequestListener((pageKey) {   
-      context.read<SearchedMovieCubit>().fetchMovies(query, page: pageKey);
+    _pagingController.addPageRequestListener((pageKey) {
+      EasyThrottle.throttle('search-page-scroll-throttle', const Duration(milliseconds: 200), () {
+        context.read<SearchedMovieCubit>().fetchMovies(query, page: pageKey);
+      });   
     });
   }
 

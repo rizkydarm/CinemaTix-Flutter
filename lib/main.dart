@@ -17,9 +17,9 @@ void main() {
       BlocProvider(
         create: (context) => SearchedMovieCubit(context.read<MovieUseCase>()),),
       BlocProvider(
-        create: (context) => PlayingNowMovieCubit(context.read<MovieUseCase>()),),
+        create: (context) => PlayingNowMovieCubit(context.read<MovieUseCase>())..fetchMovies(max: 5),),
       BlocProvider(
-        create: (context) => UpComingMovieCubit(context.read<MovieUseCase>()),),
+        create: (context) => UpComingMovieCubit(context.read<MovieUseCase>())..fetchMovies(max: 5),),
       BlocProvider(
         create: (context) => MovieDetailCubit(context.read<MovieUseCase>())),
       BlocProvider(

@@ -5,10 +5,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    context.read<PlayingNowMovieCubit>().fetchMovies(max: 5);
-    context.read<UpComingMovieCubit>().fetchMovies(max: 5);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
