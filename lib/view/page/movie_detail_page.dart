@@ -48,14 +48,16 @@ class MovieDetailPage extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 200,
-                  child: Image.network(TMDBApi.getImageUrl(state.data.backdropPath),
+                  child: FastCachedImage(
+                    url: TMDBApi.getImageUrl(state.data.backdropPath),
                     fit: BoxFit.contain,
                   ),
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
                   height: 300,
-                  child: Image.network(TMDBApi.getImageUrl(state.data.movie.posterPath),
+                  child: FastCachedImage(
+                    url: TMDBApi.getImageUrl(state.data.movie.posterPath),
                     fit: BoxFit.contain,
                   ),
                 ),

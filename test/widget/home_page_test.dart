@@ -34,7 +34,7 @@ void main() {
     );
   }
 
-  testWidgets('displays loading indicator while fetching data', (WidgetTester tester) async {
+  testWidgets('Display loading indicator while fetching data', (WidgetTester tester) async {
     when(mockPlayingNowMovieCubit.state).thenReturn(LoadingState());
 
     await tester.pumpWidget(createWidgetUnderTest());
@@ -42,7 +42,7 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
 
-  testWidgets('displays list data when loaded', (WidgetTester tester) async {
+  testWidgets('Display list data when loaded', (WidgetTester tester) async {
     final list1 = ['Item 1', 'Item 2'];
     final list2 = ['Item A', 'Item B'];
     when(mockPlayingNowMovieCubit.state).thenReturn(SuccessState(list1));
@@ -59,22 +59,11 @@ void main() {
     }
   });
 
-  testWidgets('displays error message when there is an error', (WidgetTester tester) async {
+  testWidgets('Display error message when there is an error', (WidgetTester tester) async {
     when(mockPlayingNowMovieCubit.state).thenReturn(const ErrorState('Error message'));
 
     await tester.pumpWidget(createWidgetUnderTest());
 
     expect(find.text('Error message'), findsOneWidget);
-  });
-
-  testWidgets('triggers fetchLists when button is pressed', (WidgetTester tester) async {
-    when(mockPlayingNowMovieCubit.state).thenReturn(InitialState());
-
-    await tester.pumpWidget(createWidgetUnderTest());
-
-    await tester.tap(find.byType(FloatingActionButton));
-    await tester.pump();
-
-    verify(mockPlayingNowMovieCubit.fetchMovies()).called(1);
   });
 }

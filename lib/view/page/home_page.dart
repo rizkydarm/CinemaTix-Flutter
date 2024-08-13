@@ -103,7 +103,8 @@ class HorizontalMovieList<T extends Cubit<BlocState>> extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.network(TMDBApi.getImageUrl(movie.posterPath),
+                          FastCachedImage(
+                            url: TMDBApi.getImageUrl(movie.posterPath),
                             height: 200,
                           ),
                           Text(movie.title,

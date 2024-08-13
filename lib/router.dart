@@ -44,9 +44,10 @@ class ErrorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red,
-      appBar: AppBar(),
-      body: const Center(
-        child: Text('Error Page'),
+      body: Center(
+        child: Text('Page is not found'.toUpperCase(),
+          style: Theme.of(context).textTheme.displayLarge,
+        ),
       ),
     );
   }

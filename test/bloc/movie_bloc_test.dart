@@ -30,7 +30,7 @@ void main() {
     movieDetailCubit.close();
   });
 
-  group('fetchMovies', () {
+  group('Fetch all movies', () {
     
     final movieList = [
       MovieEntity(id: '1', title: 'Movie 1', overview: 'Overview 1', posterPath: 'path1', genres: const ['Action', 'Adventure'], rating: 5.0),
@@ -42,7 +42,7 @@ void main() {
       build: () {
 
         when(mockMovieUseCase.getPlayingNowMovies())
-            .thenAnswer((_) async => movieList);
+          .thenAnswer((_) async => movieList);
 
         return playingNowMovieCubit;
       },
@@ -57,7 +57,8 @@ void main() {
       'emits [loading, error] when fetchMovies fails',
       build: () {
         when(mockMovieUseCase.getUpComingMovies())
-            .thenThrow(Exception('Failed to fetch movies'));
+          .thenThrow(Exception('Failed to fetch movies'));
+
         return upComingMovieCubit;
       },
       act: (cubit) => cubit.fetchMovies(),
@@ -68,7 +69,8 @@ void main() {
     );
   });
 
-  group('fetchMovieDetail', () {
+  group('Fetch movie detail', () {
+    
     final movieDetail = MovieDetailEntity(
       movie: MovieEntity(id: '1', title: 'Movie 1', overview: 'Overview 1', posterPath: 'path1', genres: const ['Action', 'Adventure'], rating: 5.0),
       backdropPath: 'backdropPath',
@@ -83,7 +85,8 @@ void main() {
       'emits [loading, success] when fetchMovieDetail is successful',
       build: () {
         when(mockMovieUseCase.getMovieDetailById('1'))
-            .thenAnswer((_) async => movieDetail);
+          .thenAnswer((_) async => movieDetail);
+
         return movieDetailCubit;
       },
       act: (cubit) => cubit.fetchMovieDetailById('1'),
@@ -97,7 +100,8 @@ void main() {
       'emits [loading, error] when fetchMovieDetail fails',
       build: () {
         when(mockMovieUseCase.getMovieDetailById('1'))
-            .thenThrow(Exception('Failed to fetch movie detail'));
+          .thenThrow(Exception('Failed to fetch movie detail'));
+
         return movieDetailCubit;
       },
       act: (cubit) => cubit.fetchMovieDetailById('1'),

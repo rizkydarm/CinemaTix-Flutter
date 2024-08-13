@@ -2,7 +2,6 @@
 // in cinematix/test/movie_bloc_test.dart.
 // Do not manually edit this file.
 
-// ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
 import 'package:cinematix/data/_data.dart' as _i2;
@@ -21,6 +20,7 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: no_leading_underscores_for_library_prefixes, override_on_non_overriding_member
 
 class _FakeMovieRepository_0 extends _i1.SmartFake
     implements _i2.MovieRepository {

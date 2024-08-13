@@ -1,15 +1,21 @@
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cinematix/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void runMain() {
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  getTemporaryDirectory().then((dir) {
+    FastCachedImageConfig.init(subDir: dir.path, clearCacheAfter: const Duration(days: 15));
+  });
+  
   final providers = MultiBlocProvider(
     providers: [
       Provider(
@@ -28,14 +34,14 @@ void main() {
         create: (context) => FavoriteMovieCubit(),
       ) 
     ],
-    child: const MyApp(),
+    child: const App(),
   );
 
   runApp(providers);
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
