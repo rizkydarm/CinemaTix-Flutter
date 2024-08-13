@@ -7,6 +7,7 @@ import 'package:cinematix/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 
 void runMain() {
 
@@ -15,6 +16,8 @@ void runMain() {
   getTemporaryDirectory().then((dir) {
     FastCachedImageConfig.init(subDir: dir.path, clearCacheAfter: const Duration(days: 15));
   });
+
+  print(FlavorConfig.instance.name);
   
   final providers = MultiBlocProvider(
     providers: [

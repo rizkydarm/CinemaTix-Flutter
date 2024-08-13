@@ -5,6 +5,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
@@ -73,6 +74,7 @@ class HorizontalMovieList<T extends Cubit<BlocState>> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return SizedBox(
       height: 300,
       child: BlocBuilder<T, BlocState>(
@@ -105,7 +107,22 @@ class HorizontalMovieList<T extends Cubit<BlocState>> extends StatelessWidget {
                         children: [
                           FastCachedImage(
                             url: TMDBApi.getImageUrl(movie.posterPath),
+                            loadingBuilder: (context, progress) {
+                              return const SizedBox(
+                                height: 200,
+                                width: 160,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                    ),
+                                    child: Icon(Icons.image, size: 100,),
+                                 ),
+                              );
+                            },
+                            cacheHeight: 200,
+                            cacheWidth: 160,
                             height: 200,
+                            width: 160,
                           ),
                           Text(movie.title,
                             textAlign: TextAlign.center, 
