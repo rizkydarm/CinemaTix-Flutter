@@ -1,11 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:mockito/mockito.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:cinematix/view/page/_page.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Mock Cubit
 class MockPlayingNowMovieCubit extends Mock implements PlayingNowMovieCubit {}
 class MockUpComingMovieCubit extends Mock implements UpComingMovieCubit {}
 
@@ -21,8 +20,15 @@ void main() {
 
   Widget createWidgetUnderTest() {
     return MaterialApp(
-      home: BlocProvider<PlayingNowMovieCubit>(
-        create: (_) => mockPlayingNowMovieCubit,
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<PlayingNowMovieCubit>(
+            create: (_) => mockPlayingNowMovieCubit,
+          ),
+          BlocProvider<UpComingMovieCubit>(
+            create: (_) => mockUpComingMovieCubit,
+          )
+        ],
         child: const HomePage(),
       ),
     );
