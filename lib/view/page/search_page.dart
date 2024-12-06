@@ -12,7 +12,8 @@ class SearchPage extends StatelessWidget {
       value: queryNotifier,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.cyan,
+          foregroundColor: Colors.white,
+          backgroundColor: Theme.of(context).primaryColor,
           title: SearchMovieTextField(
             onChanged: (query) {
               EasyDebounce.debounce('search-movie', const Duration(milliseconds: 320), () {

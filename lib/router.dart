@@ -30,7 +30,6 @@ final router = GoRouter(
     GoRoute(
       path: '/movie_detail/:movieId',
       builder: (context, state) => MovieDetailPage(
-        movieTitle: 'Movie Title',
         movieId: state.pathParameters['movieId'] as String,
       ),
     ),
