@@ -47,20 +47,6 @@ final router = GoRouter(
         )
       ]
     ),
-    // GoRoute(
-    //   path: '/',
-    //   builder: (context, state) => const DashboardNavPage(),
-    //   routes: [
-    //     GoRoute(
-    //       path: 'home',
-    //       builder: (context, state) => const HomePage(),
-    //     ),
-    //     GoRoute(
-    //       path: 'wallet',
-    //       builder: (context, state) => const WalletPage(),
-    //     ),
-    //   ],
-    // ),
     GoRoute(
       path: '/search',
       builder: (context, state) => const SearchPage(),

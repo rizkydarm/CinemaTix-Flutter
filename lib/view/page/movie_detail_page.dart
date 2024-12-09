@@ -24,7 +24,9 @@ class MovieDetailPage extends StatelessWidget {
                 child: const Text('Buy Ticket'),
               ),
             ),
-            FavoriteMovieButton(movieId: movieId),
+            FavoriteMovieButton(movieId: movieId,
+              initalColor: Theme.of(context).disabledColor,
+            ),
           ],
         ),
       ),
@@ -79,16 +81,9 @@ class MovieDetailPage extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: 200,
-                              child: FastCachedImage(
-                                url: TMDBApi.getImageUrl(state.data.movie.posterPath),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding: const EdgeInsets.only(right: 16),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -116,7 +111,17 @@ class MovieDetailPage extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              height: 240,
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                                child: FastCachedImage(
+                                  url: TMDBApi.getImageUrl(state.data.movie.posterPath),
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 16),
@@ -160,10 +165,13 @@ class MovieDetailPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       if (casts[index].profilePath != null)
-                                        FastCachedImage(
-                                          url: TMDBApi.getImageUrl(casts[index].profilePath!),
-                                          width: 100,
-                                          fit: BoxFit.contain,
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                          child: FastCachedImage(
+                                            url: TMDBApi.getImageUrl(casts[index].profilePath!),
+                                            width: 100,
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       Flexible(
                                         child: Center(
@@ -199,10 +207,13 @@ class MovieDetailPage extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       if (crews[index].profilePath != null) 
-                                        FastCachedImage(
-                                          url: TMDBApi.getImageUrl(crews[index].profilePath!),
-                                          width: 100,
-                                          fit: BoxFit.contain,
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                          child: FastCachedImage(
+                                            url: TMDBApi.getImageUrl(crews[index].profilePath!),
+                                            width: 100,
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       Flexible(
                                         child: Center(

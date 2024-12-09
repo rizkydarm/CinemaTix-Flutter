@@ -5,10 +5,12 @@ class FavoriteMovieButton extends StatelessWidget {
     super.key,
     required this.movieId,
     this.size,
+    this.initalColor,
   });
 
   final String movieId;
   final double? size;
+  final Color? initalColor;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class FavoriteMovieButton extends StatelessWidget {
           onPressed: () {
             context.read<FavoriteMovieCubit>().toggle(movieId);
           },
-          color: (state is SuccessState<String>) ? (state.data == movieId) ? Colors.red : null : null,
+          color: (state is SuccessState<String>) ? (state.data == movieId) ? Colors.red : initalColor : initalColor,
           icon: Icon(Icons.favorite, size: size,),
         );
       }

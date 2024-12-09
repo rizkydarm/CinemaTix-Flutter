@@ -49,8 +49,14 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CinemaTix',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: MyColors.material),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold
+            )
+          ),
+        ),
         useMaterial3: true,
       ),
       routerConfig: router,

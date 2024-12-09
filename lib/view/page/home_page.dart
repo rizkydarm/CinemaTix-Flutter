@@ -178,15 +178,12 @@ class _MovieCardState extends State<MovieCard> {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: Theme(
-                    data: Theme.of(context).copyWith(
-                      iconTheme: const IconThemeData(
-                        color: Colors.white,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: FavoriteMovieButton(movieId: movie.id, size: 30,),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: FavoriteMovieButton(
+                      movieId: movie.id, 
+                      size: 30,
+                      initalColor: Theme.of(context).cardColor
                     ),
                   ),
                 ),

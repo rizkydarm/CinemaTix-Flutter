@@ -75,7 +75,10 @@ class _InfiniteMovieListViewState<T extends MovieCubit> extends State<InfiniteMo
               },
               title: Text(item.title),
               subtitle: Text(item.genres.join(', ')),
-              trailing: FavoriteMovieButton(movieId: item.id,)
+              trailing: FavoriteMovieButton(
+                movieId: item.id,
+                initalColor: Theme.of(context).disabledColor
+              )
             ),
             firstPageProgressIndicatorBuilder: (context) => const Center(
               child: CircularProgressIndicator(),
