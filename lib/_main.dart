@@ -49,7 +49,8 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CinemaTix',
       theme: ThemeData(
-        primarySwatch: MyColors.material,
+        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
         useMaterial3: true,
       ),
       routerConfig: router,

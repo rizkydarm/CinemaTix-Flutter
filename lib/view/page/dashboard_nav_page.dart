@@ -1,26 +1,21 @@
 part of '_page.dart';
 
 class DashboardNavPage extends StatelessWidget {
-  const DashboardNavPage({super.key});
+  const DashboardNavPage({super.key, required this.navigationShell});
+
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context) {
-
-    final indexNotifier = ValueNotifier<int>(0);
-    final pageController = PageController(initialPage: 0);
-
     return Scaffold(
-      bottomNavigationBar: ValueListenableBuilder(
-        valueListenable: indexNotifier,
-        builder: (context, value, child) {
+      bottomNavigationBar: StatefulValueBuilder<int>(
+        initialValue: 0,
+        builder: (context, value, setState) {
           return BottomNavigationBar(
-            currentIndex: value,
+            currentIndex: value ?? 0,
             onTap: (index) {
-              indexNotifier.value = index;
-              pageController.animateToPage(index, 
-                duration: const Duration(milliseconds: 240), 
-                curve: Curves.easeOut
-              );
+              setState(index);
+              navigationShell.goBranch(index, initialLocation: index == navigationShell.currentIndex,);
             },
             items: const [
               BottomNavigationBarItem(
@@ -35,31 +30,7 @@ class DashboardNavPage extends StatelessWidget {
           );
         }
       ),
-      body: PageView(
-        physics: const PageScrollPhysics(),
-        controller: pageController,
-        onPageChanged: (value) => indexNotifier.value = value,
-        children: const [
-          HomePage(),
-          WalletPage(),
-        ],
-      )
-    );
-  }
-}
-
-class WalletPage extends StatelessWidget {
-  const WalletPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wallet'),
-      ),
-      body: const Center(
-        child: Text('Wallet Page'),
-      ),
+      body: navigationShell,
     );
   }
 }

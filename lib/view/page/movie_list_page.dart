@@ -7,6 +7,8 @@ class MovieListPage<T extends MovieCubit> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text('List Page'),
       ),
       body: InfiniteMovieListView<T>(),

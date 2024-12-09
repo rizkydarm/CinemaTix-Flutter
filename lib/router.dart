@@ -4,12 +4,63 @@ import 'package:cinematix/view/page/_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
+final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
+
 final router = GoRouter(
+  initialLocation: '/home',
+  navigatorKey: _rootNavigatorKey,
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const DashboardNavPage(),
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return DashboardNavPage(navigationShell: navigationShell);
+      },
+      branches: [
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorAKey,
+          routes: [
+            GoRoute(
+              path: '/home',
+              pageBuilder: (context, state) => const MaterialPage(
+                child: HomePage(),
+              ),
+              // routes: [
+                
+              // ],
+            ),
+          ]
+        ),
+        StatefulShellBranch(
+          navigatorKey: _shellNavigatorBKey,
+          routes: [
+            GoRoute(
+              path: '/wallet',
+              pageBuilder: (context, state) => const MaterialPage(
+                child: WalletPage(),
+              ),
+              // routes: [
+                
+              // ],
+            ),
+          ]
+        )
+      ]
     ),
+    // GoRoute(
+    //   path: '/',
+    //   builder: (context, state) => const DashboardNavPage(),
+    //   routes: [
+    //     GoRoute(
+    //       path: 'home',
+    //       builder: (context, state) => const HomePage(),
+    //     ),
+    //     GoRoute(
+    //       path: 'wallet',
+    //       builder: (context, state) => const WalletPage(),
+    //     ),
+    //   ],
+    // ),
     GoRoute(
       path: '/search',
       builder: (context, state) => const SearchPage(),

@@ -13,6 +13,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 part 'home_page.dart';
+part 'wallet_page.dart';
 part 'search_page.dart';
 part 'dashboard_nav_page.dart';
 part 'movie_list_page.dart';

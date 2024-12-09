@@ -17,4 +17,11 @@ class MovieCreditsCubit extends Cubit<BlocState> {
       emit(ErrorState(e.toString()));
     }
   }
+
+  @override
+  void onChange(Change<BlocState> change) {
+    super.onChange(change);
+  
+    
+  }
 }

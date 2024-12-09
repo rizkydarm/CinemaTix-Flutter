@@ -49,6 +49,11 @@ class HomePage extends StatelessWidget {
               context.push('/list/playing_now');
             },
             title: const Text('Playing Now Movies'),
+            titleTextStyle: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black
+            ),
             trailing: const Icon(Icons.arrow_forward_ios),
           ),
           const HorizontalMovieList<PlayingNowMovieCubit>(),
@@ -58,6 +63,11 @@ class HomePage extends StatelessWidget {
                 context.push('/list/upcoming');
               },
             title: const Text('Upcoming Movies'),
+            titleTextStyle: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black
+            ),
             trailing: const Icon(Icons.arrow_forward_ios),
           ),
           const HorizontalMovieList<UpComingMovieCubit>(),
@@ -90,7 +100,7 @@ class HorizontalMovieList<T extends Cubit<BlocState>> extends StatelessWidget {
           }
           else if (state is SuccessState<List<MovieEntity>>) {
             return ListView.separated(
-              padding: const EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               scrollDirection: Axis.horizontal,
               itemCount: state.data.length,
               separatorBuilder: (context, index) => const SizedBox(width: 16,),
