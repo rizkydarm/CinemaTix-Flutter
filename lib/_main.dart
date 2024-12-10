@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 
 void runMain() {
 
+  // Bloc.observer = MyBlocObserver();
+
   WidgetsFlutterBinding.ensureInitialized();
 
   getTemporaryDirectory().then((dir) {
@@ -49,13 +51,18 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CinemaTix',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: MyColors.material),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
             textStyle: const TextStyle(
               fontWeight: FontWeight.bold
             )
           ),
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: IconButton.styleFrom(
+            foregroundColor: Colors.grey
+          )
         ),
         useMaterial3: true,
       ),

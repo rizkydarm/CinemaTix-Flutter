@@ -66,14 +66,16 @@ class _InfiniteMovieListViewState<T extends MovieCubit> extends State<InfiniteMo
       child: RefreshIndicator(
         onRefresh: () => context.read<T>().fetchMovies(page: 1),
         child: PagedListView<int, MovieEntity>.separated(
-          separatorBuilder: (context, index) => const Divider(height: 0,),
+          separatorBuilder: (context, index) => const SizedBox.shrink(),
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<MovieEntity>(
             itemBuilder: (context, item, index) => ListTile(
               onTap: () {
                 context.push('/movie_detail/${item.id}');
               },
-              title: Text(item.title),
+              title: Text(item.title,
+                style: Theme.of(context).textTheme.titleLarge
+              ),
               subtitle: Text(item.genres.join(', ')),
               trailing: FavoriteMovieButton(
                 movieId: item.id,

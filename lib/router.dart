@@ -66,9 +66,14 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/movie_detail/:movieId',
-      builder: (context, state) => MovieDetailPage(
-        movieId: state.pathParameters['movieId'] as String,
+      pageBuilder: (context, state) => MaterialPage(
+        child: MovieDetailPage(
+          movieId: state.pathParameters['movieId'] as String,
+        ),
       ),
+      // builder: (context, state) => MovieDetailPage(
+      //   movieId: state.pathParameters['movieId'] as String,
+      // ),
     ),
   ],
 );
