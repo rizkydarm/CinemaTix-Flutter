@@ -589,14 +589,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  page_transition:
+  page_route_animator:
     dependency: "direct main"
     description:
-      name: page_transition
-      sha256: dee976b1f23de9bbef5cd512fe567e9f6278caee11f5eaca9a2115c19dc49ef6
+      name: page_route_animator
+      sha256: "7ec6acadcee42454f33b69d3d20d24396434b7436ad043c132e5c32c1c537c92"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "1.0.4"
   path:
     dependency: transitive
     description:

@@ -24,15 +24,23 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: FilledButton.icon(
+                child: FilledButton(
                   onPressed: () {
                     context.push('/search');
                   },
-                  icon: const Icon(Icons.search),
-                  label: const Text('Search'),
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black45,
+                    padding: const EdgeInsets.only(left: 8)
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.search),
+                      SizedBox(width: 8,),
+                      Text('Search'),
+                    ],
                   ),
                 ),
               ),
@@ -223,6 +231,7 @@ class _MovieCardState extends State<MovieCard> {
                             overflow: TextOverflow.ellipsis, 
                             maxLines: 2,
                             style: const TextStyle(
+                              height: 0,
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold

@@ -3,7 +3,7 @@ import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:cinematix/view/page/_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:page_route_animator/page_route_animator.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
@@ -50,12 +50,10 @@ final router = GoRouter(
       pageBuilder: (context, state) => CustomTransitionPage(
         child: const SearchPage(),
         transitionsBuilder: ((context, animation, secondaryAnimation, child) {
-          return PageTransition(
-            ctx: context,
-            child: child,
+          return PageRouteAnimator(
+            routeAnimation: RouteAnimation.topToBottomWithFade,
             curve: Curves.easeOutCirc,
-            type: PageTransitionType.size,
-            alignment: Alignment.topCenter,
+            child: child,
           ).buildTransitions(context, animation, secondaryAnimation,child);
         }),
       ),
