@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
                   label: const Text('Search'),
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                    foregroundColor: Colors.black45,
                   ),
                 ),
               ),
@@ -165,7 +165,16 @@ class _MovieCardState extends State<MovieCard> {
                 FastCachedImage(
                   url: TMDBApi.getImageUrl(movie.posterPath),
                   loadingBuilder: (context, progress) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Shimmer(
+                      duration: const Duration(seconds: 1),
+                      child: ColoredBox(
+                        color: Colors.black54,
+                        child: SizedBox(
+                          width: widthCard,
+                          height: widget.height,
+                        ),
+                      )
+                    );
                   },
                   gaplessPlayback: true,
                   isAntiAlias: true,

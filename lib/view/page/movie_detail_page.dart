@@ -34,7 +34,12 @@ class MovieDetailPage extends StatelessWidget {
               initalColor: Theme.of(context).disabledColor,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                final detail = context.read<MovieDetailCubit>().movieDetailTemp;
+                if (detail != null) {
+                  Share.share("${detail.movie.title} ${detail.tagline}");
+                }
+              },
               icon: const Icon(Icons.share),
             )
           ],
@@ -49,7 +54,6 @@ class MovieDetailPage extends StatelessWidget {
             child: ValueListenableBuilder(
               valueListenable: scrollNotifier,
               builder: (context, offset, child) {
-                
                 return AnimatedOpacity(
                   opacity: (offset - 200).clamp(0.0, 1.0).toDouble(),
                   duration: const Duration(milliseconds: 600),

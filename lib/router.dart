@@ -3,6 +3,7 @@ import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:cinematix/view/page/_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:page_transition/page_transition.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
@@ -39,9 +40,6 @@ final router = GoRouter(
               pageBuilder: (context, state) => const MaterialPage(
                 child: WalletPage(),
               ),
-              // routes: [
-                
-              // ],
             ),
           ]
         )
@@ -49,7 +47,18 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/search',
-      builder: (context, state) => const SearchPage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const SearchPage(),
+        transitionsBuilder: ((context, animation, secondaryAnimation, child) {
+          return PageTransition(
+            ctx: context,
+            child: child,
+            curve: Curves.easeOutCirc,
+            type: PageTransitionType.size,
+            alignment: Alignment.topCenter,
+          ).buildTransitions(context, animation, secondaryAnimation,child);
+        }),
+      ),
     ),
     GoRoute(
       path: '/list/:category',
@@ -65,15 +74,10 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/movie_detail/:movieId',
-      pageBuilder: (context, state) => MaterialPage(
-        child: MovieDetailPage(
-          movieId: state.pathParameters['movieId'] as String,
-        ),
+      path: '/movie_detail/:movieId', 
+      builder: (context, state) => MovieDetailPage(
+        movieId: state.pathParameters['movieId'] as String,
       ),
-      // builder: (context, state) => MovieDetailPage(
-      //   movieId: state.pathParameters['movieId'] as String,
-      // ),
     ),
   ],
 );
