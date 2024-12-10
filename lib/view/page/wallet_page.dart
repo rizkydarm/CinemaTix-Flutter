@@ -1,22 +1,16 @@
 part of '_page.dart';
 
-class WalletPage extends StatefulWidget {
+class WalletPage extends StatelessWidget {
   const WalletPage({super.key});
 
   @override
-  State<WalletPage> createState() => _WalletPageState();
-}
+  Widget build(BuildContext context) {
 
-class _WalletPageState extends State<WalletPage> {
+    final scrollController = ScrollController();
+    final showAppbarNotifier = ValueNotifier(false);
 
-  final scrollController = ScrollController();
+    bool isScrollingDown = false;
 
-  bool _showAppbar = false; 
-  bool isScrollingDown = false;
-
-  @override
-  void initState() {
-    super.initState();
     scrollController.addListener(() {
       if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
         if (!isScrollingDown) {
@@ -29,29 +23,30 @@ class _WalletPageState extends State<WalletPage> {
         }
       }
 
-      if (scrollController.offset > 160) {
-        setState(() => _showAppbar = true);
-      } else {
-        setState(() => _showAppbar = false);
+      if (scrollController.offset > 200 && !showAppbarNotifier.value) {
+        showAppbarNotifier.value = true;
+      } else if (scrollController.offset < 200 && showAppbarNotifier.value) {
+        showAppbarNotifier.value = false;
       }
-
     });
 
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: SafeArea(
-      child: Column(
-        children: <Widget>[
-          AnimatedContainer(
-            height: _showAppbar ? 56.0 : 0.0,
-            duration: const Duration(milliseconds: 240),
+        child: Column(
+          children: <Widget>[
+            ValueListenableBuilder(
+              valueListenable: showAppbarNotifier,
+              builder: (context, showAppbar, child) {
+                return AnimatedContainer(
+                  height: showAppbar ? 56.0 : 0.0,
+                  duration: const Duration(milliseconds: 240),
+                  child: child,
+                );
+              },
               child: AppBar(
                 backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
@@ -85,7 +80,6 @@ class _WalletPageState extends State<WalletPage> {
                 ],
               ),
             ),
-
             Expanded(
               child: SingleChildScrollView(
                 controller: scrollController,
@@ -127,20 +121,12 @@ class _WalletPageState extends State<WalletPage> {
                                 ],
                               ),
                             ),
-                            const Row(
-                              children: [
-                                Icon(Icons.attach_money_outlined,
-                                  color: Colors.white,
-                                  size: 40,
-                                ),
-                                Text('Rp1.000.000',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32,
-                                  ),
-                                ),
-                              ],
+                            const Text('Rp1.000.000',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 32,
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
@@ -169,14 +155,11 @@ class _WalletPageState extends State<WalletPage> {
                         ),
                       ),
                     ),
-                    ... List.generate(20, (i) => SizedBox(height: 100,
-                      child: Divider(color: Colors.amber,),
-                    ))
+                    
                   ],
                 ),
               ),
             ),
-
           ],
         ),
       ),
