@@ -1,15 +1,18 @@
 
+import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:cinematix/view/page/_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_route_animator/page_route_animator.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
-final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
+final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'Home');
+final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'Wallet');
 
 final router = GoRouter(
+  observers: [TalkerRouteObserver(talker)],
   initialLocation: '/home',
   navigatorKey: _rootNavigatorKey,
   routes: [

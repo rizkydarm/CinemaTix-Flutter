@@ -15,6 +15,8 @@ part 'movie_detail_bloc.dart';
 part 'movie_credits_bloc.dart';
 
 
+
+
 sealed class BlocState extends Equatable {
   const BlocState();
 

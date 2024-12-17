@@ -11,7 +11,12 @@ class MovieDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    context.read<MovieDetailCubit>().fetchMovieDetailById(movieId);
+    final showBottomAppBarNotifier = ValueNotifier(false);
+
+    context.read<MovieDetailCubit>().fetchMovieDetailById(movieId)
+      .whenComplete(() {
+        showBottomAppBarNotifier.value = true;
+      });
     context.read<MovieCreditsCubit>().fetchMovieCreditsById(movieId);
     
     final scrollNotifier = ValueNotifier(0);
@@ -21,28 +26,34 @@ class MovieDetailPage extends StatelessWidget {
     });
 
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            Expanded(
-              child: FilledButton(
-                onPressed: () {},
-                child: const Text('Buy Ticket'),
+      bottomNavigationBar: ValueListenableBuilder(
+        valueListenable: showBottomAppBarNotifier,
+        builder: (context, value, child) {
+          return value ? child! : const Nil();
+        },
+        child: BottomAppBar(
+          child: Row(
+            children: [
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {},
+                  child: const Text('Buy Ticket'),
+                ),
               ),
-            ),
-            FavoriteMovieButton(movieId: movieId,
-              initalColor: Theme.of(context).disabledColor,
-            ),
-            IconButton(
-              onPressed: () {
-                final detail = context.read<MovieDetailCubit>().movieDetailTemp;
-                if (detail != null) {
-                  Share.share("${detail.movie.title} ${detail.tagline}");
-                }
-              },
-              icon: const Icon(Icons.share),
-            )
-          ],
+              FavoriteMovieButton(movieId: movieId,
+                initalColor: Theme.of(context).disabledColor,
+              ),
+              IconButton(
+                onPressed: () {
+                  final detail = context.read<MovieDetailCubit>().movieDetailTemp;
+                  if (detail != null) {
+                    Share.share("${detail.movie.title} ${detail.tagline}");
+                  }
+                },
+                icon: const Icon(Icons.share),
+              )
+            ],
+          ),
         ),
       ),
       body: Stack(
@@ -90,7 +101,7 @@ class _MovieDetailPageBody extends StatelessWidget {
       buildWhen: (previous, current) => current is! LoadingState,
       builder: (context, state) {
         if (state is LoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return const _LoadingMovieDetailPage();
         }
         else if (state is ErrorState) {
           return Center(child: Text(state.message));
@@ -110,7 +121,12 @@ class _MovieDetailPageBody extends StatelessWidget {
                       FastCachedImage(
                         url: TMDBApi.getImageUrl(state.data.backdropPath),
                         fit: BoxFit.fill,
-                        fadeInDuration: const Duration(milliseconds: 100)
+                        fadeInDuration: const Duration(milliseconds: 100),
+                        loadingBuilder: (context, progress) => Shimmer(
+                          child: const ColoredBox(
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                       DecoratedBox(
                         decoration: BoxDecoration(
@@ -178,6 +194,11 @@ class _MovieDetailPageBody extends StatelessWidget {
                               child: FastCachedImage(
                                 url: TMDBApi.getImageUrl(state.data.movie.posterPath),
                                 fit: BoxFit.contain,
+                                loadingBuilder: (context, progress) => Shimmer(
+                                  child:  const ColoredBox(
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -230,6 +251,14 @@ class _MovieDetailPageBody extends StatelessWidget {
                                           url: TMDBApi.getImageUrl(casts[index].profilePath!),
                                           width: 100,
                                           fit: BoxFit.contain,
+                                          loadingBuilder: (context, progress) => Shimmer(
+                                            child: const SizedBox(
+                                              width: 100,
+                                              child: ColoredBox(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     Flexible(
@@ -301,6 +330,84 @@ class _MovieDetailPageBody extends StatelessWidget {
           return const Center(child: Text('Something went wrong'));
         }
       }
+    );
+  }
+}
+
+class _LoadingMovieDetailPage extends StatelessWidget {
+  const _LoadingMovieDetailPage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Shimmer(
+          child: const SizedBox(
+            height: 200+56,
+            child: ColoredBox(
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Shimmer(
+                      child: const SizedBox(
+                        height: 30,
+                        child: ColoredBox(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8,),
+                    Shimmer(
+                      child: const SizedBox(
+                        height: 30,
+                        width: 160,
+                        child: ColoredBox(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8,),
+                    Shimmer(
+                      child: const SizedBox(
+                        height: 30,
+                        width: 160,
+                        child: ColoredBox(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 32,),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Shimmer(
+                  child: const SizedBox(
+                    height: 240,
+                    width: 160,
+                    child: ColoredBox(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

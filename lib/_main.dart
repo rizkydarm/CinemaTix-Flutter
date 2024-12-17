@@ -7,10 +7,11 @@ import 'package:cinematix/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 
 void runMain() {
 
-  // Bloc.observer = MyBlocObserver();
+  Bloc.observer = TalkerBlocObserver(talker: talker);
 
   WidgetsFlutterBinding.ensureInitialized();
 

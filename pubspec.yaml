@@ -51,6 +51,12 @@ dependencies:
   shimmer_animation: ^2.2.1
   share_plus: ^10.1.2
   page_route_animator: ^1.0.4
+  talker: ^4.5.2
+  talker_logger: ^4.5.2
+  talker_flutter: ^4.5.2
+  talker_dio_logger: ^4.5.2
+  talker_bloc_logger: ^4.5.2
+  nil: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +71,8 @@ dev_dependencies:
   mockito: ^5.4.4
   bloc_test: ^9.1.7
   build_runner: ^2.1.11
-  monarch: ^3.0.0
+  monarch: ^3.8.1
+  flutter_launcher_icons: ^0.14.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -108,3 +115,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/ic_launcher.png
+  remove_alpha_ios: true
