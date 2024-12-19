@@ -80,6 +80,12 @@ final router = GoRouter(
         movieId: state.pathParameters['movieId'] as String,
       ),
     ),
+    GoRoute(
+      path: '/book_time_place/:movieId', 
+      builder: (context, state) => BookTimePlacePage(
+        movieId: state.pathParameters['movieId'] as String,
+      ),
+    ),
   ],
 );
 

@@ -36,7 +36,7 @@ class MovieDetailPage extends StatelessWidget {
             children: [
               Expanded(
                 child: FilledButton(
-                  onPressed: () {},
+                  onPressed: () => context.push('/book_time_place/$movieId'),
                   child: const Text('Buy Ticket'),
                 ),
               ),

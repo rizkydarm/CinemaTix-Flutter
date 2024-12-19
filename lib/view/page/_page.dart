@@ -1,4 +1,5 @@
 
+import 'package:cinematix/_main.dart';
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
@@ -11,7 +12,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:nil/nil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -22,3 +23,4 @@ part 'search_page.dart';
 part 'dashboard_nav_page.dart';
 part 'movie_list_page.dart';
 part 'movie_detail_page.dart';
+part 'book_time_place_page.dart';
