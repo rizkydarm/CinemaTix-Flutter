@@ -86,10 +86,10 @@ class WalletPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    ColoredBox(
-                      color: Theme.of(context).primaryColor,
-                      child: SizedBox(
-                        height: 200,
+                    SizedBox(
+                      height: 200,
+                      child: ColoredBox(
+                        color: Theme.of(context).primaryColor,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

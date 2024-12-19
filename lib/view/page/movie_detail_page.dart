@@ -29,7 +29,7 @@ class MovieDetailPage extends StatelessWidget {
       bottomNavigationBar: ValueListenableBuilder(
         valueListenable: showBottomAppBarNotifier,
         builder: (context, value, child) {
-          return value ? child! : const Nil();
+          return value ? child! : const SizedBox.shrink();
         },
         child: BottomAppBar(
           child: Row(
