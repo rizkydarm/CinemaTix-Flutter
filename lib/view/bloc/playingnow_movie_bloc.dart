@@ -23,8 +23,9 @@ class PlayingNowMovieCubit extends MovieCubit {
         currentPage = page;
         emit(SuccessState(movies));
       }
-    } catch (e) {
-      emit(ErrorState(e.toString()));
+    } catch (e, s) {
+      talker.handle(e, s, 'PlayingNow.fetchMovies');
+      emit(ErrorState('PlayingNow.fetchMovies Error: ${e.toString()}'));
     } finally {
       _isFetching = false;
     }

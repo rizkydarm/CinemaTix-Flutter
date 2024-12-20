@@ -1,11 +1,13 @@
 
 // import 'package:cinematix/core/_core.dart';
 // import 'package:cinematix/data/_data.dart';
+import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 part 'searched_movie_bloc.dart';
 part 'playingnow_movie_bloc.dart';
@@ -13,6 +15,8 @@ part 'upcoming_movie_bloc.dart';
 part 'component/favorite_movie_bloc.dart';
 part 'movie_detail_bloc.dart';
 part 'movie_credits_bloc.dart';
+part 'book_time_place_bloc.dart';
+part 'city_bloc.dart';
 
 
 
@@ -58,28 +62,28 @@ abstract class MovieCubit extends Cubit<BlocState> {
   Future<void> fetchMovies({int page = 1, int? max, String? language});
 }
 
-class MyBlocObserver extends BlocObserver {
-  @override
-  void onCreate(BlocBase bloc) {
-    super.onCreate(bloc);
-    print('onCreate -- ${bloc.runtimeType}');
-  }
+// class MyBlocObserver extends BlocObserver {
+//   @override
+//   void onCreate(BlocBase bloc) {
+//     super.onCreate(bloc);
+//     print('onCreate -- ${bloc.runtimeType}');
+//   }
 
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
-    print('onChange -- ${bloc.runtimeType}, $change');
-  }
+//   @override
+//   void onChange(BlocBase bloc, Change change) {
+//     super.onChange(bloc, change);
+//     print('onChange -- ${bloc.runtimeType}, $change');
+//   }
 
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    print('onError -- ${bloc.runtimeType}, $error');
-    super.onError(bloc, error, stackTrace);
-  }
+//   @override
+//   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+//     print('onError -- ${bloc.runtimeType}, $error');
+//     super.onError(bloc, error, stackTrace);
+//   }
 
-  @override
-  void onClose(BlocBase bloc) {
-    super.onClose(bloc);
-    print('onClose -- ${bloc.runtimeType}');
-  }
-}
+//   @override
+//   void onClose(BlocBase bloc) {
+//     super.onClose(bloc);
+//     print('onClose -- ${bloc.runtimeType}');
+//   }
+// }

@@ -12,9 +12,8 @@ class MovieCreditsCubit extends Cubit<BlocState> {
       final credits = await movieUseCase.getMovieCreditsById(id);
       emit(SuccessState((credits.crews.sublist(max), credits.casts.sublist(max))));
     } catch (e, s) {
-      debugPrint(e.toString());
-      debugPrintStack(stackTrace: s);
-      emit(ErrorState(e.toString()));
+      talker.handle(e, s, 'MovieCreditsCubit.fetchMovieCreditsById');
+      emit(ErrorState('MovieCreditsCubit.fetchMovieCreditsById Error: ${e.toString()}'));
     }
   }
 

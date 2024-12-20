@@ -23,6 +23,8 @@ void runMain() {
     providers: [
       Provider(
         create: (context) => MovieUseCase(),),
+      Provider(
+        create: (context) => CityUseCase(),),
       BlocProvider(
         create: (context) => SearchedMovieCubit(context.read<MovieUseCase>()),),
       BlocProvider(
@@ -35,7 +37,13 @@ void runMain() {
         create: (context) => MovieCreditsCubit(context.read<MovieUseCase>())),
       BlocProvider(
         create: (context) => FavoriteMovieCubit(),
-      ) 
+      ),
+      BlocProvider(
+        create: (context) => BookTimePlaceCubit(),
+      ),
+      BlocProvider(
+        create: (context) => CityCubit(context.read<CityUseCase>()),
+      )
     ],
     child: const App(),
   );
@@ -52,7 +60,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CinemaTix',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: MyColors.material),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
             textStyle: const TextStyle(
@@ -64,6 +72,9 @@ class App extends StatelessWidget {
           style: IconButton.styleFrom(
             foregroundColor: Colors.grey
           )
+        ),
+        appBarTheme: const AppBarTheme(
+          scrolledUnderElevation: 0,
         ),
         useMaterial3: true,
       ),

@@ -86,6 +86,10 @@ final router = GoRouter(
         movieId: state.pathParameters['movieId'] as String,
       ),
     ),
+    GoRoute(
+      path: '/talker_screen', 
+      builder: (context, state) => TalkerScreen(talker: talker),
+    ),
   ],
 );
 

@@ -13,43 +13,33 @@ class DioHelper {
     )
   ) {
     _dio.interceptors.add(
-      // InterceptorsWrapper(
-      //   onRequest: (options, handler) {
-      //     debugPrint('**Request**');
-      //     debugPrint('\t${options.path}');
-      //     // debugPrint(options.data.toString());
-      //     // debugPrint(options.headers.toString());
-      //     return handler.next(options);
-      //   },
-      //   onResponse: (response, handler) {
-      //     // debugPrint('==Response==');
-      //     // debugPrint(response.statusMessage);
-      //     // debugPrint(response.data.toString());
-      //     // debugPrint(response.statusCode.toString());
-      //     return handler.next(response);
-      //   } ,
-      //   onError: (e, handler) {
-      //     debugPrint('##Error##');
-      //     debugPrint("${e.message}: ${e.response?.statusCode}");
-      //     debugPrint(e.response?.statusMessage);
-      //     // debugPrint(e.response?.data.toString());
-      //     return handler.next(e);
-      //   },
-      // ),
-      TalkerDioLogger(
-        talker: talker,
-        settings: const TalkerDioLoggerSettings(
-          printResponseData: false,
-          printResponseHeaders: false,
-          printResponseMessage: false,
-          printErrorData: false,
-          printErrorHeaders: true,
-          printErrorMessage: true,
-          printRequestData: false,
-          printRequestHeaders: false,
-        ),
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          debugPrint('**Request**');
+          debugPrint('\t${options.path}');
+          // debugPrint(options.data.toString());
+          // debugPrint(options.headers.toString());
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          // debugPrint('==Response==');
+          // debugPrint(response.statusMessage);
+          // debugPrint(response.data.toString());
+          // debugPrint(response.statusCode.toString());
+          return handler.next(response);
+        } ,
+        onError: (e, handler) {
+          debugPrint('##Error##');
+          debugPrint("${e.message}: ${e.response?.statusCode}");
+          debugPrint(e.response?.statusMessage);
+          // debugPrint(e.response?.data.toString());
+          return handler.next(e);
+        },
       ),
     );
+    _dio.interceptors.add(TalkerDioLogger(
+        talker: talker,
+      ),);
   }
   
   Future<T?> get<T>(Endpoint endpoint) async {

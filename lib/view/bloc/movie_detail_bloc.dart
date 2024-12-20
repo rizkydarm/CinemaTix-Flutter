@@ -14,8 +14,9 @@ class MovieDetailCubit extends Cubit<BlocState> {
       final movie = await _movieUseCase.getMovieDetailById(id);
       movieDetailTemp = movie;
       emit(SuccessState(movie));
-    } catch (e) {
-      emit(ErrorState(e.toString()));
+    } catch (e, s) {
+      talker.handle(e, s, 'MovieDetailCubit.fetchMovieDetailById');
+      emit(ErrorState('MovieDetailCubit.fetchMovieDetailById Error: ${e.toString()}'));
     }
   }
 }

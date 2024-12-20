@@ -11,7 +11,7 @@ class MyApi {
     'accept': 'application/json'
   };
   
-  Endpoint likedMovies() => const Endpoint('likedMovies', 
+  static Endpoint likedMovies() => const Endpoint('likedMovies', 
     MyApi.headers, params: {
       'page': 100,
       'checkDulu': true

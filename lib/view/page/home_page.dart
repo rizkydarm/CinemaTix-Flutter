@@ -14,12 +14,17 @@ class HomePage extends StatelessWidget {
           width: double.infinity,
           child: Row(
             children: [
-              const SizedBox(
+              SizedBox(
                 width: 72,
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Icon(Icons.abc_outlined,
-                    size: 60,
+                  child: GestureDetector(
+                    onDoubleTap: () {
+                      context.push('/talker_screen');
+                    },
+                    child: const Icon(Icons.abc_outlined,
+                      size: 60,
+                    ),
                   ),
                 ),
               ),

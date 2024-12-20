@@ -1,5 +1,4 @@
 
-import 'package:cinematix/_main.dart';
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
@@ -16,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'home_page.dart';
 part 'wallet_page.dart';
