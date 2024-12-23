@@ -2,7 +2,7 @@ part of '../_data.dart';
 
 class MovieRemoteDataSource {
   
-  final DioHelper _dio = DioHelper(TMDBApi.baseUrl);
+  final DioHelper _dio = getit.get<DioHelper>(param1: TMDBApi.baseUrl);
 
   Future<List<MovieModel>> getSearchedMovies(String query, {int page = 1, String? language}) async {
     final data = await _dio.get<Map>(TMDBApi.searchedMovie(query, page: page, language: language));

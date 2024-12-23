@@ -1,4 +1,5 @@
 import 'package:cinematix/core/_core.dart';
+import 'package:cinematix/data/_data.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
@@ -6,44 +7,60 @@ import 'package:flutter/material.dart';
 import 'package:cinematix/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:talker/talker.dart';
+// import 'package:provider/provider.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 
 void runMain() {
-
-  Bloc.observer = TalkerBlocObserver(talker: talker);
 
   WidgetsFlutterBinding.ensureInitialized();
 
   getTemporaryDirectory().then((dir) {
     FastCachedImageConfig.init(subDir: dir.path, clearCacheAfter: const Duration(days: 15));
   });
+
+  getit.registerSingleton<Talker>(TalkerHelper().instance);
+
+  getit.registerFactoryParam<DioHelper, String, void>((baseUrl, _) => DioHelper(baseUrl));  
   
+  getit.registerSingleton<MovieRemoteDataSource>(MovieRemoteDataSource());
+  getit.registerLazySingleton<CityRemoteDataSource>(() => CityRemoteDataSource());
+  
+  getit.registerSingleton<MovieRepository>(MovieRepository());
+  getit.registerLazySingleton<CityRepository>(() => CityRepository());
+  
+  getit.registerSingleton<MovieUseCase>(MovieUseCase());
+  getit.registerLazySingleton<CityUseCase>(() => CityUseCase());
+  
+  Bloc.observer = TalkerBlocObserver(talker: getit.get<Talker>(),
+    settings: const TalkerBlocLoggerSettings(
+      enabled: true,
+      printChanges: true,
+      printClosings: true,
+      printCreations: true,
+      printEvents: true,
+      printTransitions: true,
+    ),
+  );
+
   final providers = MultiBlocProvider(
     providers: [
-      Provider(
-        create: (context) => MovieUseCase(),),
-      Provider(
-        create: (context) => CityUseCase(),),
       BlocProvider(
-        create: (context) => SearchedMovieCubit(context.read<MovieUseCase>()),),
+        create: (context) => PlayingNowMovieCubit()..fetchMovies(max: 5),),
       BlocProvider(
-        create: (context) => PlayingNowMovieCubit(context.read<MovieUseCase>())..fetchMovies(max: 5),),
+        create: (context) => UpComingMovieCubit()..fetchMovies(max: 5),),
       BlocProvider(
-        create: (context) => UpComingMovieCubit(context.read<MovieUseCase>())..fetchMovies(max: 5),),
+        create: (context) => SearchedMovieCubit()),
       BlocProvider(
-        create: (context) => MovieDetailCubit(context.read<MovieUseCase>())),
+        create: (context) => MovieDetailCubit()),
       BlocProvider(
-        create: (context) => MovieCreditsCubit(context.read<MovieUseCase>())),
+        create: (context) => MovieCreditsCubit()),
       BlocProvider(
-        create: (context) => FavoriteMovieCubit(),
-      ),
+        create: (context) => FavoriteMovieCubit()),
       BlocProvider(
-        create: (context) => BookTimePlaceCubit(),
-      ),
+        create: (context) => BookTimePlaceCubit()),
       BlocProvider(
-        create: (context) => CityCubit(context.read<CityUseCase>()),
-      )
+        create: (context) => CityCubit())
     ],
     child: const App(),
   );

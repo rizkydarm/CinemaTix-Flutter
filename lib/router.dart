@@ -12,7 +12,7 @@ final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'Home');
 final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'Wallet');
 
 final router = GoRouter(
-  observers: [TalkerRouteObserver(talker)],
+  observers: [TalkerRouteObserver(getit.get<Talker>())],
   initialLocation: '/home',
   navigatorKey: _rootNavigatorKey,
   routes: [
@@ -88,7 +88,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/talker_screen', 
-      builder: (context, state) => TalkerScreen(talker: talker),
+      builder: (context, state) => TalkerScreen(talker: getit.get<Talker>()),
     ),
   ],
 );

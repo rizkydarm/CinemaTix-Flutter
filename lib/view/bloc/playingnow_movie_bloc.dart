@@ -2,11 +2,11 @@ part of '_bloc.dart';
 
 class PlayingNowMovieCubit extends MovieCubit {
   
-  final MovieUseCase movieUseCase;
+  final MovieUseCase _movieUseCase = getit.get<MovieUseCase>();
 
   bool _isFetching = false;
 
-  PlayingNowMovieCubit(this.movieUseCase) : super(InitialState());
+  PlayingNowMovieCubit() : super(InitialState());
 
   @override
   Future<void> fetchMovies({int page = 1, int? max, String? language}) async {
@@ -15,7 +15,7 @@ class PlayingNowMovieCubit extends MovieCubit {
     
     emit(LoadingState());
     try {
-      final movies = await movieUseCase.getPlayingNowMovies(page: page);
+      final movies = await _movieUseCase.getPlayingNowMovies(page: page);
       if (max != null) {
         currentPage = page;
         emit(SuccessState(movies.sublist(0, max)));
@@ -24,7 +24,7 @@ class PlayingNowMovieCubit extends MovieCubit {
         emit(SuccessState(movies));
       }
     } catch (e, s) {
-      talker.handle(e, s, 'PlayingNow.fetchMovies');
+      getit.get<Talker>().handle(e, s, 'PlayingNow.fetchMovies');
       emit(ErrorState('PlayingNow.fetchMovies Error: ${e.toString()}'));
     } finally {
       _isFetching = false;

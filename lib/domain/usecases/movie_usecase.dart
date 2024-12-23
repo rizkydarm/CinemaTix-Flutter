@@ -3,7 +3,7 @@ part of '../_domain.dart';
 
 class MovieUseCase {
 
-  final MovieRepository _repository = MovieRepository();
+  final MovieRepository _repository = getit.get<MovieRepository>();
 
   Future<List<MovieEntity>> getPlayingNowMovies({int page = 1, String? language}) async {
     return await _repository.getPlayingNowMovies(page: page, language: language);

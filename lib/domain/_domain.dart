@@ -1,6 +1,7 @@
 
 
 
+import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/data/_data.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';

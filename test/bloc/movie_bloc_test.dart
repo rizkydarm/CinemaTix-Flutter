@@ -20,9 +20,9 @@ void main() {
 
   setUp(() {
     mockMovieUseCase = MockMovieUseCase();
-    playingNowMovieCubit = PlayingNowMovieCubit(mockMovieUseCase);
-    upComingMovieCubit = UpComingMovieCubit(mockMovieUseCase);
-    movieDetailCubit = MovieDetailCubit(mockMovieUseCase);
+    playingNowMovieCubit = PlayingNowMovieCubit();
+    upComingMovieCubit = UpComingMovieCubit();
+    movieDetailCubit = MovieDetailCubit();
   });
 
   tearDown(() {

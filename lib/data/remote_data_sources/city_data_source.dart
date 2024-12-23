@@ -2,7 +2,7 @@ part of '../_data.dart';
 
 class CityRemoteDataSource {
   
-  final DioHelper _dio = DioHelper(CityApi.baseUrl);
+  final DioHelper _dio = getit.get<DioHelper>(param1: CityApi.baseUrl);
 
   Future<AllCitiesModel> getAllCities() async {
     final data = await _dio.get<Map>(CityApi.allCities());

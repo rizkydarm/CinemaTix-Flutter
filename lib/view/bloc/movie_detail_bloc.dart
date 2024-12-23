@@ -2,11 +2,11 @@ part of '_bloc.dart';
 
 class MovieDetailCubit extends Cubit<BlocState> {
   
-  final MovieUseCase _movieUseCase;
+  final MovieUseCase _movieUseCase = getit.get<MovieUseCase>();
 
   MovieDetailEntity? movieDetailTemp;
 
-  MovieDetailCubit(this._movieUseCase) : super(InitialState());
+  MovieDetailCubit() : super(InitialState());
 
   Future<void> fetchMovieDetailById(String id) async {
     emit(LoadingState());
@@ -15,7 +15,7 @@ class MovieDetailCubit extends Cubit<BlocState> {
       movieDetailTemp = movie;
       emit(SuccessState(movie));
     } catch (e, s) {
-      talker.handle(e, s, 'MovieDetailCubit.fetchMovieDetailById');
+      getit.get<Talker>().handle(e, s, 'MovieDetailCubit.fetchMovieDetailById');
       emit(ErrorState('MovieDetailCubit.fetchMovieDetailById Error: ${e.toString()}'));
     }
   }

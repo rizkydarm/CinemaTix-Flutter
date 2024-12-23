@@ -1,8 +1,7 @@
 part of '../_core.dart';
 
 class TalkerHelper {
-
-  static final Talker instance = TalkerFlutter.init(
+  final Talker instance = TalkerFlutter.init(
     settings: TalkerSettings(
       enabled: true,
       useHistory: true,
