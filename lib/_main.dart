@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/data/_data.dart';
 import 'package:cinematix/domain/_domain.dart';
@@ -10,6 +12,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:talker/talker.dart';
 // import 'package:provider/provider.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
+import 'package:geolocator_android/geolocator_android.dart';
+import 'package:geolocator_apple/geolocator_apple.dart';
+
 
 void runMain() {
 
@@ -18,6 +23,15 @@ void runMain() {
   getTemporaryDirectory().then((dir) {
     FastCachedImageConfig.init(subDir: dir.path, clearCacheAfter: const Duration(days: 15));
   });
+
+  void registerPlatformInstance() {
+    if (Platform.isAndroid) {
+      GeolocatorAndroid.registerWith();
+    } else if (Platform.isIOS) {
+      GeolocatorApple.registerWith();
+    }
+  }
+  registerPlatformInstance();
 
   getit.registerSingleton<Talker>(TalkerHelper().instance);
 
