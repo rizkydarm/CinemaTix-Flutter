@@ -44,3 +44,6 @@ app.*.map.json
 
 # Monarch related
 .monarch/
+
+# FVM Version Cache
+.fvm/

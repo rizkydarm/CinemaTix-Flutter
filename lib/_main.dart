@@ -91,7 +91,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'CinemaTix',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: MyColors.material),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
             textStyle: const TextStyle(

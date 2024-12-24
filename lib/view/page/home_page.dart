@@ -22,9 +22,10 @@ class HomePage extends StatelessWidget {
                     onDoubleTap: () {
                       context.push('/talker_screen');
                     },
-                    child: const Icon(Icons.abc_outlined,
-                      size: 60,
-                    ),
+                    child: Image.asset('assets/white_icon.png',
+                      width: 48,
+                      height: 48,
+                    )
                   ),
                 ),
               ),

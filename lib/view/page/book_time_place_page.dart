@@ -14,6 +14,7 @@ class BookTimePlacePage extends StatelessWidget {
     context.read<BookTimePlaceCubit>().fetchAllCinemaMall();
     
     final selectedCityNotifier = ValueNotifier<CityEntity?>(null);
+    final selectedDatePlaceNotifier = ValueNotifier<(String?, String?)>((null, null));
 
     return Scaffold(
       appBar: AppBar(
@@ -47,9 +48,14 @@ class BookTimePlacePage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomAppBar(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        child: FilledButton(
-          onPressed: () {},
-          child: const Text('Next'),
+        child: ValueListenableBuilder<(String?, String?)>(
+          valueListenable: selectedDatePlaceNotifier,
+          builder: (context, value, child) {
+            return FilledButton(
+              onPressed: value.$1 != null && value.$2 != null ? () {} : null,
+              child: const Text('Next'),
+            );
+          }
         ),
       ),
       body: ListView(
@@ -66,7 +72,9 @@ class BookTimePlacePage extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          const DayDateOptionCips(),
+          DayDateOptionCips(
+            selectedDatePlaceNotifier: selectedDatePlaceNotifier,
+          ),
           const SizedBox(
             height: 16,
           ),
@@ -126,16 +134,20 @@ class BookTimePlacePage extends StatelessWidget {
                                     width: 90,
                                     child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
-                                        foregroundColor: value != null && value == itemKey ? Colors.white : MyColors.v400,
-                                        backgroundColor: value != null && value == itemKey ? MyColors.v400 : null,
+                                        foregroundColor: value != null && value == itemKey ? Colors.white : Colors.blue.shade400,
+                                        backgroundColor: value != null && value == itemKey ? Colors.blue.shade400 : null,
                                         textStyle: const TextStyle(
                                           fontWeight: FontWeight.bold
                                         ),
-                                        side: value != null && value == itemKey ? null : const BorderSide(color: MyColors.v400),
+                                        side: value != null && value == itemKey ? null : BorderSide(color: Colors.blue.shade400),
                                       ),
                                       onPressed: () {
                                         if (itemKey != value) {
                                           setState(itemKey);
+                                          selectedDatePlaceNotifier.value = (selectedDatePlaceNotifier.value.$1, itemKey);
+                                        } else {
+                                          setState(null);
+                                          selectedDatePlaceNotifier.value = (selectedDatePlaceNotifier.value.$1, null);
                                         }
                                       },
                                       child: Text(place.times[i]),
@@ -284,8 +296,11 @@ class SearchCitySheet extends StatelessWidget {
 
 class DayDateOptionCips extends StatelessWidget {
   const DayDateOptionCips({
+    required this.selectedDatePlaceNotifier,
     super.key,
   });
+
+  final ValueNotifier<(String?, String?)> selectedDatePlaceNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -304,15 +319,21 @@ class DayDateOptionCips extends StatelessWidget {
                 width: 112,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: value != null && value == i ? Colors.white : MyColors.v400,
-                    backgroundColor: value != null && value == i ? MyColors.v400 : null,
+                    foregroundColor: value != null && value == i ? Colors.white : Colors.blue.shade400,
+                    backgroundColor: value != null && value == i ? Colors.blue.shade400 : null,
                     textStyle: const TextStyle(
                       fontWeight: FontWeight.bold
                     ),
-                    side: value != null && value == i ? null : const BorderSide(color: MyColors.v400),
+                    side: value != null && value == i ? null : BorderSide(color: Colors.blue.shade400),
                   ),
                   onPressed: () {
-                    setState(i);
+                    if (value != i) {
+                      setState(i);
+                      selectedDatePlaceNotifier.value = (sevenDays[i], selectedDatePlaceNotifier.value.$2);
+                    } else {
+                      setState(null);
+                      selectedDatePlaceNotifier.value = (null, selectedDatePlaceNotifier.value.$2);
+                    }
                   },
                   child: Text(sevenDays[i].toUpperCase()),
                 ),
