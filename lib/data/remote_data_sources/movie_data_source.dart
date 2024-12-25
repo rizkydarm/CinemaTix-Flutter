@@ -1,6 +1,6 @@
 part of '../_data.dart';
 
-class MovieRemoteDataSource {
+class MovieRemoteDataSource implements RemoteDataSource {
   
   final DioHelper _dio = getit.get<DioHelper>(param1: TMDBApi.baseUrl);
 

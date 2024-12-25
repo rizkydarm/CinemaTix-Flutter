@@ -114,13 +114,17 @@ class WalletPage extends StatelessWidget {
                                   const Spacer(),
                                   IconButton(
                                     onPressed: () {
-                                      
+                                      if (AdaptiveTheme.of(context).brightness == Brightness.dark) {
+                                        AdaptiveTheme.of(context).setLight();
+                                      }
                                     },
                                     icon: const Icon(Icons.email_outlined),
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      
+                                      if (AdaptiveTheme.of(context).brightness == Brightness.light) {
+                                        AdaptiveTheme.of(context).setDark();
+                                      }
                                     },
                                     icon: const Icon(Icons.settings_outlined),
                                   )

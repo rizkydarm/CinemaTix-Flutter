@@ -1,6 +1,6 @@
 part of '../_data.dart';
 
-class MovieRepository {
+class MovieRepository implements Repository {
   
   final MovieRemoteDataSource _remoteDataSource = MovieRemoteDataSource();
 

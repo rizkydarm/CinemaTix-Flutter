@@ -26,3 +26,27 @@ class MyColors {
     900: MyColors.v900,
   });
 }
+
+class MyTheme {
+
+  MyTheme._();
+
+  final theme = ThemeData(
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold
+        )
+      ),
+    ),
+    // iconButtonTheme: IconButtonThemeData(
+    //   style: IconButton.styleFrom(
+    //     foregroundColor: Colors.grey
+    //   )
+    // ),
+    appBarTheme: const AppBarTheme(
+      scrolledUnderElevation: 0,
+    ),
+    useMaterial3: true,
+  );
+}

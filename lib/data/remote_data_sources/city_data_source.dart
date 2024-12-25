@@ -1,6 +1,6 @@
 part of '../_data.dart';
 
-class CityRemoteDataSource {
+class CityRemoteDataSource implements RemoteDataSource {
   
   final DioHelper _dio = getit.get<DioHelper>(param1: CityApi.baseUrl);
 

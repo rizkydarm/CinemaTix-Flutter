@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/data/_data.dart';
 import 'package:cinematix/domain/_domain.dart';
@@ -87,29 +88,34 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'CinemaTix',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.bold
-            )
-          ),
-        ),
-        iconButtonTheme: IconButtonThemeData(
-          style: IconButton.styleFrom(
-            foregroundColor: Colors.grey
-          )
-        ),
-        appBarTheme: const AppBarTheme(
-          scrolledUnderElevation: 0,
-        ),
+    return AdaptiveTheme(
+      light: ThemeData(
         useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+        ),
       ),
-      routerConfig: router,
+      dark: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
+        ),
+      ),
+      initial: AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) =>  MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'CinemaTix',
+        theme: theme,
+        darkTheme: darkTheme,
+        
+        routerConfig: router,
+      )
     );
   }
 }

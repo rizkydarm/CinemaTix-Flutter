@@ -1,4 +1,5 @@
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
@@ -23,3 +24,4 @@ part 'dashboard_nav_page.dart';
 part 'movie_list_page.dart';
 part 'movie_detail_page.dart';
 part 'book_time_place_page.dart';
+part 'login_page.dart';

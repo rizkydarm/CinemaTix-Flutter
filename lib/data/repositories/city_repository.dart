@@ -1,6 +1,6 @@
 part of '../_data.dart';
 
-class CityRepository {
+class CityRepository implements Repository {
   
   final CityRemoteDataSource _remoteDataSource = CityRemoteDataSource();
 

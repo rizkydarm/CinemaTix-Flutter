@@ -13,7 +13,7 @@ final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'Wallet');
 
 final router = GoRouter(
   observers: [TalkerRouteObserver(getit.get<Talker>())],
-  initialLocation: '/home',
+  initialLocation: '/login',
   navigatorKey: _rootNavigatorKey,
   routes: [
     StatefulShellRoute.indexedStack(
@@ -89,6 +89,10 @@ final router = GoRouter(
     GoRoute(
       path: '/talker_screen', 
       builder: (context, state) => TalkerScreen(talker: getit.get<Talker>()),
+    ),
+    GoRoute(
+      path: '/login', 
+      builder: (context, state) => LoginPage(),
     ),
   ],
 );
