@@ -22,10 +22,10 @@ class AuthRepository implements Repository {
       email: model.email!, 
       profile: ProfileEntity(
         id: model.profile!.id!,
-        username: model.profile!.username!,
-        displayName: model.profile!.displayName!,
-        numberPhone: model.profile!.numberPhone!,
-        avatarUrl: model.profile!.avatarUrl!,
+        username: model.profile?.username,
+        displayName: model.profile?.displayName,
+        numberPhone: model.profile?.numberPhone,
+        avatarUrl: model.profile?.avatarUrl,
       )
     );
   }
