@@ -1,11 +1,11 @@
 part of '_page.dart';
 
-class LoginPage extends StatelessWidget {
+class RegisterPage extends StatelessWidget {
   
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  LoginPage({super.key});
+  RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.0),
-            const Text('Login',
+            const Text('Register',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -103,37 +103,39 @@ class LoginPage extends StatelessWidget {
               child: BlocBuilder<AuthCubit, BlocState>(
                 builder: (context, state) {
                   return ElevatedButton(
-                      onPressed: () {
-                        String email = emailController.text;
-                        String password = passwordController.text;
-                  
-                        if (email.isEmpty || password.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Email and password cannot be empty')),
-                          );
-                          return;
-                        }
-                  
-                        String emailPattern = r'^[^@]+@[^@]+\.[^@]+';
-                        RegExp regex = RegExp(emailPattern);
-                        if (!regex.hasMatch(email)) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Please enter a valid email address')),
-                          );
-                          return;
-                        }
-                  
-                        if (password.length < 8) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Password must be at least 8 characters long')),
-                          );
-                          return;
-                        }
-                  
-                        context.read<AuthCubit>().login(email, password);
-                  
+                    onPressed: state is LoadingState ? null : () {
+                      String email = emailController.text;
+                      String password = passwordController.text;
+                
+                      if (email.isEmpty || password.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Email and password cannot be empty')),
+                        );
+                        return;
+                      }
+                
+                      String emailPattern = r'^[^@]+@[^@]+\.[^@]+';
+                      RegExp regex = RegExp(emailPattern);
+                      if (!regex.hasMatch(email)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please enter a valid email address')),
+                        );
+                        return;
+                      }
+                
+                      if (password.length < 8) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Password must be at least 8 characters long')),
+                        );
+                        return;
+                      }
+                
+                      final cubit = context.read<AuthCubit>();
+                      cubit.register(email, password);
                     },
-                    child: const Text('Submit'),
+                    child: state is LoadingState ? const Center(
+                      child: CircularProgressIndicator(),
+                    ) : const Text('Submit'),
                   );
                 }
               ),
@@ -142,12 +144,12 @@ class LoginPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Don\'t have an account? '),
+                const Text('Already have an account? '),
                 GestureDetector(
                   onTap: () {
-                    context.go('/register');
+                    context.go('/login');
                   },
-                  child: Text('Register',
+                  child: Text('Login',
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                     ),

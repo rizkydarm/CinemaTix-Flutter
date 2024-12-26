@@ -34,11 +34,18 @@ void runMain() {
   }
   registerPlatformInstance();
 
-  getit.registerSingleton<Talker>(TalkerHelper().instance);
+  getit.registerSingleton<Talker>(TalkerHelper.instance);
+  
+  getit.registerSingletonAsync<SQLHelper>(() => SQLHelper().init());
 
   getit.registerFactoryParam<DioHelper, String, void>((baseUrl, _) => DioHelper(baseUrl));  
   
+  getit.registerSingleton<AuthLocalDataSource>(AuthLocalDataSource());
+  getit.registerSingleton<AuthRepository>(AuthRepository());
+  getit.registerSingleton<AuthUseCase>(AuthUseCase());
+
   getit.registerSingleton<MovieRemoteDataSource>(MovieRemoteDataSource());
+  
   getit.registerLazySingleton<CityRemoteDataSource>(() => CityRemoteDataSource());
   
   getit.registerSingleton<MovieRepository>(MovieRepository());
@@ -75,7 +82,9 @@ void runMain() {
       BlocProvider(
         create: (context) => BookTimePlaceCubit()),
       BlocProvider(
-        create: (context) => CityCubit())
+        create: (context) => CityCubit()),
+      BlocProvider(
+        create: (context) => AuthCubit())
     ],
     child: const App(),
   );

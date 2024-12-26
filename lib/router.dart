@@ -94,6 +94,10 @@ final router = GoRouter(
       path: '/login', 
       builder: (context, state) => LoginPage(),
     ),
+    GoRoute(
+      path: '/register', 
+      builder: (context, state) => RegisterPage(),
+    ),
   ],
 );
 

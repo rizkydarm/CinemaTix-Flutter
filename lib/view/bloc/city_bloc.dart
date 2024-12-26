@@ -11,8 +11,9 @@ class CityCubit extends Cubit<BlocState> {
       emit(LoadingState());
       final cities = await _cityUseCase.getAllCities();
       emit(SuccessState(cities));
-    } catch (e) {
-      emit(ErrorState(e.toString()));
+    } catch (e, s) {
+      getit.get<Talker>().handle(e, s, 'CityCubit.fetchCities');
+      emit(ErrorState('CityCubit.fetchCities Error: ${e.toString()}'));
     }
   }
 }

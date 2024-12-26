@@ -107,9 +107,14 @@ class WalletPage extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   const SizedBox(width: 16,),
-                                  Image.asset('assets/white_icon.png',
-                                    width: 48,
-                                    height: 48,
+                                  GestureDetector(
+                                    onDoubleTap: () {
+                                      context.go('/login');
+                                    },
+                                    child: Image.asset('assets/white_icon.png',
+                                      width: 48,
+                                      height: 48,
+                                    ),
                                   ),
                                   const Spacer(),
                                   IconButton(

@@ -18,6 +18,7 @@ part 'movie_detail_bloc.dart';
 part 'movie_credits_bloc.dart';
 part 'book_time_place_bloc.dart';
 part 'city_bloc.dart';
+part 'auth_bloc.dart';
 
 
 

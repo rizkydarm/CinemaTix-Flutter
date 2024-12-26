@@ -2,7 +2,7 @@ part of '../_data.dart';
 
 class MovieRepository implements Repository {
   
-  final MovieRemoteDataSource _remoteDataSource = MovieRemoteDataSource();
+  final MovieRemoteDataSource _remoteDataSource = getit.get<MovieRemoteDataSource>();
 
   Future<List<MovieEntity>> _fetchMovies(
     Future<List<MovieModel>> Function({int page, String? language}) fetchFunction,
