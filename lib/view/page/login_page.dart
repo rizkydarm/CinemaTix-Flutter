@@ -103,7 +103,7 @@ class LoginPage extends StatelessWidget {
               child: BlocBuilder<AuthCubit, BlocState>(
                 builder: (context, state) {
                   return ElevatedButton(
-                      onPressed: () {
+                      onPressed: state is LoadingState ? null : () {
                         String email = emailController.text;
                         String password = passwordController.text;
                   
@@ -133,7 +133,14 @@ class LoginPage extends StatelessWidget {
                         context.read<AuthCubit>().login(email, password);
                   
                     },
-                    child: const Text('Submit'),
+                    child: state is LoadingState ? const Center(
+                      child: SizedBox.square(
+                        dimension: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3.6,
+                        )
+                      ),
+                    ) : const Text('Submit'),
                   );
                 }
               ),

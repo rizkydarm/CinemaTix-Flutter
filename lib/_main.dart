@@ -45,14 +45,18 @@ void runMain() {
   getit.registerSingleton<AuthUseCase>(AuthUseCase());
 
   getit.registerSingleton<MovieRemoteDataSource>(MovieRemoteDataSource());
+  getit.registerSingleton<MovieRepository>(MovieRepository());
+  getit.registerSingleton<MovieUseCase>(MovieUseCase());
   
   getit.registerLazySingleton<CityRemoteDataSource>(() => CityRemoteDataSource());
   
-  getit.registerSingleton<MovieRepository>(MovieRepository());
   getit.registerLazySingleton<CityRepository>(() => CityRepository());
   
-  getit.registerSingleton<MovieUseCase>(MovieUseCase());
   getit.registerLazySingleton<CityUseCase>(() => CityUseCase());
+
+  getit.registerSingleton<FavoriteMovieLocalDataSource>(FavoriteMovieLocalDataSource());
+  getit.registerLazySingleton<FavoriteMovieRepository>(() => FavoriteMovieRepository());
+  getit.registerLazySingleton<FavoriteMovieUseCase>(() => FavoriteMovieUseCase());
   
   Bloc.observer = TalkerBlocObserver(talker: getit.get<Talker>(),
     settings: const TalkerBlocLoggerSettings(
@@ -78,13 +82,15 @@ void runMain() {
       BlocProvider(
         create: (context) => MovieCreditsCubit()),
       BlocProvider(
-        create: (context) => FavoriteMovieCubit()),
-      BlocProvider(
         create: (context) => BookTimePlaceCubit()),
       BlocProvider(
         create: (context) => CityCubit()),
       BlocProvider(
-        create: (context) => AuthCubit())
+        create: (context) => AuthCubit()),
+      BlocProvider(
+        create: (context) => FavoriteMovieCubit(context)..init(),
+      )
+
     ],
     child: const App(),
   );

@@ -25,7 +25,7 @@ class UpComingMovieCubit extends MovieCubit {
       }
     } catch (e, s) {
       getit.get<Talker>().handle(e, s, 'UpComingMovieCubit.fetchMovies');
-      emit(ErrorState('UpComingMovieCubit.fetchMovies Error: ${e.toString()}'));
+      emit(ErrorState(e.toString()));
     } finally {
       _isFetching = false;
     }

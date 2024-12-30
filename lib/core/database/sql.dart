@@ -9,19 +9,24 @@ class SQLHelper {
       final dataBasePath = await getDatabasesPath();
       final path = join(dataBasePath, "cinematix.db");
       _database = await openDatabase(path,
-        onOpen: (db) async {
-          db.execute("PRAGMA foreign_keys = ON");
-          final tables = await db.rawQuery('SELECT name FROM sqlite_master WHERE type = "table"');
-          final tablesName = tables.map((e) => e['name']).toList();
-          print('Tables: $tablesName');
-        }
+        onOpen: _printAllTables
       );
-      // await clearDatabase();
+      // await _clearDatabase();
       return this;
     } catch (e) {      
       throw Exception('Failed to open database');
     }
   }
+
+  FutureOr<void> _printAllTables(db) async {
+      db.execute("PRAGMA foreign_keys = ON");
+      final tables = await db.rawQuery('SELECT name FROM sqlite_master WHERE type = "table"');
+      final tablesName = tables.map((e) => e['name'] as String).toList();
+      debugPrint('Tables: $tablesName');
+      for (var table in tablesName) {
+        _printAllData(db, table);
+      }
+    }
 
   Future<void> createTable(String table, List<SQLColumn> columns) async {
     if (_database == null) {
@@ -57,11 +62,7 @@ class SQLHelper {
     if (_database == null) {
       throw Exception('Database is not initialized');
     }
-    try {
-      await _database!.close();
-    } catch (e) {
-      throw Exception('Failed to close database');
-    }
+    await _database!.close();
   }
 
   Future<void> insert(String table, Map<String, dynamic> data) async {
@@ -69,10 +70,6 @@ class SQLHelper {
       throw Exception('Database is not initialized');
     }
     await _database!.insert(table, data);
-    // try {
-    // } catch (e) {
-    //   throw Exception('Failed to insert data');
-    // }
   }
 
   Future<void> update(String table, Map<String, dynamic> data, String where, List<dynamic> whereArgs) async {
@@ -80,53 +77,42 @@ class SQLHelper {
       throw Exception('Database is not initialized');
     }
     await _database!.update(table, data, where: where, whereArgs: whereArgs);
-    // try {
-    //   // _printAllData(table);
-    // } catch (e) {
-    //   throw Exception('Failed to update data in database');
-    // }
   }
 
-  Future<void> delete(String table, String where, List<dynamic> whereArgs) async {
+  Future<void> delete(String table, {String? where, List<dynamic>? whereArgs}) async {
     if (_database == null) {
       throw Exception('Database is not initialized');
     }
     await _database!.delete(table, where: where, whereArgs: whereArgs);
-    // try {
-    // } catch (e) {
-    //   throw Exception('Failed to delete data in database');
-    // }
   }
 
   Future<List<Map<String, dynamic>>> query(String table, {String? where, List<dynamic>? whereArgs}) async {
     if (_database == null) {
       throw Exception('Database is not initialized');
     }
-    try {
-      final result = await _database?.query(table, where: where, whereArgs: whereArgs);
-      // _printAllData(table);
-      if (result != null) {
-        return result;
-      } else {
-        throw Exception('Failed to query data in database');
-      }
-    } catch (e) {
-      rethrow;
-    }
+    final result = await _database!.query(table, where: where, whereArgs: whereArgs);
+    return result;
   }
 
-  Future<void> _printAllData(String table) async {
+  Future<void> _printAllData(Database db, String table) async {
+    // if (_database == null) {
+    //   throw Exception('Database is not initialized');
+    // }
     try {
-      final data = await _database!.query(table);
+      final data = await db.query(table);
+      print('Table: $table');
       for (var row in data) {
-        print(row);
+        print('Row:');
+        row.forEach((key, value) {
+          print('\t$key: $value');
+        });
       }
     } catch (e) {
       throw Exception('Failed to print all data from database');
     }
   }
 
-  Future<void> clearDatabase() async {
+  Future<void> _clearDatabase() async {
     if (_database == null) {
       throw Exception('Database is not initialized');
     }
@@ -145,7 +131,7 @@ class SQLHelper {
 
 }
 
-class SQLType {
+sealed class SQLType {
   static const text = 'TEXT';
   static const integer = 'INTEGER';
   static const real = 'REAL';

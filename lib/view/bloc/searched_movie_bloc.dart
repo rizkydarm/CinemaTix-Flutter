@@ -24,8 +24,8 @@ class SearchedMovieCubit extends Cubit<BlocState> {
         emit(SuccessState(movies));
       }
     } catch (e, s) {
-      getit.get<Talker>().handle(e, s, 'SearchedMovie.fetchMovies');
-      emit(ErrorState('SearchedMovie.fetchMovies Error: ${e.toString()}'));
+      getit.get<Talker>().handle(e, s, 'SearchedMovieCubit.fetchMovies');
+      emit(ErrorState(e.toString()));
     } finally {
       _isFetching = false;
     }

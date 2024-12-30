@@ -5,7 +5,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(context.read<AuthCubit>().user?.email);
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.white,
@@ -17,7 +16,7 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 width: 72,
                 child: Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.topLeft,
                   child: GestureDetector(
                     onDoubleTap: () {
                       context.push('/talker_screen');

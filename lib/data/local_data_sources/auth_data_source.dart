@@ -13,24 +13,32 @@ class AuthLocalDataSource implements LocalDataSource {
       }
       final isUserTableExist = await _sql!.isTableExists('user');
       if (!isUserTableExist) {
-        await _sql!.createTable('user', [
-          SQLColumn('id', SQLType.text, isPrimaryKey: true),
-          SQLColumn('email', SQLType.text),
-          SQLColumn('password', SQLType.text),
-          SQLColumn('profile_id', SQLType.text),
-        ]);
+        await _createUserTable();
       }
       final isProfileExist = await _sql!.isTableExists('profile');
       if (!isProfileExist) {
-        await _sql!.createTable('profile', [
-          SQLColumn('id', SQLType.text, isPrimaryKey: true),
-          SQLColumn('username', SQLType.text, canBeNull: true),
-          SQLColumn('display_name', SQLType.text, canBeNull: true),
-          SQLColumn('number_phone', SQLType.text, canBeNull: true),
-          SQLColumn('avatar_url', SQLType.text, canBeNull: true),
-        ]);
+        await _createProfileTable();
       }
     });
+  }
+
+  Future<void> _createProfileTable() async {
+    await _sql!.createTable('profile', [
+      SQLColumn('id', SQLType.text, isPrimaryKey: true),
+      SQLColumn('username', SQLType.text, canBeNull: true),
+      SQLColumn('display_name', SQLType.text, canBeNull: true),
+      SQLColumn('number_phone', SQLType.text, canBeNull: true),
+      SQLColumn('avatar_url', SQLType.text, canBeNull: true),
+    ]);
+  }
+
+  Future<void> _createUserTable() async {
+    await _sql!.createTable('user', [
+      SQLColumn('id', SQLType.text, isPrimaryKey: true),
+      SQLColumn('email', SQLType.text),
+      SQLColumn('password', SQLType.text),
+      SQLColumn('profile_id', SQLType.text),
+    ]);
   }
   
   Future<UserModel> register(String email, String password) async {

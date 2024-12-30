@@ -16,11 +16,13 @@ class FavoriteMovieButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteMovieCubit, BlocState>(
       builder: (context, state) {
+        bool isStateFavorite = (state is SuccessState<List<FavoriteMovieEntity>>);
+        bool isFavorite = isStateFavorite ? (state.data).any((data) => data.movieId == movieId) : false;
         return IconButton(
           onPressed: () {
             context.read<FavoriteMovieCubit>().toggle(movieId);
           },
-          color: (state is SuccessState<String>) ? (state.data == movieId) ? Colors.red : initalColor : initalColor,
+          color: isFavorite ? Colors.red : initalColor,
           icon: Icon(Icons.favorite, size: size,),
         );
       }

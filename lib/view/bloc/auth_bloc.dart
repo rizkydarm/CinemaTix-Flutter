@@ -14,21 +14,23 @@ class AuthCubit extends Cubit<BlocState> {
     try {
       emit(LoadingState());
       _user = await _authUseCase.register(email, password);
+      await Future.delayed(const Duration(seconds: 2));
       emit(SuccessState(_user));
     } catch (e, s) {
-      getit.get<Talker>().handle(e, s, 'AuthUseCase.register');
-      emit(ErrorState('AuthUseCase.login register: ${e.toString()}'));
+      getit.get<Talker>().handle(e, s, 'AuthCubit.register');
+      emit(ErrorState(e.toString()));
     }
   }
 
   Future<void> login(String email, String password) async {
     try {
       emit(LoadingState());
-      final cities = await _authUseCase.login(email, password);
-      emit(SuccessState(cities));
+      _user = await _authUseCase.login(email, password);
+      await Future.delayed(const Duration(seconds: 2));
+      emit(SuccessState(_user));
     } catch (e, s) {
-      getit.get<Talker>().handle(e, s, 'AuthUseCase.login');
-      emit(ErrorState('AuthUseCase.login Error: ${e.toString()}'));
+      getit.get<Talker>().handle(e, s, 'AuthCubit.login');
+      emit(ErrorState(e.toString()));
     }
   }
 }

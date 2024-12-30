@@ -1,3 +1,4 @@
+part of '../_data.dart';
 
 class AllCitiesModel {
     int? status;

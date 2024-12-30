@@ -13,7 +13,7 @@ class CityCubit extends Cubit<BlocState> {
       emit(SuccessState(cities));
     } catch (e, s) {
       getit.get<Talker>().handle(e, s, 'CityCubit.fetchCities');
-      emit(ErrorState('CityCubit.fetchCities Error: ${e.toString()}'));
+      emit(ErrorState(e.toString()));
     }
   }
 }
