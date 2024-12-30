@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '_main.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 
-void main() {
+Future<void> main() async {
   FlavorConfig(
     name: "DEV",
     color: Colors.red,
@@ -12,5 +12,5 @@ void main() {
       "baseUrl": "https://www.example.com",
     },
   );
-  runMain();
+  await runMain();
 }

@@ -12,7 +12,11 @@ class AuthUseCase {
     return await _repository.login(email, password);
   }
 
-  // Future<UserEntity> getActiveUser() async {
-  
-  // }
+  Future<void> logout() async {
+    await _repository.logout();
+  }
+
+  Future<UserEntity> getUser() async {
+    return await _repository.getUser();
+  }
 }

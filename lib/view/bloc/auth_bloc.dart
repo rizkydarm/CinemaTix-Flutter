@@ -33,4 +33,28 @@ class AuthCubit extends Cubit<BlocState> {
       emit(ErrorState(e.toString()));
     }
   }
+
+  Future<void> logout() async {
+    try {
+      emit(LoadingState());
+      await _authUseCase.logout();
+      await Future.delayed(const Duration(seconds: 2));
+      emit(const SuccessState(null));
+    } catch (e, s) {
+      getit.get<Talker>().handle(e, s, 'AuthCubit.logout');
+      emit(ErrorState(e.toString()));
+    }
+  }
+
+  Future<void> getUser() async {
+    try {
+      emit(LoadingState());
+      _user = await _authUseCase.getUser();
+      await Future.delayed(const Duration(seconds: 2));
+      emit(SuccessState(_user));
+    } catch (e, s) {
+      getit.get<Talker>().handle(e, s, 'AuthCubit.getUser');
+      emit(ErrorState(e.toString()));
+    }
+  }
 }

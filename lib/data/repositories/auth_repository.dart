@@ -29,4 +29,23 @@ class AuthRepository implements Repository {
       )
     );
   }
+
+  Future<void> logout() async {
+    await _localDataSource.removeUser();
+  }
+
+  Future<UserEntity> getUser() async {
+    final model = await _localDataSource.getUser();
+    return UserEntity(
+      id: model.id!, 
+      email: model.email!, 
+      profile: ProfileEntity(
+        id: model.profile!.id!,
+        username: model.profile?.username,
+        displayName: model.profile?.displayName,
+        numberPhone: model.profile?.numberPhone,
+        avatarUrl: model.profile?.avatarUrl,
+      )
+    );
+  }
 }

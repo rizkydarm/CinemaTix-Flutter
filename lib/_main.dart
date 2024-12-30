@@ -17,7 +17,7 @@ import 'package:geolocator_android/geolocator_android.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
 
 
-void runMain() {
+Future<void> runMain() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -36,7 +36,11 @@ void runMain() {
 
   getit.registerSingleton<Talker>(TalkerHelper.instance);
   
-  getit.registerSingletonAsync<SQLHelper>(() => SQLHelper().init());
+  final sqlHelper = await SQLHelper().init();
+  getit.registerSingleton<SQLHelper>(sqlHelper);
+  
+  final sharedPrefHelper = await SharedPrefHelper().init();
+  getit.registerSingleton<SharedPrefHelper>(sharedPrefHelper);
 
   getit.registerFactoryParam<DioHelper, String, void>((baseUrl, _) => DioHelper(baseUrl));  
   
@@ -49,9 +53,7 @@ void runMain() {
   getit.registerSingleton<MovieUseCase>(MovieUseCase());
   
   getit.registerLazySingleton<CityRemoteDataSource>(() => CityRemoteDataSource());
-  
-  getit.registerLazySingleton<CityRepository>(() => CityRepository());
-  
+  getit.registerLazySingleton<CityRepository>(() => CityRepository());  
   getit.registerLazySingleton<CityUseCase>(() => CityUseCase());
 
   getit.registerSingleton<FavoriteMovieLocalDataSource>(FavoriteMovieLocalDataSource());
@@ -76,21 +78,30 @@ void runMain() {
       BlocProvider(
         create: (context) => UpComingMovieCubit()..fetchMovies(max: 5),),
       BlocProvider(
-        create: (context) => SearchedMovieCubit()),
+        create: (context) => SearchedMovieCubit(),
+        lazy: true,
+      ),
       BlocProvider(
-        create: (context) => MovieDetailCubit()),
+        create: (context) => MovieDetailCubit(),
+        lazy: true,
+      ),
       BlocProvider(
-        create: (context) => MovieCreditsCubit()),
+        create: (context) => MovieCreditsCubit(),
+        lazy: true,
+      ),
       BlocProvider(
-        create: (context) => BookTimePlaceCubit()),
+        create: (context) => BookTimePlaceCubit(),
+        lazy: true,
+      ),
       BlocProvider(
-        create: (context) => CityCubit()),
+        create: (context) => CityCubit(),
+        lazy: true,  
+      ),
       BlocProvider(
-        create: (context) => AuthCubit()),
+        create: (context) => AuthCubit()..getUser()),
       BlocProvider(
         create: (context) => FavoriteMovieCubit(context)..init(),
       )
-
     ],
     child: const App(),
   );
@@ -103,6 +114,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final router = createRouter(context);
+
     return AdaptiveTheme(
       light: ThemeData(
         useMaterial3: true,
@@ -128,8 +142,9 @@ class App extends StatelessWidget {
         title: 'CinemaTix',
         theme: theme,
         darkTheme: darkTheme,
-        
+        // routeInformationProvider: router.routeInformationProvider,
         routerConfig: router,
+        // routeInformationParser: router.routeInformationParser,
       )
     );
   }

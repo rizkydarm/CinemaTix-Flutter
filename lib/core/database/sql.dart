@@ -11,7 +11,6 @@ class SQLHelper {
       _database = await openDatabase(path,
         onOpen: _printAllTables
       );
-      // await _clearDatabase();
       return this;
     } catch (e) {      
       throw Exception('Failed to open database');

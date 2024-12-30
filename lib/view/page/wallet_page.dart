@@ -109,7 +109,33 @@ class WalletPage extends StatelessWidget {
                                   const SizedBox(width: 16,),
                                   GestureDetector(
                                     onDoubleTap: () {
-                                      context.go('/login');
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Logout'),
+                                            content: const Text('Are you sure you want to logout?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  context.pop();
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  context.read<AuthCubit>().logout().whenComplete(() {
+                                                    if (context.mounted) {
+                                                      context.go('/login');
+                                                    }
+                                                  });
+                                                },
+                                                child: const Text('Logout'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                     child: Image.asset('assets/white_icon.png',
                                       width: 48,

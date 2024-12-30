@@ -2,18 +2,19 @@ part of '../_data.dart';
 
 class FavoriteMovieLocalDataSource implements LocalDataSource {
 
-  SQLHelper? _sql;
+  final SQLHelper _sql = getit.get<SQLHelper>();
 
   FavoriteMovieLocalDataSource() {
-    getit.getAsync<SQLHelper>().then((value) {
-      _sql = value;
-    }).whenComplete(() async {
-      if (_sql == null) {
-        throw Exception('SQLHelper is not initialized');
-      }
-      final isUserTableExist = await _sql!.isTableExists('favorite_movie');
+    // getit.get<SQLHelper>().then((value) {
+    //   _sql = value;
+    // });
+
+    if (_sql == null) {
+      throw Exception('SQLHelper is not initialized');
+    }
+    _sql!.isTableExists('favorite_movie').then((isUserTableExist) {
       if (!isUserTableExist) {
-        await _createTable();
+        _createTable();
       }
     });
   }

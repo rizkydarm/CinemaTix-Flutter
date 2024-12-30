@@ -2,24 +2,27 @@ part of '../_data.dart';
 
 class AuthLocalDataSource implements LocalDataSource {
 
-  SQLHelper? _sql;
+  final SQLHelper _sql = getit.get<SQLHelper>();
+  final SharedPrefHelper _sharedPref = getit.get<SharedPrefHelper>();
 
   AuthLocalDataSource() {
-    getit.getAsync<SQLHelper>().then((value) {
-      _sql = value;
-    }).whenComplete(() async {
-      if (_sql == null) {
+    if (_sql == null) {
         throw Exception('SQLHelper is not initialized');
       }
-      final isUserTableExist = await _sql!.isTableExists('user');
-      if (!isUserTableExist) {
-        await _createUserTable();
-      }
-      final isProfileExist = await _sql!.isTableExists('profile');
-      if (!isProfileExist) {
-        await _createProfileTable();
-      }
-    });
+       _sql!.isTableExists('user').then((isUserTableExist) {
+          if (!isUserTableExist) {
+            _createUserTable();
+          }
+       });
+      _sql!.isTableExists('profile').then((isProfileExist) {
+        if (!isProfileExist) {
+          _createProfileTable();
+        }
+      });
+
+    // getit.getAsync<SharedPrefHelper>().then((value) {
+    //   _sharedPref = value;
+    // });
   }
 
   Future<void> _createProfileTable() async {
@@ -47,6 +50,7 @@ class AuthLocalDataSource implements LocalDataSource {
     }
     final profile = ProfileModel(id: const Uuid().v4());
     final user = UserModel(id: const Uuid().v4(), email: email, password: password, profile: profile);
+    await _saveUser(user);
     await _sql!.insert('user', user.toSQLJson());
     await _sql!.insert('profile', profile.toJson());
     return user;
@@ -62,11 +66,33 @@ class AuthLocalDataSource implements LocalDataSource {
       final resultProfile = await _sql!.query('profile', where: 'id = ?', whereArgs: [user.profile?.id]);
       if (resultProfile.isNotEmpty) {
         user.profile?.copyWithModel(ProfileModel.fromJson(resultProfile.first));
-        return user;
       }
+      await _saveUser(user);
       return user;
     } else {
       throw Exception('User is not found');
     }
+  }
+
+  Future<void> _saveUser(UserModel user) async {
+    if (_sharedPref == null) {
+      throw Exception('SharedPrefHelper is not initialized');
+    }
+    await _sharedPref!.setMap('user', user.toJson());  
+  }
+
+  Future<void> removeUser() async {
+    if (_sharedPref == null) {
+      throw Exception('SharedPrefHelper is not initialized');
+    }
+    await _sharedPref!.removeMap('user');
+  }
+
+  Future<UserModel> getUser() async {
+    if (_sharedPref == null) {
+      throw Exception('SharedPrefHelper is not initialized');
+    }
+    final userJson = await _sharedPref!.getMap('user');
+    return UserModel.fromJson(userJson);
   }
 }

@@ -1,20 +1,27 @@
-
 import 'package:cinematix/core/_core.dart';
+import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:cinematix/view/page/_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_route_animator/page_route_animator.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'Home');
-final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'Wallet');
-
-final router = GoRouter(
+GoRouter createRouter(BuildContext context) => GoRouter(
   observers: [TalkerRouteObserver(getit.get<Talker>())],
   initialLocation: '/login',
-  navigatorKey: _rootNavigatorKey,
+  refreshListenable: StreamToListenable([context.read<AuthCubit>().stream]),
+  redirect: (context, state) {
+    final authCubit = context.read<AuthCubit>();
+    final authState = authCubit.state;
+    if (authState is SuccessState<UserEntity>) {
+      return '/home';
+    } else if (authState is ErrorState) {
+      return '/login';
+    }
+    return null;
+  },
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
@@ -22,21 +29,16 @@ final router = GoRouter(
       },
       branches: [
         StatefulShellBranch(
-          navigatorKey: _shellNavigatorAKey,
           routes: [
             GoRoute(
               path: '/home',
               pageBuilder: (context, state) => const MaterialPage(
                 child: HomePage(),
               ),
-              // routes: [
-                
-              // ],
             ),
           ]
         ),
         StatefulShellBranch(
-          navigatorKey: _shellNavigatorBKey,
           routes: [
             GoRoute(
               path: '/wallet',
@@ -57,7 +59,7 @@ final router = GoRouter(
             routeAnimation: RouteAnimation.topToBottomWithFade,
             curve: Curves.easeOutCirc,
             child: child,
-          ).buildTransitions(context, animation, secondaryAnimation,child);
+          ).buildTransitions(context, animation, secondaryAnimation, child);
         }),
       ),
     ),
