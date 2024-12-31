@@ -71,6 +71,9 @@ Future<void> runMain() async {
     ),
   );
 
+  final authCubit = AuthCubit();
+  await authCubit.getUser();
+
   final providers = MultiBlocProvider(
     providers: [
       BlocProvider(
@@ -97,8 +100,9 @@ Future<void> runMain() async {
         create: (context) => CityCubit(),
         lazy: true,  
       ),
-      BlocProvider(
-        create: (context) => AuthCubit()..getUser()),
+      BlocProvider.value(
+        value: authCubit
+      ),
       BlocProvider(
         create: (context) => FavoriteMovieCubit(context)..init(),
       )
@@ -115,7 +119,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final router = createRouter(context);
+    final isLoggedIn = context.read<AuthCubit>().user != null;
+    final router = createRouter(isLoggedIn ? '/home' : '/login');
 
     return AdaptiveTheme(
       light: ThemeData(

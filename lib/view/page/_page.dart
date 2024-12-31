@@ -26,3 +26,4 @@ part 'movie_detail_page.dart';
 part 'book_time_place_page.dart';
 part 'login_page.dart';
 part 'register_page.dart';
+part 'seat_ticket_page.dart';

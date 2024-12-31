@@ -6,27 +6,21 @@ class AuthLocalDataSource implements LocalDataSource {
   final SharedPrefHelper _sharedPref = getit.get<SharedPrefHelper>();
 
   AuthLocalDataSource() {
-    if (_sql == null) {
-        throw Exception('SQLHelper is not initialized');
+    
+    _sql.isTableExists('user').then((isUserTableExist) {
+      if (!isUserTableExist) {
+        _createUserTable();
       }
-       _sql!.isTableExists('user').then((isUserTableExist) {
-          if (!isUserTableExist) {
-            _createUserTable();
-          }
-       });
-      _sql!.isTableExists('profile').then((isProfileExist) {
-        if (!isProfileExist) {
-          _createProfileTable();
-        }
-      });
-
-    // getit.getAsync<SharedPrefHelper>().then((value) {
-    //   _sharedPref = value;
-    // });
+    });
+    _sql.isTableExists('profile').then((isProfileExist) {
+      if (!isProfileExist) {
+        _createProfileTable();
+      }
+    });
   }
 
   Future<void> _createProfileTable() async {
-    await _sql!.createTable('profile', [
+    await _sql.createTable('profile', [
       SQLColumn('id', SQLType.text, isPrimaryKey: true),
       SQLColumn('username', SQLType.text, canBeNull: true),
       SQLColumn('display_name', SQLType.text, canBeNull: true),
@@ -36,7 +30,7 @@ class AuthLocalDataSource implements LocalDataSource {
   }
 
   Future<void> _createUserTable() async {
-    await _sql!.createTable('user', [
+    await _sql.createTable('user', [
       SQLColumn('id', SQLType.text, isPrimaryKey: true),
       SQLColumn('email', SQLType.text),
       SQLColumn('password', SQLType.text),
@@ -45,25 +39,19 @@ class AuthLocalDataSource implements LocalDataSource {
   }
   
   Future<UserModel> register(String email, String password) async {
-    if (_sql == null) {
-      throw Exception('SQLHelper is not initialized');
-    }
     final profile = ProfileModel(id: const Uuid().v4());
     final user = UserModel(id: const Uuid().v4(), email: email, password: password, profile: profile);
     await _saveUser(user);
-    await _sql!.insert('user', user.toSQLJson());
-    await _sql!.insert('profile', profile.toJson());
+    await _sql.insert('user', user.toSQLJson());
+    await _sql.insert('profile', profile.toJson());
     return user;
   }
 
   Future<UserModel> login(String email, String password) async {
-    if (_sql == null) {
-      throw Exception('SQLHelper is not initialized');
-    }
-    final resultUser = await _sql!.query('user', where: 'email = ? AND password = ?', whereArgs: [email, password]);
+    final resultUser = await _sql.query('user', where: 'email = ? AND password = ?', whereArgs: [email, password]);
     if (resultUser.isNotEmpty) {
       final user = UserModel.fromSQLJson(resultUser.first);
-      final resultProfile = await _sql!.query('profile', where: 'id = ?', whereArgs: [user.profile?.id]);
+      final resultProfile = await _sql.query('profile', where: 'id = ?', whereArgs: [user.profile?.id]);
       if (resultProfile.isNotEmpty) {
         user.profile?.copyWithModel(ProfileModel.fromJson(resultProfile.first));
       }
@@ -75,24 +63,15 @@ class AuthLocalDataSource implements LocalDataSource {
   }
 
   Future<void> _saveUser(UserModel user) async {
-    if (_sharedPref == null) {
-      throw Exception('SharedPrefHelper is not initialized');
-    }
-    await _sharedPref!.setMap('user', user.toJson());  
+    await _sharedPref.setMap('user', user.toJson());  
   }
 
   Future<void> removeUser() async {
-    if (_sharedPref == null) {
-      throw Exception('SharedPrefHelper is not initialized');
-    }
-    await _sharedPref!.removeMap('user');
+    await _sharedPref.removeMap('user');
   }
 
   Future<UserModel> getUser() async {
-    if (_sharedPref == null) {
-      throw Exception('SharedPrefHelper is not initialized');
-    }
-    final userJson = await _sharedPref!.getMap('user');
+    final userJson = await _sharedPref.getMap('user');
     return UserModel.fromJson(userJson);
   }
 }

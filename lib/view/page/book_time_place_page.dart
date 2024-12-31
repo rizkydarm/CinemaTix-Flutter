@@ -52,7 +52,9 @@ class BookTimePlacePage extends StatelessWidget {
           valueListenable: selectedDatePlaceNotifier,
           builder: (context, value, child) {
             return FilledButton(
-              onPressed: value.$1 != null && value.$2 != null ? () {} : null,
+              onPressed: value.$1 != null && value.$2 != null ? () {
+                context.push('/seat_ticket');
+              } : null,
               child: const Text('Next'),
             );
           }

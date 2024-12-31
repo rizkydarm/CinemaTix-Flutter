@@ -294,15 +294,14 @@ class _MovieDetailPageBody extends StatelessWidget {
                                 width: 100,
                                 child: Column(
                                   children: [
-                                    if (crews[index].profilePath != null) 
-                                      ClipRRect(
-                                        borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                        child: FastCachedImage(
-                                          url: TMDBApi.getImageUrl(crews[index].profilePath!),
-                                          width: 100,
-                                          fit: BoxFit.contain,
-                                        ),
+                                    if (crews[index].profilePath != null) ClipRRect(
+                                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                      child: FastCachedImage(
+                                        url: TMDBApi.getImageUrl(crews[index].profilePath!),
+                                        width: 100,
+                                        fit: BoxFit.contain,
                                       ),
+                                    ),
                                     Flexible(
                                       child: Center(
                                         child: Text(crews[index].name, 

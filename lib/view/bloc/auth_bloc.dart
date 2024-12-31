@@ -48,13 +48,13 @@ class AuthCubit extends Cubit<BlocState> {
 
   Future<void> getUser() async {
     try {
-      emit(LoadingState());
+      // emit(LoadingState());
       _user = await _authUseCase.getUser();
       await Future.delayed(const Duration(seconds: 2));
-      emit(SuccessState(_user));
+      // emit(SuccessState(_user));
     } catch (e, s) {
       getit.get<Talker>().handle(e, s, 'AuthCubit.getUser');
-      emit(ErrorState(e.toString()));
+      // emit(ErrorState(e.toString()));
     }
   }
 }
