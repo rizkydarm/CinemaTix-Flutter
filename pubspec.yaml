@@ -54,6 +54,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/payment_logo/
 
 flutter_native_splash:
   color: "#FFFFFF"

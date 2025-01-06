@@ -148,97 +148,113 @@ class CheckoutPage extends StatelessWidget {
                   ),
                 ),
               ),
-              ListTile(
-                tileColor: Theme.of(context).cardColor,
-                title: const Text('Payment Method',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16
-                  ),
-                ),
-                subtitle: const Text('QRIS'),
-                trailing: TextButton(
-                  onPressed: () {
-                    final paymentVA = [
-                      {
-                        'nama': 'BCA VA',
-                        'logo': 'bca_logo.png'
-                      },
-                      {
-                        'nama': 'Mandiri VA',
-                        'logo': 'mandiri_logo.png'
-                      },
-                      {
-                        'nama': 'BRI VA',
-                        'logo': 'bri_logo.png'
-                      },
-                      {
-                        'nama': 'BNI VA',
-                        'logo': 'bni_logo.png'
-                      }
-                    ];
-                    final paymentWallet = [
-                      {
-                        'nama': 'Dana',
-                        'logo': 'dana_logo.png'
-                      },
-                      {
-                        'nama': 'Gopay',
-                        'logo': 'gopay_logo.png'
-                      },
-                      {
-                        'nama': 'OVO',
-                        'logo': 'ovo_logo.png'
-                      },
-                      {
-                        'nama': 'LinkAja',
-                        'logo': 'linkaja_logo.png'
-                      }
-                    ];
-                    showModalBottomSheet(
-                      context: scafContext,
-                      isScrollControlled: true,
-                      builder: (context) => DraggableScrollableSheet(
-                        builder: (context, controller) => ListView(
-                          controller: controller,
-                          children: [
-                            ... List.generate(paymentVA.length, (index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                child: MaterialButton(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                      color: Colors.grey
-                                    ),
-                                    borderRadius: BorderRadius.circular(16)
-                                  ),
-                                  onPressed: () {},
-                                  child: Row(
-                                    children: [
-                                      Image.asset('assets/payment_logo/${paymentVA[index]['logo']}',
-                                        width: 100,
-                                        height: 60,
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Text(paymentVA[index]['nama'] as String),
-                                    ],
+              StatefulValueBuilder<String?>(
+                initialValue: null,
+                builder: (context, value, setValue) {
+                  return ListTile(
+                    tileColor: Theme.of(context).cardColor,
+                    title: const Text('Payment Method',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16
+                      ),
+                    ),
+                    subtitle: Text(value ?? ''),
+                    trailing: TextButton(
+                      onPressed: () {
+                        final paymentVA = [
+                          {
+                            'nama': 'BCA VA',
+                            'logo': 'bca_logo.png'
+                          },
+                          {
+                            'nama': 'Mandiri VA',
+                            'logo': 'mandiri_logo.png'
+                          },
+                          {
+                            'nama': 'BRI VA',
+                            'logo': 'bri_logo.png'
+                          },
+                          {
+                            'nama': 'BNI VA',
+                            'logo': 'bni_logo.png'
+                          }
+                        ];
+                        final paymentWallet = [
+                          {
+                            'nama': 'Dana',
+                            'logo': 'dana_logo.png'
+                          },
+                          {
+                            'nama': 'Gopay',
+                            'logo': 'gopay_logo.png'
+                          },
+                          {
+                            'nama': 'OVO',
+                            'logo': 'ovo_logo.png'
+                          },
+                          {
+                            'nama': 'LinkAja',
+                            'logo': 'linkaja_logo.png'
+                          }
+                        ];
+                        showModalBottomSheet(
+                          context: scafContext,
+                          isScrollControlled: true,
+                          enableDrag: true,
+                          showDragHandle: true,
+                          builder: (context) => DraggableScrollableSheet(
+                            expand: false,
+                            maxChildSize: 0.8,
+                            initialChildSize: 0.6,
+                            builder: (context, controller) => ListView(
+                              padding: const EdgeInsets.all(16),
+                              controller: controller,
+                              children: [
+                                const Text('Wallet',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16
                                   ),
                                 ),
-                              );
-                            })
-                          ],
-                        ),
-                      ),
-                      showDragHandle: true,
-                      enableDrag: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(16))
-                      ),
-                    );
-                  },
-                  child:const Text('Change'),
-                ),
+                                ... List.generate(paymentWallet.length, (index) {
+                                  return PaymentButton(
+                                    payments: paymentWallet, 
+                                    index: index,
+                                    onPressed: (index) {
+                                      setValue(paymentWallet[index]['nama'] as String);
+                                      scafContext.pop();
+                                    },
+                                  );
+                                }),
+                                const Text('Bank VA',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16
+                                  ),
+                                ),
+                                ... List.generate(paymentVA.length, (index) {
+                                  return PaymentButton(
+                                    payments: paymentVA, 
+                                    index: index,
+                                    onPressed: (p0) {
+                                      setValue(paymentWallet[index]['nama'] as String);
+                                      scafContext.pop();
+                                    },
+                                  );
+                                }),
+                              ],
+                            ),
+                          ),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(16))
+                          ),
+                        );
+                      },
+                      child:const Text('Change'),
+                    ),
+                  );
+                }
               ),
               const SizedBox(height: 16,),
               ColoredBox(
@@ -273,6 +289,48 @@ class CheckoutPage extends StatelessWidget {
             ],
           );
         }
+      ),
+    );
+  }
+}
+
+class PaymentButton extends StatelessWidget {
+  
+  const PaymentButton({
+    super.key,
+    required this.payments,
+    required this.index,
+    required this.onPressed,
+  });
+
+  final List<Map<String, String>> payments;
+  final int index;
+  final void Function(int) onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: MaterialButton(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(
+            color: Colors.grey
+          ),
+          borderRadius: BorderRadius.circular(16)
+        ),
+        onPressed: () => onPressed(index),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.asset('assets/payment_logo/${payments[index]['logo']}',
+              width: 80,
+              height: 40,
+              fit: BoxFit.contain,
+            ),
+            Text(payments[index]['nama'] as String),
+          ],
+        ),
       ),
     );
   }
