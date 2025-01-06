@@ -90,7 +90,7 @@ GoRouter createRouter(String initialLocation) => GoRouter(
     ),
     GoRoute(
       path: '/seat_ticket', 
-      builder: (context, state) => SeatTicketPage()
+      builder: (context, state) => const SeatTicketPage()
     ),
     
     GoRoute(
@@ -104,6 +104,10 @@ GoRouter createRouter(String initialLocation) => GoRouter(
     GoRoute(
       path: '/register', 
       builder: (context, state) => RegisterPage(),
+    ),
+    GoRoute(
+      path: '/checkout', 
+      builder: (context, state) => const CheckoutPage(),
     ),
   ],
 );

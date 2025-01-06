@@ -105,7 +105,10 @@ Future<void> runMain() async {
       ),
       BlocProvider(
         create: (context) => FavoriteMovieCubit(context)..init(),
-      )
+      ),
+      BlocProvider(
+        create: (context) => CheckoutCubit(),
+      ),
     ],
     child: const App(),
   );
@@ -122,24 +125,33 @@ class App extends StatelessWidget {
     final isLoggedIn = context.read<AuthCubit>().user != null;
     final router = createRouter(isLoggedIn ? '/home' : '/login');
 
-    return AdaptiveTheme(
-      light: ThemeData(
-        useMaterial3: true,
+    var themeData = ThemeData(
+      useMaterial3: true,      
+      colorScheme: ColorScheme.fromSwatch(
+        primarySwatch: Colors.blue,
+        backgroundColor: Colors.white,
         brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.blue,
-          backgroundColor: Colors.white,
-          brightness: Brightness.light,
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          foregroundColor: Colors.grey,
         ),
       ),
-      dark: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.blue,
-          backgroundColor: Colors.black,
-          brightness: Brightness.dark,
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+      ),
+    );
+    return AdaptiveTheme(
+      light: themeData.copyWith(
+        brightness: Brightness.light,
+      ),
+      dark: themeData.copyWith(
+        brightness: Brightness.dark,
       ),
       initial: AdaptiveThemeMode.light,
       builder: (theme, darkTheme) =>  MaterialApp.router(

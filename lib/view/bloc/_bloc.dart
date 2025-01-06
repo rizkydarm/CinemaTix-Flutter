@@ -20,6 +20,7 @@ part 'movie_credits_bloc.dart';
 part 'book_time_place_bloc.dart';
 part 'city_bloc.dart';
 part 'auth_bloc.dart';
+part 'checkout_bloc.dart';
 
 
 

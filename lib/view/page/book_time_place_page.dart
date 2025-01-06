@@ -13,7 +13,8 @@ class BookTimePlacePage extends StatelessWidget {
 
     context.read<BookTimePlaceCubit>().fetchAllCinemaMall();
     
-    final selectedCityNotifier = ValueNotifier<CityEntity?>(null);
+    final selectedCityNotifier = ValueNotifier<CityEntity?>(CityEntity(id: '10', name: 'Bandung'));
+    final selectedCinemaNotifier = ValueNotifier<CinemaMallEntity?>(null);
     final selectedDatePlaceNotifier = ValueNotifier<(String?, String?)>((null, null));
 
     return Scaffold(
@@ -37,7 +38,7 @@ class BookTimePlacePage extends StatelessWidget {
           },
           label: ValueListenableBuilder(
             valueListenable: selectedCityNotifier,
-            builder: (context, value, child) => Text(value?.name ?? 'Bandung',
+            builder: (context, value, child) => Text(value?.name ?? '-',
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold
@@ -53,7 +54,32 @@ class BookTimePlacePage extends StatelessWidget {
           builder: (context, value, child) {
             return FilledButton(
               onPressed: value.$1 != null && value.$2 != null ? () {
+
+                if (selectedCityNotifier.value == null) {
+                  return;
+                }
+
+                if (selectedCinemaNotifier.value == null) {
+                  return;
+                }
+
+                if (selectedDatePlaceNotifier.value.$1 == null || selectedDatePlaceNotifier.value.$2 == null) {
+                  return;
+                }
+
+
+                context.read<CheckoutCubit>().selectedCinemaMall = SelectedCityCinemaMallEntity(
+                  city: selectedCityNotifier.value!,
+                  cinemaMall: selectedCinemaNotifier.value!,
+                );
+
+                context.read<CheckoutCubit>().selectedDateTimeBookingEntity = SelectedDateTimeBookingEntity(
+                  date: selectedDatePlaceNotifier.value.$1!,
+                  time: selectedDatePlaceNotifier.value.$2!,
+                );
+
                 context.push('/seat_ticket');
+
               } : null,
               child: const Text('Next'),
             );
@@ -146,11 +172,12 @@ class BookTimePlacePage extends StatelessWidget {
                                       onPressed: () {
                                         if (itemKey != value) {
                                           setState(itemKey);
-                                          selectedDatePlaceNotifier.value = (selectedDatePlaceNotifier.value.$1, itemKey);
+                                          selectedDatePlaceNotifier.value = (selectedDatePlaceNotifier.value.$1, place.times[i]);
                                         } else {
                                           setState(null);
                                           selectedDatePlaceNotifier.value = (selectedDatePlaceNotifier.value.$1, null);
                                         }
+                                        selectedCinemaNotifier.value = place;
                                       },
                                       child: Text(place.times[i]),
                                     ),

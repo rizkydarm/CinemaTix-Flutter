@@ -18,12 +18,6 @@ class MovieDetailPage extends StatelessWidget {
         showBottomAppBarNotifier.value = true;
       });
     context.read<MovieCreditsCubit>().fetchMovieCreditsById(movieId);
-    
-    final scrollNotifier = ValueNotifier(0);
-    final scrollController = ScrollController();
-    scrollController.addListener(() {
-      scrollNotifier.value = scrollController.offset.roundToDouble().toInt();
-    });
 
     return Scaffold(
       bottomNavigationBar: ValueListenableBuilder(
@@ -36,13 +30,14 @@ class MovieDetailPage extends StatelessWidget {
             children: [
               Expanded(
                 child: FilledButton(
-                  onPressed: () => context.push('/book_time_place/$movieId'),
-                  child: const Text('Buy Ticket'),
+                  onPressed: () {
+                    context.read<CheckoutCubit>().selectedMovie = context.read<MovieDetailCubit>().movieDetailTemp?.movie;
+                    context.push('/book_time_place/$movieId');
+                  },
+                  child: const Text('Book Ticket'),
                 ),
               ),
-              FavoriteMovieButton(movieId: movieId,
-                initalColor: Theme.of(context).disabledColor,
-              ),
+              FavoriteMovieButton(movieId: movieId,),
               IconButton(
                 onPressed: () {
                   final detail = context.read<MovieDetailCubit>().movieDetailTemp;
@@ -59,27 +54,13 @@ class MovieDetailPage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.topLeft,
         children: [
-          _MovieDetailPageBody(scrollController: scrollController,),
+          const _MovieDetailPageBody(),
           Padding(
             padding: const EdgeInsets.fromLTRB(8,59+8,0,0),
-            child: ValueListenableBuilder(
-              valueListenable: scrollNotifier,
-              builder: (context, offset, child) {
-                return AnimatedOpacity(
-                  opacity: (offset - 200).clamp(0.0, 1.0).toDouble(),
-                  duration: const Duration(milliseconds: 600),
-                  curve: Curves.easeOutCubic,
-                  child: Transform.scale(
-                    scale: (offset - 200).clamp(0.0, 1.0).toDouble(),
-                    child: child
-                  ),
-                );
-              },
-              child: IconButton.filled(
-                color: Colors.white,
-                onPressed: () => context.pop(),
-                icon: const Icon(Icons.arrow_back_ios_new_outlined),
-              ),
+            child: IconButton.filled(
+              color: Colors.white,
+              onPressed: () => context.pop(),
+              icon: const Icon(Icons.arrow_back_ios_new_outlined),
             ),
           ),
         ],
@@ -89,11 +70,8 @@ class MovieDetailPage extends StatelessWidget {
 }
 
 class _MovieDetailPageBody extends StatelessWidget {
-  const _MovieDetailPageBody({
-    required this.scrollController
-  });
-
-  final ScrollController scrollController;
+  
+  const _MovieDetailPageBody();
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +86,6 @@ class _MovieDetailPageBody extends StatelessWidget {
         }
         else if (state is SuccessState<MovieDetailEntity>) {
           return CustomScrollView(
-            controller: scrollController,
             slivers: <Widget>[
               SliverAppBar(
                 automaticallyImplyLeading: false,
