@@ -37,6 +37,8 @@ dependencies:
   shared_preferences: ^2.3.4
   sqflite: ^2.4.1
   path: ^1.9.0
+  qr_flutter: ^4.1.0
+  lottie: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +57,7 @@ flutter:
   assets:
     - assets/
     - assets/payment_logo/
+    - assets/lottie/
 
 flutter_native_splash:
   color: "#FFFFFF"
