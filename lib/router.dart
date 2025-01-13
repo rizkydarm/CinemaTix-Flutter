@@ -109,6 +109,11 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       path: '/checkout', 
       builder: (context, state) => const CheckoutPage(),
     ),
+    GoRoute(
+      path: '/waiting_trans', 
+      builder: (context, state) => const WaitingTransactionPage(),
+    ),
+    
   ],
 );
 

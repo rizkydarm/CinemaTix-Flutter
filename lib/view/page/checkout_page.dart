@@ -17,9 +17,7 @@ class CheckoutPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-        title: Text('Checkout'),
-      ),
+      appBar: AppBar(),
       body: Builder(
         builder: (scafContext) {
           return ListView(
@@ -71,7 +69,7 @@ class CheckoutPage extends StatelessWidget {
               ),
               
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: ColoredBox(
                   color: Theme.of(context).cardColor,
                   child: Padding(
@@ -115,7 +113,7 @@ class CheckoutPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: ColoredBox(
                   color: Theme.of(context).cardColor,
                   child: Padding(
@@ -211,6 +209,33 @@ class CheckoutPage extends StatelessWidget {
                               padding: const EdgeInsets.all(16),
                               controller: controller,
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  child: MaterialButton(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                        color: Colors.grey
+                                      ),
+                                      borderRadius: BorderRadius.circular(16)
+                                    ),
+                                    onPressed: () {
+                                      setValue('QRIS');
+                                      scafContext.pop();
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Image.asset('assets/payment_logo/qris_logo.jpeg',
+                                          width: 80,
+                                          height: 40,
+                                          fit: BoxFit.contain,
+                                        ),
+                                        const Text('QRIS'),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                                 const Text('Wallet',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -256,7 +281,7 @@ class CheckoutPage extends StatelessWidget {
                   );
                 }
               ),
-              const SizedBox(height: 16,),
+              const SizedBox(height: 8,),
               ColoredBox(
                 color: Theme.of(context).cardColor,
                 child: Padding(
@@ -264,15 +289,63 @@ class CheckoutPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text('Total Payment',
+                      const Text('Detail Payment',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text('IDR 50.000 x ${seats.total}'),
-                      Text('IDR ${(50000*seats.total)}'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Total Tickets (${seats.total})',
+                            style: const TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          Text(intToIdr(50000*seats.total)),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Tax (10%)',
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          Text(intToIdr(50000*seats.total*0.1)),
+                        ],
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('App Fee',
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          Text('IDR3.000'),
+                        ],
+                      ),
+                      const SizedBox(height: 8,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Total',
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14
+                            ),
+                          ),
+                          Text(intToIdr((50000*seats.total) + (50000*seats.total*0.1) + 3000)),
+                        ],
+                      ),                
                     ],
                   ),
                 ),
@@ -281,9 +354,9 @@ class CheckoutPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 child: ElevatedButton(
                   onPressed: () {
-                  // Handle purchase logic here
+                    context.go('/waiting_trans');
                   },
-                  child: Text('Purchase'),
+                  child: const Text('Purchase'),
                 ),
               ),
             ],
