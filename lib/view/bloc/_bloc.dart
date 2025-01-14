@@ -23,8 +23,6 @@ part 'auth_bloc.dart';
 part 'checkout_bloc.dart';
 
 
-
-
 sealed class BlocState extends Equatable {
   const BlocState();
 

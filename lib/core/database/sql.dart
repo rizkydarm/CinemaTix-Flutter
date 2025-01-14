@@ -9,7 +9,7 @@ class SQLHelper {
       final dataBasePath = await getDatabasesPath();
       final path = join(dataBasePath, "cinematix.db");
       _database = await openDatabase(path,
-        onOpen: _printAllTables
+        // onOpen: _printAllTables
       );
       return this;
     } catch (e) {      
@@ -34,7 +34,7 @@ class SQLHelper {
     final columnsDefinition = <String>[];
     for (var column in columns) {
       final type = column.type;
-      final columnDefinition = '${column.name} $type${column.isPrimaryKey ? ' PRIMARY KEY' : ''}${column.canBeNull ? '' : ' NULL'}';
+      final columnDefinition = '${column.name} $type${column.isPrimaryKey ? ' PRIMARY KEY' : ''}${column.canBeNull ? '' : ' NOT NULL'}';
       columnsDefinition.add(columnDefinition);
     }
 
@@ -99,7 +99,7 @@ class SQLHelper {
     // }
     try {
       final data = await db.query(table);
-      print('Table: $table');
+      print('Table: $table (${data.length})');
       for (var row in data) {
         print('Row:');
         row.forEach((key, value) {
@@ -110,6 +110,15 @@ class SQLHelper {
       throw Exception('Failed to print all data from database');
     }
   }
+
+  Future<void> dropTable(String tableName) async {
+  try {
+    await _database!.execute('DROP TABLE IF EXISTS $tableName');
+  } catch (e) {
+      throw Exception('Failed to drop table from database');
+  }
+}
+
 
   Future<void> _clearDatabase() async {
     if (_database == null) {

@@ -19,5 +19,6 @@ part 'usecases/movie_usecase.dart';
 part 'usecases/city_usecase.dart';
 part 'usecases/auth_usecase.dart';
 part 'usecases/favorite_movie_usecase.dart';
+part 'usecases/transaction_usecase.dart';
 
 abstract class Entity extends Equatable {}

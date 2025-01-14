@@ -15,6 +15,11 @@ class CheckoutPage extends StatelessWidget {
     final cinema = cubit.selectedCinemaMall!;
     final datetime = cubit.selectedDateTimeBookingEntity!;
 
+    num tax = 50000*seats.total*0.1;
+    num totalPayment = (50000*seats.total) + tax + 3000;
+
+    String? paymentMethod;
+
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(),
@@ -159,7 +164,7 @@ class CheckoutPage extends StatelessWidget {
                     ),
                     subtitle: Text(value ?? ''),
                     trailing: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         final paymentVA = [
                           {
                             'nama': 'BCA VA',
@@ -196,7 +201,7 @@ class CheckoutPage extends StatelessWidget {
                             'logo': 'linkaja_logo.png'
                           }
                         ];
-                        showModalBottomSheet(
+                        paymentMethod = await showModalBottomSheet<String>(
                           context: scafContext,
                           isScrollControlled: true,
                           enableDrag: true,
@@ -221,7 +226,7 @@ class CheckoutPage extends StatelessWidget {
                                     ),
                                     onPressed: () {
                                       setValue('QRIS');
-                                      scafContext.pop();
+                                      scafContext.pop('QRIS');
                                     },
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,7 +253,7 @@ class CheckoutPage extends StatelessWidget {
                                     index: index,
                                     onPressed: (index) {
                                       setValue(paymentWallet[index]['nama'] as String);
-                                      scafContext.pop();
+                                      scafContext.pop(paymentWallet[index]['nama'] as String);
                                     },
                                   );
                                 }),
@@ -317,7 +322,7 @@ class CheckoutPage extends StatelessWidget {
                               fontWeight: FontWeight.bold
                             ),
                           ),
-                          Text(intToIdr(50000*seats.total*0.1)),
+                          Text(intToIdr(tax)),
                         ],
                       ),
                       const Row(
@@ -343,7 +348,7 @@ class CheckoutPage extends StatelessWidget {
                               fontSize: 14
                             ),
                           ),
-                          Text(intToIdr((50000*seats.total) + (50000*seats.total*0.1) + 3000)),
+                          Text(intToIdr(totalPayment)),
                         ],
                       ),                
                     ],
@@ -352,11 +357,29 @@ class CheckoutPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.go('/waiting_trans');
-                  },
-                  child: const Text('Purchase'),
+                child: BlocBuilder<CheckoutCubit, BlocState>(
+                  builder: (context, state) {
+                    // if (state is ErrorState) {
+                    //   print(state.message);
+                    // }
+                    return ElevatedButton(
+                      onPressed: (state is LoadingState) ? null : () async {
+                        if (paymentMethod == null) {
+                          return;
+                        }
+                        final user = context.read<AuthCubit>().user;
+                        await context.read<CheckoutCubit>().saveTransaction(user!, intToIdr(totalPayment), paymentMethod!, {
+                          'tax': intToIdr(tax),
+                          'admin': 'IDR3.000',
+                        }).whenComplete(() {
+                          if (context.mounted) {
+                            context.go('/waiting_trans');
+                          }
+                        });
+                      },
+                      child: const Text('Purchase'),
+                    );
+                  }
                 ),
               ),
             ],

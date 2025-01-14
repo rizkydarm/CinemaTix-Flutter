@@ -1,6 +1,5 @@
 part of '../_data.dart';
 
-
 class ProfileModel {
   final String? id;
   final String? username; 

@@ -154,10 +154,10 @@ class BookTimePlacePage extends StatelessWidget {
                               child: ListView.separated(
                                 padding: const EdgeInsets.symmetric(horizontal: 16),
                                 scrollDirection: Axis.horizontal,
-                                itemCount: place.times.length,
+                                itemCount: place.times?.length ?? 0,
                                 separatorBuilder: (context, i) => const SizedBox(width: 8,),
                                 itemBuilder: (context, i) {
-                                  final itemKey = '${place.props}${place.times[i]}';
+                                  final itemKey = '${place.props}${place.times?[i]}';
                                   return SizedBox(
                                     width: 90,
                                     child: OutlinedButton(
@@ -172,14 +172,14 @@ class BookTimePlacePage extends StatelessWidget {
                                       onPressed: () {
                                         if (itemKey != value) {
                                           setState(itemKey);
-                                          selectedDatePlaceNotifier.value = (selectedDatePlaceNotifier.value.$1, place.times[i]);
+                                          selectedDatePlaceNotifier.value = (selectedDatePlaceNotifier.value.$1, place.times?[i] ?? '-');
                                         } else {
                                           setState(null);
                                           selectedDatePlaceNotifier.value = (selectedDatePlaceNotifier.value.$1, null);
                                         }
                                         selectedCinemaNotifier.value = place;
                                       },
-                                      child: Text(place.times[i]),
+                                      child: Text(place.times?[i] ?? '-'),
                                     ),
                                   );
                                 },

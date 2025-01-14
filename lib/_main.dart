@@ -59,6 +59,10 @@ Future<void> runMain() async {
   getit.registerSingleton<FavoriteMovieLocalDataSource>(FavoriteMovieLocalDataSource());
   getit.registerLazySingleton<FavoriteMovieRepository>(() => FavoriteMovieRepository());
   getit.registerLazySingleton<FavoriteMovieUseCase>(() => FavoriteMovieUseCase());
+
+  getit.registerSingleton<TransactionDataSource>(TransactionDataSource());
+  getit.registerLazySingleton<TransactionRepository>(() => TransactionRepository());
+  getit.registerLazySingleton<TransactionUseCase>(() => TransactionUseCase());
   
   Bloc.observer = TalkerBlocObserver(talker: getit.get<Talker>(),
     settings: const TalkerBlocLoggerSettings(

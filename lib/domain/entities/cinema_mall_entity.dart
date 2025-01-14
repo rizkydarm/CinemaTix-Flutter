@@ -4,9 +4,9 @@ part of '../_domain.dart';
 class CinemaMallEntity extends Entity {
   final String mall;
   final String cinema;
-  final List<String> times;
+  final List<String>? times;
 
-  CinemaMallEntity({required this.mall, required this.cinema, required this.times});
+  CinemaMallEntity({required this.mall, required this.cinema, this.times});
 
   @override
   List<Object?> get props => [
