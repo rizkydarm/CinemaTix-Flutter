@@ -37,9 +37,13 @@ class TransactionDataSource implements LocalDataSource {
     });
   }
 
-  Future<List<TransactionModel>> fetchAll() async {
-    final result = await _sql.query('user_transactions').onError((e, s) {
+  Future<List<TransactionModel>> fetchAllByUser(String userId) async {
+    final result = await _sql.query('user_transactions',
+      where: 'user_id = ?',
+      whereArgs: [userId],
+    ).onError((e, s) {
       getit.get<Talker>().handle(e!, s, 'TransactionDataSource.fetchAll');
+      throw e;
     });
     return result.map((e) => TransactionModel.fromSQLJson(e)).toList();
   }

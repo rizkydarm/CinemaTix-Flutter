@@ -3,7 +3,6 @@ import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/data/_data.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 part 'entities/movie_entity.dart';
 part 'entities/searched_movie_entity.dart';

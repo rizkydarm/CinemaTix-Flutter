@@ -38,6 +38,7 @@ class AuthCubit extends Cubit<BlocState> {
     try {
       emit(LoadingState());
       await _authUseCase.logout();
+      _user = null;
       await Future.delayed(const Duration(seconds: 2));
       emit(const SuccessState(null));
     } catch (e, s) {

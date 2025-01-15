@@ -108,10 +108,13 @@ Future<void> runMain() async {
         value: authCubit
       ),
       BlocProvider(
-        create: (context) => FavoriteMovieCubit(context)..init(),
+        create: (context) => FavoriteMovieCubit(context),
       ),
       BlocProvider(
         create: (context) => CheckoutCubit(),
+      ),
+      BlocProvider(
+        create: (context) => WalletCubit(context),
       ),
     ],
     child: const App(),

@@ -19,6 +19,8 @@ class CheckoutCubit extends Cubit<BlocState> {
         return '${e.$1}${abc[e.$2]}';
       }).toList();
       final en = TransactionEntity(
+        id: const Uuid().v4(),
+        datetime: DateTime.now(),
         movie: selectedMovie!, 
         userId: user.id,
         city: selectedCinemaMall!.city, 

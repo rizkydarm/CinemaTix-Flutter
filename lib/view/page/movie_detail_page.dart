@@ -139,7 +139,7 @@ class _MovieDetailPageBody extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(state.data.movie.title,
+                                  Text(state.data.movie.title ?? '-',
                                     style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold
@@ -152,7 +152,7 @@ class _MovieDetailPageBody extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(state.data.movie.genres.join(', '),
+                                  Text(state.data.movie.genres!.join(', '),
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold
@@ -169,7 +169,7 @@ class _MovieDetailPageBody extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: const BorderRadius.all(Radius.circular(12)),
                               child: FastCachedImage(
-                                url: TMDBApi.getImageUrl(state.data.movie.posterPath),
+                                url: TMDBApi.getImageUrl(state.data.movie.posterPath ?? '-'),
                                 fit: BoxFit.contain,
                                 loadingBuilder: (context, progress) => Shimmer(
                                   child:  const ColoredBox(
@@ -182,7 +182,7 @@ class _MovieDetailPageBody extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      Text(state.data.movie.overview),
+                      Text(state.data.movie.overview ?? '-'),
                     ],
                   ),
                 ),

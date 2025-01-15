@@ -39,7 +39,7 @@ class CheckoutPage extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: const BorderRadius.all(Radius.circular(12)),
                           child: FastCachedImage(
-                            url: TMDBApi.getImageUrl(movie.posterPath),
+                            url: TMDBApi.getImageUrl(movie.posterPath!),
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -58,12 +58,12 @@ class CheckoutPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              Text(movie.title,
+                              Text(movie.title ?? '-',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(movie.genres.join(', ')),
+                              Text(movie.genres?.join(', ') ?? '-'),
                             ],
                           ),
                         ),

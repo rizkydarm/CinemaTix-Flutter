@@ -9,7 +9,7 @@ class SQLHelper {
       final dataBasePath = await getDatabasesPath();
       final path = join(dataBasePath, "cinematix.db");
       _database = await openDatabase(path,
-        // onOpen: _printAllTables
+        onOpen: _printAllTables
       );
       return this;
     } catch (e) {      
@@ -21,10 +21,11 @@ class SQLHelper {
       db.execute("PRAGMA foreign_keys = ON");
       final tables = await db.rawQuery('SELECT name FROM sqlite_master WHERE type = "table"');
       final tablesName = tables.map((e) => e['name'] as String).toList();
-      debugPrint('Tables: $tablesName');
+      String log  = 'Tables: $tablesName';
       for (var table in tablesName) {
-        _printAllData(db, table);
+        log += await _printAllData(db, table);
       }
+      getit.get<Talker>().logCustom(TalkerLog(log, key: 'sql-database', logLevel: LogLevel.info, title: 'SQL', pen: AnsiPen()..yellow()));
     }
 
   Future<void> createTable(String table, List<SQLColumn> columns) async {
@@ -93,19 +94,17 @@ class SQLHelper {
     return result;
   }
 
-  Future<void> _printAllData(Database db, String table) async {
-    // if (_database == null) {
-    //   throw Exception('Database is not initialized');
-    // }
+  Future<String> _printAllData(Database db, String table) async {
     try {
       final data = await db.query(table);
-      print('Table: $table (${data.length})');
+      String log = 'Table: $table (${data.length})\n';
       for (var row in data) {
-        print('Row:');
+        log += 'Row:\n';
         row.forEach((key, value) {
-          print('\t$key: $value');
+          log += ('\t$key: $value\n');
         });
       }
+      return log;
     } catch (e) {
       throw Exception('Failed to print all data from database');
     }

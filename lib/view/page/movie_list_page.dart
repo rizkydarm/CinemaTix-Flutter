@@ -73,10 +73,10 @@ class _InfiniteMovieListViewState<T extends MovieCubit> extends State<InfiniteMo
               onTap: () {
                 context.push('/movie_detail/${item.id}');
               },
-              title: Text(item.title,
+              title: Text(item.title ?? '-',
                 style: Theme.of(context).textTheme.titleLarge
               ),
-              subtitle: Text(item.genres.join(', ')),
+              subtitle: Text(item.genres!.join(', ')),
               trailing: FavoriteMovieButton(
                 movieId: item.id,
                 initalColor: Theme.of(context).disabledColor

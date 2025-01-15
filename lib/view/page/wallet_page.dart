@@ -11,6 +11,8 @@ class WalletPage extends StatelessWidget {
 
     bool isScrollingDown = false;
 
+    context.read<WalletCubit>().fetchAllTransaction();
+
     scrollController.addListener(() {
       if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
         if (!isScrollingDown) {
@@ -31,6 +33,7 @@ class WalletPage extends StatelessWidget {
     });
 
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         toolbarHeight: 0,
         backgroundColor: Theme.of(context).primaryColor,
@@ -196,7 +199,64 @@ class WalletPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text("Last Transactions",
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    // const SizedBox(height: 16,),
+                    BlocBuilder<WalletCubit, BlocState>(
+                      builder: (context, state) {
+                        if (state is LoadingState) {
+                          return const SizedBox(
+                            height: 200,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+                        else if (state is SuccessState) {
+                          final data = state.data as List<TransactionEntity>;
+                          if (data.isNotEmpty) {
+                            return Column(
+                              children: List.generate(data.length > 10 ? 10 : data.length, (index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: ListTile(
+                                    onTap: () {},
+                                    tileColor: Theme.of(context).cardColor,
+                                    title: Text(data[index].movie.title ?? '-',
+                                      style: Theme.of(context).textTheme.titleMedium,
+                                    ),
+                                    subtitle: Text(data[index].totalPayment),
+                                    trailing: ColoredBox(
+                                      color: Colors.green.withOpacity(0.2),
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text('Success',
+                                          style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                );
+                              })
+                            );
+                          } else {
+                            return const SizedBox(
+                            height: 100,
+                            child: Center(child: Text('The transactions are still empty')));
+                          }
+                        } else {
+                          return const SizedBox(
+                            height: 100,
+                            child: Center(child: Text('Something went wrong')));
+                        }
+                      },
+                    ) 
                   ],
                 ),
               ),

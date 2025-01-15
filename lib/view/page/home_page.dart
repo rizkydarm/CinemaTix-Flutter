@@ -5,6 +5,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    context.read<FavoriteMovieCubit>().init();
+
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.white,
@@ -176,7 +179,7 @@ class _MovieCardState extends State<MovieCard> {
               alignment: Alignment.bottomCenter,
               children: [
                 FastCachedImage(
-                  url: TMDBApi.getImageUrl(movie.posterPath),
+                  url: TMDBApi.getImageUrl(movie.posterPath!),
                   loadingBuilder: (context, progress) {
                     return Shimmer(
                       duration: const Duration(seconds: 1),
@@ -231,7 +234,7 @@ class _MovieCardState extends State<MovieCard> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(movie.title,
+                          Text(movie.title ?? '-',
                             textAlign: TextAlign.center, 
                             overflow: TextOverflow.ellipsis, 
                             maxLines: 2,
@@ -243,7 +246,7 @@ class _MovieCardState extends State<MovieCard> {
                             ),
                           ),
                           Text(
-                            '${movie.rating.toStringAsFixed(1)} • ${movie.genres.join(', ')}',
+                            '${movie.rating!.toStringAsFixed(1)} • ${movie.genres!.join(', ')}',
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center, 
                             maxLines: 2,

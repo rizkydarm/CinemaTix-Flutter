@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:talker/talker.dart';
+import 'package:uuid/uuid.dart';
 
 part 'searched_movie_bloc.dart';
 part 'playingnow_movie_bloc.dart';
@@ -21,6 +22,7 @@ part 'book_time_place_bloc.dart';
 part 'city_bloc.dart';
 part 'auth_bloc.dart';
 part 'checkout_bloc.dart';
+part 'walllet_bloc.dart';
 
 
 sealed class BlocState extends Equatable {

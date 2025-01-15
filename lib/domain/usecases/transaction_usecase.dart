@@ -4,7 +4,7 @@ class TransactionUseCase {
 
   final TransactionRepository _repository = getit.get<TransactionRepository>();
 
-  Future<void> add(TransactionEntity e) async {
-    await _repository.add(e);
-  }
+  Future<void> add(TransactionEntity e) => _repository.add(e);
+
+  Future<List<TransactionEntity>> fetchAllByUser(UserEntity user) => _repository.fetchAllByUser(user);
 }

@@ -4,13 +4,33 @@ class TransactionRepository implements Repository {
   
   final TransactionDataSource _localDataSource = getit.get<TransactionDataSource>();
 
-  Future<List<TransactionEntity>> fetchAll() async {
-    final result = await _localDataSource.fetchAll();
+  Future<List<TransactionEntity>> fetchAllByUser(UserEntity user) async {
+    final result = await _localDataSource.fetchAllByUser(user.id);
     return result.map((e) {
+      
+      final movieDecode = jsonDecode(e.movie!) as Map;
+      final placeDecode = jsonDecode(e.place!) as Map;
+      final cityDecode = jsonDecode(placeDecode['city']) as Map;
+
       return TransactionEntity(
         id: e.id,
         userId: e.userId,
-        movie: 
+        datetime: e.datetime!,
+        bookDatetime: e.bookDatetime!,
+        movie: MovieEntity(
+          id: movieDecode['id'],
+          title: movieDecode['title'],
+          posterPath: movieDecode['poster_path'],
+          genres: movieDecode["genres"] == null ? [] : List<String>.from(movieDecode["genres"]!.map((x) => x)),
+          overview: movieDecode["overview"]
+        ),
+        city: CityEntity(id: cityDecode['id'], name: cityDecode['name']),
+        cinemaMall: CinemaMallEntity(mall: placeDecode['mall'], cinema: placeDecode['cinema']),
+        status: e.status!,
+        seats: e.seats!.split(',').toList(),
+        paymentMethod: e.paymentMethod!,
+        totalPayment: e.totalPayment!,
+        detail: Map<String, String>.from(jsonDecode(e.detail!))
       );
     }).toList();
   }
