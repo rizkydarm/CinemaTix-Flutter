@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+		
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+				flutter-version: '3.24.5'
+        channel: 'stable'
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build
+      run: flutter build ios --no-codesign
+
+  test:
+    runs-on: macos-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+				flutter-version: '3.24.5'
+        channel: 'stable'
+
+    - name: Run tests
+      run: flutter test
+
+  run_simulator:
+    runs-on: macos-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'
+
+    - name: Run Simulator
+      run: |
+        xcrun simctl boot "iPhone 14 Pro Max"
+        flutter drive --target=lib/main_dev.dart
