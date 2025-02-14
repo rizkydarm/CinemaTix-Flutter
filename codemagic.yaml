@@ -1,0 +1,54 @@
+workflows:
+  version: 2.1
+
+  flutter-android:
+    name: Flutter Android Build
+    triggers:
+      - push
+    jobs:
+      - name: Build APK
+        machine:
+          image: macos-latest
+        steps:
+          - name: Checkout
+            checkout: {}
+
+          - name: Set up Flutter
+            run: |
+              git clone https://github.com/flutter/flutter.git -b stable --depth 1
+              echo "::add-path::$(pwd)/flutter/bin"
+
+          - name: Flutter Dependencies
+            run: flutter pub get
+
+          - name: Flutter Test
+            run: flutter test
+
+          - name: Build APK
+            run: flutter build apk --release
+
+  flutter-ios:
+    name: Flutter iOS Build
+    triggers:
+      - push
+    jobs:
+      - name: Build IPA
+        machine:
+          image: macos-latest
+        steps:
+          - name: Checkout
+            checkout: {}
+
+          - name: Set up Flutter
+            run: |
+              git clone https://github.com/flutter/flutter.git -b stable --depth 1
+              echo "::add-path::$(pwd)/flutter/bin"
+
+          - name: Flutter Dependencies
+            run: flutter pub get
+
+          - name: Flutter Test
+            run: flutter test
+
+          - name: Build IPA
+            run: flutter build ios --release
