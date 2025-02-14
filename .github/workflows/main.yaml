@@ -1,4 +1,4 @@
-name: CI
+name: Github Actions CI
 
 on:
   push:
@@ -19,14 +19,17 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.24.5'
+        flutter-version-file: pubspec.yaml 
         channel: 'stable'
+
+    - name: Check Flutter
+      run: flutter doctor
 
     - name: Install dependencies
       run: flutter pub get
 
     - name: Build
-      run: flutter build ios --no-codesign
+      run: flutter build ios --release --no-codesign
 
   test:
     runs-on: macos-latest
