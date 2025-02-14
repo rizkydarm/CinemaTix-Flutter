@@ -1,4 +1,4 @@
-name: Github Actions CI
+name: Main CI
 
 on:
   push:
@@ -49,8 +49,7 @@ jobs:
       run: flutter test
 
   run_simulator:
-    runs-on: macos-latest
-    needs: test
+    runs-on: macos-latest 
 
     steps:
     - name: Checkout code
@@ -59,9 +58,8 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: 'stable'
+        flutter-version-file: pubspec.yaml 
+        channel: 'stable'
 
     - name: Run Simulator
-      run: |
-        xcrun simctl boot "iPhone 14 Pro Max"
-        flutter drive --target=lib/main_dev.dart
+      run: flutter run --target=lib/main_prod.dart -d iPhone

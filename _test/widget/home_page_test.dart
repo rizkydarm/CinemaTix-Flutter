@@ -7,15 +7,18 @@ import 'package:cinematix/view/page/_page.dart';
 
 class MockPlayingNowMovieCubit extends Mock implements PlayingNowMovieCubit {}
 class MockUpComingMovieCubit extends Mock implements UpComingMovieCubit {}
+class MockFavoriteMovieCubit extends Mock implements FavoriteMovieCubit {}
 
 void main() {
   
   late MockPlayingNowMovieCubit mockPlayingNowMovieCubit;
   late MockUpComingMovieCubit mockUpComingMovieCubit;
+  late MockFavoriteMovieCubit mockFavoriteMovieCubit;
 
   setUp(() {
     mockPlayingNowMovieCubit = MockPlayingNowMovieCubit();
     mockUpComingMovieCubit = MockUpComingMovieCubit();
+    mockFavoriteMovieCubit = MockFavoriteMovieCubit();
   });
 
   Widget createWidgetUnderTest() {
@@ -27,7 +30,10 @@ void main() {
           ),
           BlocProvider<UpComingMovieCubit>(
             create: (_) => mockUpComingMovieCubit,
-          )
+          ),
+          BlocProvider<FavoriteMovieCubit>(
+            create: (_) => mockFavoriteMovieCubit,
+          ),
         ],
         child: const HomePage(),
       ),
