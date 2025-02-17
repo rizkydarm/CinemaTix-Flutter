@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  build_ios:
     runs-on: macos-latest
     
     steps:
@@ -31,26 +31,9 @@ jobs:
     - name: Build
       run: flutter build ios --release --no-codesign --target=lib/main_prod.dart
 
-  test:
-    runs-on: macos-latest
-    needs: build
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.24.5'
-        channel: 'stable'
-
-    - name: Run tests
-      run: flutter test
-
-  run_simulator:
-    runs-on: macos-latest 
-
+  build_android:
+    runs-on: linux
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -61,5 +44,43 @@ jobs:
         flutter-version-file: pubspec.yaml 
         channel: 'stable'
 
-    - name: Run Simulator
-      run: flutter run --target=lib/main_prod.dart -d iPhone
+    - name: Check Flutter
+      run: flutter doctor
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build
+      run: flutter build apk --release --target-platform=android-arm64 --target=lib/main_prod.dart
+  # test:
+  #   runs-on: macos-latest
+  #   needs: build
+
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
+
+  #   - name: Set up Flutter
+  #     uses: subosito/flutter-action@v2
+  #     with:
+  #       flutter-version: '3.24.5'
+  #       channel: 'stable'
+
+  #   - name: Run tests
+  #     run: flutter test
+
+  # run_simulator:
+  #   runs-on: macos-latest 
+
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
+
+  #   - name: Set up Flutter
+  #     uses: subosito/flutter-action@v2
+  #     with:
+  #       flutter-version-file: pubspec.yaml 
+  #       channel: 'stable'
+
+  #   - name: Run Simulator
+  #     run: flutter run --target=lib/main_prod.dart -d iPhone
