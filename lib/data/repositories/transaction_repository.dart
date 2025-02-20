@@ -15,6 +15,7 @@ class TransactionRepository implements Repository {
       return TransactionEntity(
         id: e.id,
         userId: e.userId,
+        noTransaction: e.noTransaction ?? '#123123123123',
         datetime: e.datetime!,
         bookDatetime: e.bookDatetime!,
         movie: MovieEntity(

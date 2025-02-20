@@ -1,4 +1,5 @@
 import 'package:cinematix/core/_core.dart';
+import 'package:cinematix/domain/_domain.dart';
 // import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:cinematix/view/page/_page.dart';
@@ -111,7 +112,10 @@ GoRouter createRouter(String initialLocation) => GoRouter(
     ),
     GoRoute(
       path: '/waiting_trans', 
-      builder: (context, state) => const WaitingTransactionPage(),
+      builder: (context, state) {
+        final data = state.extra as TransactionEntity;
+        return WaitingTransactionPage(data: data);
+      },
     ),
     
   ],

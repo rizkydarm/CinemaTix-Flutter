@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/domain/_domain.dart';

@@ -5,6 +5,7 @@ class TransactionEntity extends Entity {
   final String id;
   final String userId;
   final DateTime datetime;
+  final String noTransaction;
   final DateTime bookDatetime;
   final MovieEntity movie;
   final String status;
@@ -18,6 +19,7 @@ class TransactionEntity extends Entity {
   TransactionEntity({
     required this.id,
     required this.userId,
+    required this.noTransaction,
     required this.movie,
     required this.city,
     required this.status,

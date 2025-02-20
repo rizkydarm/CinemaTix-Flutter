@@ -13,6 +13,7 @@ class TransactionModel {
     String? totalPayment;
     String? paymentMethod;
     String? detail;
+    String? noTransaction;
 
     TransactionModel({
        required this.id,
@@ -26,6 +27,7 @@ class TransactionModel {
         this.totalPayment,
         this.paymentMethod,
         this.detail,
+        this.noTransaction,
     });
 
     factory TransactionModel.fromSQLJson(Map<String, dynamic> json) => TransactionModel(
@@ -40,6 +42,7 @@ class TransactionModel {
         totalPayment: json["total_payment"],
         paymentMethod: json["payment_method"],
         detail: json["detail"],
+        noTransaction: json["no_transaction"],
     );
 
     Map<String, dynamic> toSQLJson() => {
@@ -54,5 +57,6 @@ class TransactionModel {
         "total_payment": totalPayment,
         "payment_method": paymentMethod,
         "detail": detail,
+        "no_transaction": noTransaction,
     };
 }

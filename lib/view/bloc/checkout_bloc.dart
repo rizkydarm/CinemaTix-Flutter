@@ -20,6 +20,7 @@ class CheckoutCubit extends Cubit<BlocState> {
       }).toList();
       final en = TransactionEntity(
         id: const Uuid().v4(),
+        noTransaction: '#${generateLongString(16)}',
         datetime: DateTime.now(),
         movie: selectedMovie!, 
         userId: user.id,

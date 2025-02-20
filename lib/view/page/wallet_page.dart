@@ -178,7 +178,9 @@ class WalletPage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   WalletButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      context.push('/waiting_trans');
+                                    },
                                     icon: const Icon(Icons.arrow_upward_outlined),
                                     label: "Top Up",
                                   ),
@@ -224,20 +226,33 @@ class WalletPage extends StatelessWidget {
                             return Column(
                               children: List.generate(data.length > 10 ? 10 : data.length, (index) {
                                 return Padding(
-                                  padding: const EdgeInsets.only(bottom: 16),
+                                  padding: const EdgeInsets.only(bottom: 8),
                                   child: ListTile(
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.push('/waiting_trans', extra: data[index]);
+                                    },
                                     tileColor: Theme.of(context).cardColor,
                                     title: Text(data[index].movie.title ?? '-',
                                       style: Theme.of(context).textTheme.titleMedium,
                                     ),
                                     subtitle: Text(data[index].totalPayment),
-                                    trailing: ColoredBox(
-                                      color: Colors.green.withOpacity(0.2),
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text('Success',
-                                          style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                                    trailing: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: ColoredBox(
+                                        color: switch (data[index].status) {
+                                          'waiting' => Colors.orange.withOpacity(0.2),
+                                          'success' => Colors.green.withOpacity(0.2),
+                                          'failed' => Colors.red.withOpacity(0.2),
+                                          _ => Colors.grey.withOpacity(0.2),
+                                        },
+                                        child:   Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: switch (data[index].status) {
+                                            'waiting' => const Text('Waiting', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+                                            'success' => const Text('Success', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                                            'failed' => const Text('Failed', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                                            _ => const Text('Unknown', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+                                          } 
                                         ),
                                       ),
                                     ),
