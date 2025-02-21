@@ -44,6 +44,16 @@ jobs:
         flutter-version-file: pubspec.yaml 
         channel: 'stable'
 
+    - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'  # Java 11 is required for Flutter
+
+    - name: Install Android SDK and NDK
+      uses: android-actions/setup-android@v3
+      with:
+        ndk-version: '21.3.6528147'  # Replace with your required NDK version
+
     - name: Check Flutter
       run: flutter doctor
 

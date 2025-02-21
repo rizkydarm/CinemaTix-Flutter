@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'cinematix-b77a3.firebasestorage.app',
     iosBundleId: 'com.example.cinematix',
   );
+
 }
