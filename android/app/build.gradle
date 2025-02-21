@@ -29,7 +29,7 @@ if (flutterVersionName == null) {
 android {
     namespace "com.example.cinematix"
     compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    ndkVersion "21.3.6528147"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -49,7 +49,7 @@ android {
         applicationId "com.example.cinematix"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -66,8 +66,8 @@ android {
 
 flutter {
     source '../..'
-    ndkVersion "21.3.6528147"  // Override NDK version
-    minSdkVersion 23  // Override minimum SDK version
+    // ndkVersion "21.3.6528147"  // Override NDK version
+    // minSdkVersion 23  // Override minimum SDK version
 }
 
 dependencies {}
