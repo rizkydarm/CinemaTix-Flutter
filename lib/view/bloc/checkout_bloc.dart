@@ -31,7 +31,7 @@ class CheckoutCubit extends Cubit<BlocState> {
           int.parse(selectedDateTimeBookingEntity!.time.split('.').last)
         ),
         seats: seats,
-        status: 'Success', 
+        status: 'waiting', 
         cinemaMall: selectedCinemaMall!.cinemaMall, 
         totalPayment: totalPayment, 
         paymentMethod: paymentMethod, 

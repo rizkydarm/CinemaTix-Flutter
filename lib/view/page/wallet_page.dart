@@ -178,9 +178,7 @@ class WalletPage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   WalletButton(
-                                    onPressed: () {
-                                      context.push('/waiting_trans');
-                                    },
+                                    onPressed: () {},
                                     icon: const Icon(Icons.arrow_upward_outlined),
                                     label: "Top Up",
                                   ),
@@ -239,15 +237,15 @@ class WalletPage extends StatelessWidget {
                                     trailing: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
                                       child: ColoredBox(
-                                        color: switch (data[index].status) {
+                                        color: switch (data[index].status.toLowerCase()) {
                                           'waiting' => Colors.orange.withOpacity(0.2),
                                           'success' => Colors.green.withOpacity(0.2),
                                           'failed' => Colors.red.withOpacity(0.2),
                                           _ => Colors.grey.withOpacity(0.2),
                                         },
-                                        child:   Padding(
+                                        child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: switch (data[index].status) {
+                                          child: switch (data[index].status.toLowerCase()) {
                                             'waiting' => const Text('Waiting', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
                                             'success' => const Text('Success', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
                                             'failed' => const Text('Failed', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),

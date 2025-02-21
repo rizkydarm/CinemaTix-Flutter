@@ -12,6 +12,8 @@ class WaitingTransactionPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Transaction'),
       ),
       body: Center(

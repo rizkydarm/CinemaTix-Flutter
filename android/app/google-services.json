@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "894566012669",
+    "project_id": "cinematix-b77a3",
+    "storage_bucket": "cinematix-b77a3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894566012669:android:600c6cfc6c9368cb5ed094",
+        "android_client_info": {
+          "package_name": "com.example.cinematix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQBerYCAdXfugz3NEC6gFl5JHgGapo31Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
