@@ -6,6 +6,14 @@ class WalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    void onMessageTapped() {
+      AdaptiveTheme.of(context).toggleThemeMode();
+    }
+
+    void onSettingTapped() {
+      AdaptiveTheme.of(context).toggleThemeMode();
+    }
+
     final scrollController = ScrollController();
     final showAppbarNotifier = ValueNotifier(false);
 
@@ -53,15 +61,15 @@ class WalletPage extends StatelessWidget {
               child: AppBar(
                 backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
-                flexibleSpace: const Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 8),
+                flexibleSpace: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
                     children: [
-                      Icon(Icons.attach_money_outlined,
-                        color: Colors.white,
-                        size: 40,
+                      Image.asset('assets/white_icon.png',
+                        width: 48,
+                        height: 48,
                       ),
-                      Text('Rp1.000.000',
+                      const Text('Rp1.000.000',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -73,11 +81,11 @@ class WalletPage extends StatelessWidget {
                 ),
                 actions: <Widget>[
                   IconButton(
-                    onPressed: () {},
+                    onPressed: onMessageTapped,
                     icon: const Icon(Icons.email_outlined),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: onSettingTapped,
                     icon: const Icon(Icons.settings_outlined),
                   )
                 ],
@@ -147,19 +155,11 @@ class WalletPage extends StatelessWidget {
                                   ),
                                   const Spacer(),
                                   IconButton(
-                                    onPressed: () {
-                                      if (AdaptiveTheme.of(context).brightness == Brightness.dark) {
-                                        AdaptiveTheme.of(context).setLight();
-                                      }
-                                    },
+                                    onPressed: onMessageTapped,
                                     icon: const Icon(Icons.email_outlined),
                                   ),
                                   IconButton(
-                                    onPressed: () {
-                                      if (AdaptiveTheme.of(context).brightness == Brightness.light) {
-                                        AdaptiveTheme.of(context).setDark();
-                                      }
-                                    },
+                                    onPressed: onSettingTapped,
                                     icon: const Icon(Icons.settings_outlined),
                                   )
                                 ],
