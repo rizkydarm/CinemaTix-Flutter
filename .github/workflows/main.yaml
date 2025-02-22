@@ -24,25 +24,20 @@ jobs:
     - name: Install Apple Certificate
       run: |
         sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
-        sudo xcodebuild -runFirstLaunch
-    
-    - name: Prepare iOS deployment target fix
-      run: |
-        chmod +x ios/dev_target_fix.sh
+        sudo xcodebuild -runFirstLaunch 
         
     - name: Fix iOS deployment targets
       run: |
         cd ios
+        chmod +x dev_target_fix.sh
         ./dev_target_fix.sh
+        cd ..
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
         flutter-version-file: pubspec.yaml 
         channel: 'stable'
-
-    - name: Check Flutter
-      run: flutter doctor
 
     - name: Install dependencies
       run: flutter pub get

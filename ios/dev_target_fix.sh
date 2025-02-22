@@ -3,8 +3,6 @@
 # Make the script exit on any error
 set -e
 
-cd ios
-
 # Update the minimum deployment target in Podfile
 if [ -f "Podfile" ]; then
     echo "Updating Podfile deployment target..."
