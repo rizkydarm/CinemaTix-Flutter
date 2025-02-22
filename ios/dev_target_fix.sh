@@ -23,16 +23,10 @@ pod install
 find . -name "Podfile.lock" -exec sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET: .*$/IPHONEOS_DEPLOYMENT_TARGET: '15.6'/g' {} \;
 echo "Updating Podfile.lock"
 
-# Update xcconfig files
-# for xcconfig in $(find . -name "*.xcconfig"); do
-#     sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = .*/IPHONEOS_DEPLOYMENT_TARGET = 15.6/g' "$xcconfig"
-# done
-# echo "Updating xcconfig files"
-
 # Force update all pods project deployment target
 for project in $(find Pods -name "project.pbxproj"); do
     sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = .*;/IPHONEOS_DEPLOYMENT_TARGET = 15.6;/g' "$project"
 done
-echo "Updating project deployment target"
+echo "Updating Pods project deployment target"
 
 echo "iOS deployment target update completed"
