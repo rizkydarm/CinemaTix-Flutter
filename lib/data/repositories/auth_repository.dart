@@ -66,13 +66,22 @@ class AuthRepository implements AuthRepositoryAbs {
   Future<UserEntity> signInWithGoogle() async {
     final userCredential = await _firebaseAuthDataSource.signInWithGoogle();
     final user = userCredential.user;
-    return UserEntity(
+    final userEntity = UserEntity(
       id: user!.uid,
       email: user.email!,
       profile: ProfileEntity(
         id: const Uuid().v4(),
       )
     );
+    _localDataSource.saveUser(UserModel(
+      id: user.uid,
+      email: user.email!,
+      password: '',
+      profile: ProfileModel(
+        id: userEntity.profile.id,
+      ),
+    ));
+    return userEntity;
   }
 }
 

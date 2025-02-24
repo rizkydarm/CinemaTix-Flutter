@@ -359,21 +359,18 @@ class CheckoutPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 child: BlocBuilder<CheckoutCubit, BlocState>(
                   builder: (context, state) {
-                    // if (state is ErrorState) {
-                    //   print(state.message);
-                    // }
                     return ElevatedButton(
                       onPressed: (state is LoadingState) ? null : () async {
-                        if (paymentMethod == null) {
+                        if (paymentMethod != 'QRIS') {
                           return;
                         }
                         final user = context.read<AuthCubit>().user;
-                        await context.read<CheckoutCubit>().saveTransaction(user!, intToIdr(totalPayment), paymentMethod!, {
+                        context.read<CheckoutCubit>().saveTransaction(user!, intToIdr(totalPayment), paymentMethod!, {
                           'tax': intToIdr(tax),
                           'admin': 'IDR3.000',
-                        }).whenComplete(() {
+                        }).then((transaction) {
                           if (context.mounted) {
-                            context.go('/waiting_trans');
+                            context.go('/waiting_trans', extra: transaction);
                           }
                         });
                       },

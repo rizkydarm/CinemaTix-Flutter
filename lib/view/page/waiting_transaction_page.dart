@@ -16,80 +16,81 @@ class WaitingTransactionPage extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Transaction'),
       ),
-      body: Center(
-        child: FutureBuilder(
-          future: null,
-          builder: (context, snapshot) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 16,),
-                QrisTicket(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: QrisTicket(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/payment_logo/qris_logo.jpeg',
-                              width: 80,
-                            ),
-                            Image.asset('assets/payment_logo/gpn_logo.png',
-                              width: 40,
-                            ),
-                          ],
+                        Image.asset('assets/payment_logo/qris_logo.jpeg',
+                          width: 80,
                         ),
-                        const SizedBox(height: 8,),
-                        SizedBox(
-                          height: 320,
-                          child: Center(
-                            child: ColoredBox(
-                              color: Colors.white,
-                              child: QrImageView(
-                                data: generateLongString(512), 
-                                version: QrVersions.auto,
-                                size: 280,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8,),
-                        Flexible(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('No. Transaction:'),
-                              Text(data.noTransaction,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8,),
-                              const Text('Total Payment: '),
-                              Text(data.totalPayment,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                        Image.asset('assets/payment_logo/gpn_logo.png',
+                          width: 40,
                         ),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 8,),
+                    SizedBox(
+                      height: 320,
+                      child: Center(
+                        child: ColoredBox(
+                          color: Colors.white,
+                          child: QrImageView(
+                            data: generateLongString(512), 
+                            version: QrVersions.auto,
+                            size: 280,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8,),
+                    Flexible(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('No. Transaction:'),
+                          Text(data.noTransaction,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8,),
+                          const Text('Total Payment: '),
+                          Text(data.totalPayment,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 100,)
-              ],
-            );
-          }
-        ),
-      ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 24,),
+          if (!GoRouter.of(context).canPop())
+            FilledButton(
+              onPressed: () {
+                context.go('/home');
+              },
+              child: const Text('Go Home'),
+            ),
+        ],
+      )
     );
   }
 }

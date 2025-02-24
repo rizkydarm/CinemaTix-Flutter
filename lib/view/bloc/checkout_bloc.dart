@@ -11,7 +11,7 @@ class CheckoutCubit extends Cubit<BlocState> {
   
   final TransactionUseCase _transactionUseCase = getit.get<TransactionUseCase>();
 
-  Future<void> saveTransaction(UserEntity user, String totalPayment, String paymentMethod, Map<String, String> detail) async {
+  Future<TransactionEntity?> saveTransaction(UserEntity user, String totalPayment, String paymentMethod, Map<String, String> detail) async {
     try {
       emit(LoadingState());
       final seats = selectedSeatsEntity!.positions.map((e) {
@@ -20,7 +20,7 @@ class CheckoutCubit extends Cubit<BlocState> {
       }).toList();
       final en = TransactionEntity(
         id: const Uuid().v4(),
-        noTransaction: '#${generateLongString(16)}',
+        noTransaction: '#${generateRandomNumberString(16)}',
         datetime: DateTime.now(),
         movie: selectedMovie!, 
         userId: user.id,
@@ -39,9 +39,11 @@ class CheckoutCubit extends Cubit<BlocState> {
       );
       await _transactionUseCase.add(en);
       emit(const SuccessState(null));
+      return en;
     } catch (e, s) {
       getit.get<Talker>().handle(e, s, 'CheckoutCubit.saveTransaction');
       emit(ErrorState(e.toString()));
     }
+    return null;
   }
 }

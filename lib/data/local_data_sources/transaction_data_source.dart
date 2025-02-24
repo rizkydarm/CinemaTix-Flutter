@@ -18,6 +18,7 @@ class TransactionDataSource implements LocalDataSource {
   Future<void> _createTransactionTable() async {
     await _sql.createTable('user_transactions', [
       SQLColumn('id', SQLType.text, isPrimaryKey: true),
+      SQLColumn('no_transaction', SQLType.text, canBeNull: true),
       SQLColumn('user_id', SQLType.text),
       SQLColumn('datetime', SQLType.text),
       SQLColumn('book_datetime', SQLType.text),

@@ -44,7 +44,7 @@ class AuthLocalDataSource implements LocalDataSource {
     }
     final profile = ProfileModel(id: const Uuid().v4());
     final user = UserModel(id: const Uuid().v4(), email: email, password: password, profile: profile);
-    await _saveUser(user);
+    await saveUser(user);
     await _sql.insert('user', user.toSQLJson());
     await _sql.insert('profile', profile.toJson());
     return user;
@@ -58,14 +58,14 @@ class AuthLocalDataSource implements LocalDataSource {
       if (resultProfile.isNotEmpty) {
         user.profile?.copyWithModel(ProfileModel.fromJson(resultProfile.first));
       }
-      await _saveUser(user);
+      await saveUser(user);
       return user;
     } else {
       throw Exception('User is not found');
     }
   }
 
-  Future<void> _saveUser(UserModel user) async {
+  Future<void> saveUser(UserModel user) async {
     await _sharedPref.setMap('user', user.toJson());  
   }
 
