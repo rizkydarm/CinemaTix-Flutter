@@ -1,9 +1,19 @@
 part of '../_data.dart';
 
-class AuthRepository implements Repository {
+abstract class AuthRepositoryAbs implements Repository {
+  Future<UserEntity> register(String email, String password);
+  Future<UserEntity> login(String email, String password);
+  Future<UserEntity> signInWithGoogle();
+  Future<void> logout();
+  Future<UserEntity> getUser();
+}
+
+class AuthRepository implements AuthRepositoryAbs {
   
   final AuthLocalDataSource _localDataSource = getit.get<AuthLocalDataSource>();
+  final FirebaseAuthDataSource _firebaseAuthDataSource = getit.get<FirebaseAuthDataSource>();
 
+  @override
   Future<UserEntity> register(String email, String password) async {
     final model = await _localDataSource.register(email, password);
     return UserEntity(
@@ -15,6 +25,7 @@ class AuthRepository implements Repository {
     );
   }
 
+  @override
   Future<UserEntity> login(String email, String password) async {
     final model = await _localDataSource.login(email, password);
     return UserEntity(
@@ -30,10 +41,12 @@ class AuthRepository implements Repository {
     );
   }
 
+  @override
   Future<void> logout() async {
     await _localDataSource.removeUser();
   }
 
+  @override
   Future<UserEntity> getUser() async {
     final model = await _localDataSource.getUser();
     return UserEntity(
@@ -48,4 +61,50 @@ class AuthRepository implements Repository {
       )
     );
   }
+
+  @override
+  Future<UserEntity> signInWithGoogle() async {
+    final userCredential = await _firebaseAuthDataSource.signInWithGoogle();
+    final user = userCredential.user;
+    return UserEntity(
+      id: user!.uid,
+      email: user.email!,
+      profile: ProfileEntity(
+        id: const Uuid().v4(),
+      )
+    );
+  }
+}
+
+class DummyAuthRepository implements AuthRepositoryAbs {
+  @override
+  Future<UserEntity> getUser() {
+    // TODO: implement getUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntity> login(String email, String password) {
+    // TODO: implement login
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> logout() {
+    // TODO: implement logout
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserEntity> register(String email, String password) {
+    // TODO: implement register
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<UserEntity> signInWithGoogle() {
+    // TODO: implement signInWithGoogle
+    throw UnimplementedError();
+  }
+  
 }

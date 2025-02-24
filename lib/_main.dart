@@ -34,7 +34,9 @@ Future<void> runMain() async {
   getit.registerSingleton<SharedPrefHelper>(sharedPrefHelper);
 
   getit.registerFactoryParam<DioHelper, String, void>((baseUrl, _) => DioHelper(baseUrl));  
-  
+
+  getit.registerSingleton<FirebaseAuthDataSource>(FirebaseAuthDataSource());
+
   getit.registerSingleton<AuthLocalDataSource>(AuthLocalDataSource());
   getit.registerSingleton<AuthRepository>(AuthRepository());
   getit.registerSingleton<AuthUseCase>(AuthUseCase());

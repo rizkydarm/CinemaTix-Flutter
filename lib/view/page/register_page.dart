@@ -9,6 +9,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Theme.of(context).canvasColor,
       appBar: AppBar(
@@ -92,53 +93,52 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(height: 16.0),
             BlocListener<AuthCubit, BlocState>(
               listener: (context, state) {
+                if (state is LoadingState) {
+                  showLoadingHud(context);
+                }
                 if (state is ErrorState) {
+                  hideLoadingHud(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.message)),
                   );
                 } else if (state is SuccessState) {
+                  hideLoadingHud(context);
                   context.go('/home');
                 }
               },
-              child: BlocBuilder<AuthCubit, BlocState>(
-                builder: (context, state) {
-                  return ElevatedButton(
-                    onPressed: state is LoadingState ? null : () {
-                      String email = emailController.text;
-                      String password = passwordController.text;
-                
-                      if (email.isEmpty || password.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Email and password cannot be empty')),
-                        );
-                        return;
-                      }
-                
-                      String emailPattern = r'^[^@]+@[^@]+\.[^@]+';
-                      RegExp regex = RegExp(emailPattern);
-                      if (!regex.hasMatch(email)) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Please enter a valid email address')),
-                        );
-                        return;
-                      }
-                
-                      if (password.length < 8) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Password must be at least 8 characters long')),
-                        );
-                        return;
-                      }
-                
-                      final cubit = context.read<AuthCubit>();
-                      cubit.register(email, password);
-                    },
-                    child: state is LoadingState ? const Center(
-                      child: CircularProgressIndicator(),
-                    ) : const Text('Submit'),
-                  );
-                }
-              ),
+              child: ElevatedButton(
+                onPressed: () {
+                  String email = emailController.text;
+                  String password = passwordController.text;
+            
+                  if (email.isEmpty || password.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Email and password cannot be empty')),
+                    );
+                    return;
+                  }
+            
+                  String emailPattern = r'^[^@]+@[^@]+\.[^@]+';
+                  RegExp regex = RegExp(emailPattern);
+                  if (!regex.hasMatch(email)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please enter a valid email address')),
+                    );
+                    return;
+                  }
+            
+                  if (password.length < 8) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Password must be at least 8 characters long')),
+                    );
+                    return;
+                  }
+            
+                  final cubit = context.read<AuthCubit>();
+                  cubit.register(email, password);
+                },
+                child: const Text('Submit'),
+              )
             ),
             const SizedBox(height: 16.0),
             Row(

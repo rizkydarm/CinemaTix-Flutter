@@ -39,6 +39,9 @@ class AuthLocalDataSource implements LocalDataSource {
   }
   
   Future<UserModel> register(String email, String password) async {
+    if (await isUserRegistered(email)) {
+      throw Exception('User is already registered');
+    }
     final profile = ProfileModel(id: const Uuid().v4());
     final user = UserModel(id: const Uuid().v4(), email: email, password: password, profile: profile);
     await _saveUser(user);
@@ -73,5 +76,10 @@ class AuthLocalDataSource implements LocalDataSource {
   Future<UserModel> getUser() async {
     final userJson = await _sharedPref.getMap('user');
     return UserModel.fromJson(userJson);
+  }
+
+  Future<bool> isUserRegistered(String email) async {
+    final userJson = await _sql.query('user', where: 'email = ?', whereArgs: [email]);
+    return userJson.isNotEmpty;
   }
 }

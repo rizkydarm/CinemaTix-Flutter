@@ -58,4 +58,18 @@ class AuthCubit extends Cubit<BlocState> {
       // emit(ErrorState(e.toString()));
     }
   }
+
+  Future<UserEntity?> signInWithGoogle() async {
+    try {
+      emit(LoadingState());
+      _user = await _authUseCase.signInWithGoogle();
+      await Future.delayed(const Duration(seconds: 2));
+      emit(SuccessState(_user));
+      return _user;
+    } catch (e, s) {
+      getit.get<Talker>().handle(e, s, 'AuthCubit.signInWithGoogle');
+      emit(ErrorState(e.toString()));
+    }
+    return null;
+  }
 }

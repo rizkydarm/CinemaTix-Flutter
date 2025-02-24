@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:cinematix/core/_core.dart';
 import 'package:cinematix/domain/_domain.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,6 +19,7 @@ part 'models/transaction_model.dart';
 part 'remote_data_sources/remote_data_source.dart';
 part 'remote_data_sources/movie_data_source.dart';
 part 'remote_data_sources/city_data_source.dart';
+part 'remote_data_sources/firebase_auth_data_source.dart';
 
 part 'local_data_sources/local_data_source.dart';
 part 'local_data_sources/favorite_movie_data_source.dart';
