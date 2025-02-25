@@ -5,7 +5,6 @@ import 'package:cinematix/data/_data.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cinematix/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,42 +14,12 @@ import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
-}
-
-
 Future<void> runMain() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  final firebaseMessaging = FirebaseMessaging.instance;
-
-  await firebaseMessaging.requestPermission();
-  
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  firebaseMessaging.getToken().then((token) {
-    print("Firebase Messaging Token: $token");
-  });
-
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
-
-    if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
-    }
-  });
-
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print('A new onMessageOpenedApp event was published!');
-    // Handle the notification tap
-  });
 
   getTemporaryDirectory().then((dir) {
     FastCachedImageConfig.init(subDir: dir.path, clearCacheAfter: const Duration(days: 15));
@@ -98,6 +67,8 @@ Future<void> runMain() async {
       printTransitions: true,
     ),
   );
+
+  PushNotification.initialize();
 
   final authCubit = AuthCubit();
   await authCubit.getUser();

@@ -29,7 +29,7 @@ if (flutterVersionName == null) {
 android {
     namespace "com.example.cinematix"
     compileSdk flutter.compileSdkVersion
-    ndkVersion "21.3.6528147"
+    ndkVersion = "27.1.12297006"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

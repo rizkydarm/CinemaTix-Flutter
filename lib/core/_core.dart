@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:get_it/get_it.dart';
@@ -18,6 +21,8 @@ part 'network/api/my_api.dart';
 part 'network/api/tmbd_api.dart';
 part 'network/api/city_api.dart';
 
+part 'network/firebase/push_notification.dart';
+
 part 'util/theme.dart';
 part 'util/env.dart';
 part 'util/talker.dart';
@@ -27,29 +32,6 @@ part 'database/sql.dart';
 part 'database/shared_pref.dart';
 
 final GetIt getit = GetItHelper.instance;
-
-// class StreamToListenable extends ChangeNotifier {
-//   late final List<StreamSubscription> subscriptions;
-
-//   StreamToListenable(List<Stream> streams) {
-//     subscriptions = [];
-//     for (var e in streams) {
-//       var s = e.asBroadcastStream().listen(_tt);
-//       subscriptions.add(s);
-//     }
-//     notifyListeners();
-//   }
-
-//   @override
-//   void dispose() {
-//     for (var e in subscriptions) {
-//       e.cancel();
-//     }
-//     super.dispose();
-//   }
-
-//   void _tt(event) => notifyListeners();
-// }
 
 String intToIdr(num number) {
   final format = NumberFormat.currency(locale: 'ID', decimalDigits: 0);
