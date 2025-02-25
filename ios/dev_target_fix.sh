@@ -1,7 +1,13 @@
 #!/bin/bash
 
+
+
 # Make the script exit on any error
 set -e
+
+if [[ $(basename "$PWD") != "ios" ]]; then
+    cd ios
+fi
 
 # Update the minimum deployment target in Podfile
 if [ -f "Podfile" ]; then
