@@ -5,6 +5,7 @@ import 'package:cinematix/data/_data.dart';
 import 'package:cinematix/domain/_domain.dart';
 import 'package:cinematix/view/bloc/_bloc.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:cinematix/router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ Future<void> runMain() async {
   });
 
   getit.registerSingleton<Talker>(TalkerHelper.instance);
+  getit.registerSingleton<FirebaseAnalytics>(FirebaseAnalytics.instance);
   
   final sqlHelper = await SQLHelper().init();
   getit.registerSingleton<SQLHelper>(sqlHelper);
@@ -127,22 +129,8 @@ class App extends StatelessWidget {
     final isLoggedIn = context.read<AuthCubit>().user != null;
     final router = createRouter(isLoggedIn ? '/home' : '/login');
 
-    var themeData = ThemeData(
-      useMaterial3: true,      
-      iconButtonTheme: IconButtonThemeData(
-        style: IconButton.styleFrom(
-          foregroundColor: Colors.grey,
-        ),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
+    getit.get<FirebaseAnalytics>().logAppOpen();
+
     return 
     AdaptiveTheme(
       light: ThemeData(

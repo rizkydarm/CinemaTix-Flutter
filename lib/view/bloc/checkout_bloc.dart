@@ -38,6 +38,11 @@ class CheckoutCubit extends Cubit<BlocState> {
         detail: detail
       );
       await _transactionUseCase.add(en);
+      getit.get<FirebaseAnalytics>().logAddPaymentInfo(
+        currency: 'IDR',
+        value: (int.tryParse(totalPayment) ?? 0).toDouble(),
+        parameters: en.toSQLJson(),
+      );
       emit(const SuccessState(null));
       return en;
     } catch (e, s) {

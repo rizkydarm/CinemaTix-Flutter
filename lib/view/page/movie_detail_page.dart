@@ -11,6 +11,13 @@ class MovieDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    getit.get<FirebaseAnalytics>().logScreenView(
+      screenName: 'Movie Detail Page',
+      parameters: {
+        'movie_id': movieId,
+      },
+    );
+
     final showBottomAppBarNotifier = ValueNotifier(false);
 
     context.read<MovieDetailCubit>().fetchMovieDetailById(movieId)
