@@ -55,6 +55,7 @@ class SearchMovieTextField extends StatelessWidget {
       constraints: const BoxConstraints.expand(
         height: 40
       ),
+      textStyle: const WidgetStatePropertyAll(TextStyle(color: Colors.black)),
       onChanged: onChanged,
     );
   }

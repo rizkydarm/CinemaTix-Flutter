@@ -60,17 +60,27 @@ class WaitingTransactionPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('No. Transaction:'),
+                          const Text('No. Transaction:',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                           Text(data.noTransaction,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 8,),
-                          const Text('Total Payment: '),
+                          const Text('Total Payment:',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
                           Text(data.totalPayment,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
                         ],

@@ -103,6 +103,10 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
+      path: '/profile', 
+      builder: (context, state) => const ProfilePage(),
+    ),
+    GoRoute(
       path: '/register', 
       builder: (context, state) => RegisterPage(),
     ),

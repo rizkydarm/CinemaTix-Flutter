@@ -129,11 +129,6 @@ class App extends StatelessWidget {
 
     var themeData = ThemeData(
       useMaterial3: true,      
-      colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: Colors.blue,
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
-      ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
           foregroundColor: Colors.grey,
@@ -148,23 +143,69 @@ class App extends StatelessWidget {
         ),
       ),
     );
-    return AdaptiveTheme(
-      light: themeData.copyWith(
-        brightness: Brightness.light,
+    return 
+    AdaptiveTheme(
+      light: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+          brightness: Brightness.light,
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: IconButton.styleFrom(
+            foregroundColor: Colors.grey,
+          ),
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            textStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        primaryTextTheme: const TextTheme(
+          headlineLarge: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        )
       ),
-      dark: themeData.copyWith(
-        brightness: Brightness.dark,
+      dark: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+          brightness: Brightness.dark,
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: IconButton.styleFrom(
+            foregroundColor: Colors.grey.shade300,
+          ),
+        ),  
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            textStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedItemColor: Colors.white,
+        ),
       ),
-      initial: AdaptiveThemeMode.light,
-      builder: (theme, darkTheme) =>  MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'CinemaTix',
-        theme: theme,
-        darkTheme: darkTheme,
-        // routeInformationProvider: router.routeInformationProvider,
-        routerConfig: router,
-        // routeInformationParser: router.routeInformationParser,
-      )
+      initial: AdaptiveThemeMode.dark,
+      debugShowFloatingThemeButton: true,
+      builder: (theme, darkTheme) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'CinemaTix',
+          theme: theme,
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.dark,
+          routerConfig: router,
+        );
+      }
     );
   }
 }

@@ -65,10 +65,10 @@ class HomePage extends StatelessWidget {
               context.push('/list/playing_now');
             },
             title: const Text('Playing Now Movies'),
-            titleTextStyle: const TextStyle(
+            titleTextStyle: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.black
+              color: AdaptiveTheme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
             ),
             trailing: const Icon(Icons.arrow_forward_ios),
           ),
@@ -79,10 +79,10 @@ class HomePage extends StatelessWidget {
                 context.push('/list/upcoming');
               },
             title: const Text('Upcoming Movies'),
-            titleTextStyle: const TextStyle(
+            titleTextStyle: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.black
+              color: AdaptiveTheme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black
             ),
             trailing: const Icon(Icons.arrow_forward_ios),
           ),
@@ -184,7 +184,7 @@ class _MovieCardState extends State<MovieCard> {
                     return Shimmer(
                       duration: const Duration(seconds: 1),
                       child: ColoredBox(
-                        color: Colors.black54,
+                        color: Colors.grey,
                         child: SizedBox(
                           width: widthCard,
                           height: widget.height,

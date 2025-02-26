@@ -48,7 +48,7 @@ class SeatTicketPage extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: Theme.of(context).primaryColor,
+                        color: Colors.blue,
                         width: 1,
                       ),
                       color: Colors.white,
@@ -64,7 +64,7 @@ class SeatTicketPage extends StatelessWidget {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).primaryColor
+                      color: Colors.blue,
                     ),
                   ),
                 ),
@@ -163,15 +163,15 @@ class TwoDimensionalScroll extends StatelessWidget {
                         return Material(
                           shape: RoundedRectangleBorder(
                             side: isBooked ? BorderSide.none : BorderSide(
-                              color: value == false ? Theme.of(context).primaryColor : Colors.transparent,
+                              color: value == false ? Colors.blue : Colors.transparent,
                               width: 1,
                             ),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          color: isBooked ? Colors.grey : (value == false ? Colors.white : Theme.of(context).primaryColor),
+                          color: isBooked ? Colors.grey : (value == false ? Colors.white : Colors.blue),
                           clipBehavior: Clip.antiAlias,
                           child: isBooked ? null : InkWell(
-                            splashColor: Theme.of(context).primaryColor.withOpacity(0.4),
+                            splashColor: Colors.blue.withOpacity(0.4),
                             onTap: () {
                               setState(!value!);
                               selectedSeatCount.value = selectedSeatCount.value + (value ? -1 : 1);

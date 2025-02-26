@@ -7,12 +7,16 @@ class WalletPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     void onMessageTapped() {
-      AdaptiveTheme.of(context).toggleThemeMode();
+      
     }
 
     void onSettingTapped() {
-      AdaptiveTheme.of(context).toggleThemeMode();
+      
     }
+
+    void onProfileTapped() {
+      context.push('/profile');
+    }    
 
     final scrollController = ScrollController();
     final showAppbarNotifier = ValueNotifier(false);
@@ -41,10 +45,10 @@ class WalletPage extends StatelessWidget {
     });
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: AdaptiveTheme.of(context).brightness == Brightness.dark ? Colors.grey.shade800 : Colors.grey.shade200,
       appBar: AppBar(
         toolbarHeight: 0,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: AdaptiveTheme.of(context).brightness == Brightness.dark ? Colors.blue : Theme.of(context).primaryColor,
       ),
       body: SafeArea(
         child: Column(
@@ -59,7 +63,7 @@ class WalletPage extends StatelessWidget {
                 );
               },
               child: AppBar(
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: AdaptiveTheme.of(context).brightness == Brightness.dark ? Colors.blue : Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
                 flexibleSpace: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -87,6 +91,10 @@ class WalletPage extends StatelessWidget {
                   IconButton(
                     onPressed: onSettingTapped,
                     icon: const Icon(Icons.settings_outlined),
+                  ),
+                  IconButton(
+                    onPressed: onProfileTapped,
+                    icon: const Icon(Icons.person),
                   )
                 ],
               ),
@@ -100,7 +108,7 @@ class WalletPage extends StatelessWidget {
                     SizedBox(
                       height: 200,
                       child: ColoredBox(
-                        color: Theme.of(context).primaryColor,
+                        color: AdaptiveTheme.of(context).brightness == Brightness.dark ? Colors.blue : Theme.of(context).primaryColor,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -161,6 +169,10 @@ class WalletPage extends StatelessWidget {
                                   IconButton(
                                     onPressed: onSettingTapped,
                                     icon: const Icon(Icons.settings_outlined),
+                                  ),
+                                  IconButton(
+                                    onPressed: onProfileTapped,
+                                    icon: const Icon(Icons.person),
                                   )
                                 ],
                               ),

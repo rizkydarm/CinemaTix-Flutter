@@ -31,3 +31,4 @@ part 'register_page.dart';
 part 'seat_ticket_page.dart';
 part 'checkout_page.dart';
 part 'waiting_transaction_page.dart';
+part 'profile_page.dart';
